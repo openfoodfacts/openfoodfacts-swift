@@ -28,3 +28,8 @@ You can find the full documentation here: XXXX
 ## Open Data Licence
 The database in under the OdBL. This means attributing the source and also contributing back any additions (photos, data), which this package makes easy to do.
 You can check the terms of use here : [Terms of use](https://world.openfoodfacts.org/terms-of-use).
+
+## Third party applications
+If you use this SDK, feel free to open a PR to add your application in this list.
+
+## Authors
