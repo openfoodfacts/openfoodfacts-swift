@@ -8,27 +8,42 @@
 import Foundation
 import UIKit
 
-class OpenFoodAPIConfiguration {
+public enum OFFEnvironment {
+    case production
+    case staging
+}
+
+/// https://wiki.openfoodfacts.org/API/Write
+public class OFFConfig {
     
-    static let instance = OpenFoodAPIConfiguration()
+    var api = OFFApi()
     
-    static let scheme = "https"
-    static let uriProdHost = "world.openfoodfacts.org"
-    static let uriProdHostFolksonomy = "api.folksonomy.openfoodfacts.org"
-    static let uriProdHostRobotoff = "robotoff.openfoodfacts.org"
-    static let imageProdUrlBase = "https://static.openfoodfacts.org/images/products/"
-    static let uriProdHostEvents = "events.openfoodfacts.org"
+    public var apiEnv = OFFEnvironment.production {
+        didSet {
+            api.currentEnvironment = apiEnv
+            
+            if apiEnv == .staging {
+                self.globalUser = User(userId: "off", password: "off")
+            }
+        }
+    }
+    /// Required property
+    public var globalUser: User?
+    /// Auto-generated can be overriden
+    public var userAgent: UserAgent?
+    /// Metadata
+    public var country: OpenFoodFactsCountry = OpenFoodFactsCountry.USA
+    public var uiLanguage: OpenFoodFactsLanguage = OpenFoodFactsLanguage.ENGLISH
+    public var productsLanguage: OpenFoodFactsLanguage = OpenFoodFactsLanguage.POLISH
     
-    var uuid = UUID().uuidString
+    public static let shared: OFFConfig = {
+        let instance = OFFConfig()
+        return instance
+    }()
     
-    var globalUser: User?
+    var uuid = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
     
-    var userAgent: UserAgent?
-    
-    var country: OpenFoodFactsCountry = OpenFoodFactsCountry.USA
-    var language: OpenFoodFactsLanguage = OpenFoodFactsLanguage.ENGLISH
-    
-    private init() {
+    init() {
         setupUserAgent()
     }
     
@@ -71,7 +86,7 @@ class OpenFoodAPIConfiguration {
             name: appName,
             version: version,
             system: system,
-            url: "https://world.openfoodfacts.org/",
+            url: api.host(for: .world),
             comment: comment
         )
     }

@@ -21,7 +21,7 @@
 
 import Foundation
 
-struct UserAgent: Codable {
+public struct UserAgent: Codable {
     
     var name: String?
     var version: String?

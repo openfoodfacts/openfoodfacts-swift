@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum OpenFoodFactsCountry: String {
+public enum OpenFoodFactsCountry: String {
     
     case ANDORRA="ad"
     case UNITED_ARAB_EMIRATES="ae"

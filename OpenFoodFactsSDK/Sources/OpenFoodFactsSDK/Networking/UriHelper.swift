@@ -18,14 +18,14 @@ class UriHelper {
     ) -> URL? {
         
         var userAgentParams = [String: String]()
-        if addUserAgentParameters, let agent = OpenFoodAPIConfiguration.instance.userAgent {
-            userAgentParams = agent.toMap(with: OpenFoodAPIConfiguration.instance.uuid)
+        if addUserAgentParameters, let agent = OFFConfig.shared.userAgent {
+            userAgentParams = agent.toMap(with: OFFConfig.shared.uuid)
         }
         let allQueryParams = queryParameters?.merging(userAgentParams) { (current, _) in current }
         
         var components = URLComponents()
-        components.scheme = OpenFoodAPIConfiguration.scheme
-        components.host = OpenFoodAPIConfiguration.uriProdHost
+        components.scheme = OFFApi.scheme
+        components.host = OFFConfig.shared.api.host(for: .world)
         components.path = path
         components.queryItems = allQueryParams?.map { URLQueryItem(name: $0.key, value: $0.value) }
         
@@ -42,25 +42,31 @@ class UriHelper {
     
     static func getRobotoffUri(path: String, queryParameters: [String: String]?) -> URL? {
         var components = UriHelper.baseComponents(path: path, from: queryParameters)
-        components.host = OpenFoodAPIConfiguration.uriProdHostRobotoff
+        components.host = OFFConfig.shared.api.host(for: .robotoff)
         return components.url
     }
     
     static func getFolksonomyUri(path: String, queryParameters: [String: String]?) -> URL? {
         var components = UriHelper.baseComponents(path: path, from: queryParameters)
-        components.host = OpenFoodAPIConfiguration.uriProdHostFolksonomy
+        components.host = OFFConfig.shared.api.host(for: .folksonomy)
         return components.url
     }
     
     static func getEventsUri(path: String, queryParameters: [String: String]?) -> URL? {
         var components = UriHelper.baseComponents(path: path, from: queryParameters)
-        components.host = OpenFoodAPIConfiguration.uriProdHostEvents
+        components.host = OFFConfig.shared.api.host(for: .events)
+        return components.url
+    }
+    
+    static func getTaxonomiesUri(path: String) -> URL? {
+        var components = UriHelper.baseComponents(path: path, from: [:])
+        components.host = OFFConfig.shared.api.host(for: .taxonomies)
         return components.url
     }
     
     private static func baseComponents(path: String, from queryParameters: [String: String]?) -> URLComponents {
         var components = URLComponents()
-        components.scheme = OpenFoodAPIConfiguration.scheme
+        components.scheme = OFFApi.scheme
         components.path = path
         components.queryItems = queryParameters?.map { URLQueryItem(name: $0.key, value: $0.value) }
         return components
@@ -69,8 +75,8 @@ class UriHelper {
     // TODO: verify why this shit is needed
     static func replaceSubdomain(uri: URL) -> URL {
         return replaceSubdomainWithCodes(uri: uri,
-                                         languageCode: OpenFoodAPIConfiguration.instance.language.rawValue,
-                                         countryCode: OpenFoodAPIConfiguration.instance.country.rawValue)
+                                         languageCode: OFFConfig.shared.productsLanguage.rawValue,
+                                         countryCode: OFFConfig.shared.country.rawValue)
     }
     
     static func replaceSubdomainWithCodes(uri: URL, languageCode: String?, countryCode: String?) -> URL {

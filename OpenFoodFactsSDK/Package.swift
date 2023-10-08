@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "OpenFoodFactsSDK",
     platforms: [
-        .iOS(.v14)
+        .iOS(.v15)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -15,14 +15,15 @@ let package = Package(
             targets: ["OpenFoodFactsSDK"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/nrivard/BarcodeView.git", .upToNextMajor(from: "0.1.4"))
+        .package(url: "https://github.com/nrivard/BarcodeView.git", .upToNextMajor(from: "0.1.4")),
+        .package(url: "https://github.com/TimOliver/TOCropViewController.git", from: "2.6.1")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "OpenFoodFactsSDK",
-            dependencies: ["BarcodeView"]
+            dependencies: ["BarcodeView", "TOCropViewController"]
         ),
         .testTarget(
             name: "OpenFoodFactsSDK-iosTests",

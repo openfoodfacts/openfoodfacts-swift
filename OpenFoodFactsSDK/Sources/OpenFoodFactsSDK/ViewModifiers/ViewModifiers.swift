@@ -6,11 +6,78 @@
 //
 
 import SwiftUI
+import Combine
 
 struct RoundedBackgroundCard: ViewModifier {
     
     func body(content: Content) -> some View {
         content
             .padding(10).background(Color(UIColor.secondarySystemBackground)).cornerRadius(10)
+    }
+}
+
+// Created for NumericTextFields
+// by Stewart Lynch on 2022-12-18
+// Using Swift 5.0
+struct NumbersOnlyViewModifier: ViewModifier {
+    
+    @Binding var text: String
+    var includeDecimal: Bool
+    
+    func body(content: Content) -> some View {
+        content
+            .keyboardType(includeDecimal ? .decimalPad : .numberPad)
+            .onReceive(Just(text)) { newValue in
+                var numbers = "0123456789"
+                let decimalSeparator: String = Locale.current.decimalSeparator ?? "."
+                if includeDecimal {
+                    numbers += decimalSeparator
+                }
+                if newValue.components(separatedBy: decimalSeparator).count-1 > 1 {
+                    let filtered = newValue
+                    self.text = String(filtered.dropLast())
+                } else {
+                    let filtered = newValue.filter { numbers.contains($0)}
+                    if filtered != newValue {
+                        self.text = filtered
+                    }
+                }
+            }
+    }
+}
+
+struct ClearButton: ViewModifier {
+    @Binding var text: String
+    var isActive: Bool
+    
+    func body(content: Content) -> some View {
+        ZStack(alignment: .trailing) {
+            content
+            
+            if !text.isEmpty && isActive {
+                Button {
+                    text = ""
+                } label: {
+                    Image(systemName: "multiply.circle.fill")
+                        .foregroundStyle(.gray)
+                }
+                .padding(.trailing, 8)
+            }
+        }
+    }
+}
+
+struct RequiredField: ViewModifier {
+    var isActive: Bool
+    
+    func body(content: Content) -> some View {
+        HStack(alignment: .top) {
+            if isActive {
+                Text("*").alignmentGuide(.top, computeValue: { dimension in
+                    0
+                })
+            }
+            content
+        }.padding(0)
     }
 }

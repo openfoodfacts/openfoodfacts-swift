@@ -22,11 +22,17 @@
 
 import Foundation
 
-struct User: Codable {
-    var comment: String?
-    var userId: String
-    var password: String
-
+public struct User: Codable {
+    public var comment: String?
+    public var userId: String
+    public var password: String
+    
+    public init(comment: String? = nil, userId: String, password: String) {
+        self.comment = comment
+        self.userId = userId
+        self.password = password
+    }
+    
     enum CodingKeys: String, CodingKey {
         case comment
         case userId = "user_id"

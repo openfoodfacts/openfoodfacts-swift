@@ -10,7 +10,7 @@ import Foundation
 
 class HttpHelper {
     
-    static let instance = HttpHelper()
+    static let shared = HttpHelper()
     static let userAgent = "iOS API"
     static let from = "anonymous"
     
@@ -52,7 +52,7 @@ class HttpHelper {
 /// The data / body of the request has to be provided as map. (key, value)
 /// The files to send have to be provided as map containing the source file uri.
 /// As result a json object of the "type" Status is expected.
-    func doMultipartRequest(uri: URL, body: [String: String], files: [String: URL]? = nil, completion: @escaping (Result<Status, Error>) -> Void) {
+    func doMultipartRequest(uri: URL, body: [String: String], sendImage: SendImage) async throws -> URLResponse {
         
         var allQueryParams = body
         mergeWithUserAgent(baseDict: &allQueryParams)
@@ -63,23 +63,19 @@ class HttpHelper {
         request.httpMethod = "POST"
         
         var data = Data()
-
+        
         for (key, value) in allQueryParams {
             data.append("--\(boundary)\r\n")
             data.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
             data.append("\(value)\r\n")
         }
         
-        if let files = files {
-            for (key, url) in files {
-                if let fileData = try? Data(contentsOf: url) {
-                    data.append("--\(boundary)\r\n")
-                    data.append("Content-Disposition: form-data; name=\"\(key)\"; filename=\"\(url.lastPathComponent)\"\r\n")
-                    data.append("Content-Type: application/octet-stream\r\n\r\n")
-                    data.append(fileData)
-                    data.append("\r\n")
-                }
-            }
+        if let file = sendImage.image, let fileData = file.pngData() {
+            data.append("--\(boundary)\r\n")
+            data.append("Content-Disposition: form-data; name=\"\(sendImage.getImageName())\"; filename=\"\(fileData.hashValue)\"\r\n")
+            data.append("Content-Type: application/octet-stream\r\n\r\n")
+            data.append(fileData)
+            data.append("\r\n")
         }
         
         data.append("--\(boundary)--\r\n")
@@ -87,53 +83,31 @@ class HttpHelper {
         request.httpBody = data
         request.allHTTPHeaderFields = buildHeaders(contentType: "multipart/form-data; boundary=\(boundary)")
         
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(NSError(domain: "No Data", code: 0, userInfo: nil)))
-                return
-            }
-            
-            if let httpResponse = response as? HTTPURLResponse {
-                if httpResponse.statusCode == 200 {
-                    let responseBody = String(data: data, encoding: .utf8)
-                    completion(.success(Status(status: 200, body: responseBody, error: nil)))
-                } else {
-                    completion(.failure(NSError(domain: "Server Error", code: httpResponse.statusCode, userInfo: ["Reason": httpResponse.statusCode.description])))
-                }
-            }
+        do {
+            let (_, response) = try await URLSession.shared.data(for: request)
+            return response
+        } catch {
+            throw error
         }
-        task.resume()
     }
     
 /// Send a http get request to the specified uri.
 /// The data of the request (if any) has to be provided as parameter within the uri.
 /// The result of the request will be returned as string.
 /// By default the query will hit the PROD DB
-    func doGetRequest(uri: URL, completion: @escaping (Result<Data, Error>) -> Void) {
+    func doGetRequest(uri: URL, addCredentialsToHeader: Bool = false) async throws -> Data {
         var request = URLRequest(url: uri)
         
         request.httpMethod = "GET"
-        request.allHTTPHeaderFields = buildHeaders()
+        request.allHTTPHeaderFields = buildHeaders(addCredentialsToHeader: addCredentialsToHeader)
         
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(NSError(domain: "No Data", code: 0, userInfo: nil)))
-                return
-            }
-            
-            completion(.success(data))
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            return data
+        } catch {
+            // Re-throw the error to be caught by the caller
+            throw error
         }
-        task.resume()
     }
     
 /// Send a http post request to the specified uri.
@@ -171,11 +145,11 @@ class HttpHelper {
         var headers = [
             "Accept": "application/json",
             "Content-Type": contentType,
-            "User-Agent": OpenFoodAPIConfiguration.instance.userAgent?.toString() ?? HttpHelper.userAgent,
-            "From": OpenFoodAPIConfiguration.instance.globalUser?.userId ?? HttpHelper.from
+            "User-Agent": OFFConfig.shared.userAgent?.toString() ?? HttpHelper.userAgent,
+            "From": OFFConfig.shared.globalUser?.userId ?? HttpHelper.from
         ]
         
-        if addCredentialsToHeader, let myUser = OpenFoodAPIConfiguration.instance.globalUser {
+        if addCredentialsToHeader, let myUser = OFFConfig.shared.globalUser {
             let userId = myUser.userId
             let password = myUser.password
             let credentialData = "\(userId):\(password)".data(using: .utf8)
@@ -190,8 +164,8 @@ class HttpHelper {
     private func mergeWithUserAgent(baseDict: inout [String: String]) {
         var userAgentParams = [String: String]()
 
-        if let agent = OpenFoodAPIConfiguration.instance.userAgent {
-            userAgentParams = agent.toMap(with: OpenFoodAPIConfiguration.instance.uuid)
+        if let agent = OFFConfig.shared.userAgent {
+            userAgentParams = agent.toMap(with: OFFConfig.shared.uuid)
         }
 
         baseDict.merge(userAgentParams) { (current, _) in current }
@@ -199,7 +173,7 @@ class HttpHelper {
     
     private func mergeWithGlobalUser(baseDict: inout [String: String]) {
         var userParams = [String: String]()
-        if let user = OpenFoodAPIConfiguration.instance.globalUser {
+        if let user = OFFConfig.shared.globalUser {
             userParams = user.toMap()
         }
         baseDict.merge(userParams) { (current, _) in current }
