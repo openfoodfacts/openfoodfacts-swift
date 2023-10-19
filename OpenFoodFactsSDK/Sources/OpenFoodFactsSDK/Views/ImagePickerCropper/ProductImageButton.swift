@@ -10,42 +10,47 @@ import SwiftUI
 
 struct ProductImageButton: View {
     
-    var showDivider: Bool
     var imageKey: ImageField
     
     @Binding var image: UIImage
     @EnvironmentObject var pickerModel: ImagesHelper
     @EnvironmentObject var pageConfig: ProductPageConfig
     
+    @ViewBuilder
+    func imageView() -> some View {
+        if self.image.isEmpty() {
+            Image(systemName: "photo.badge.plus.fill")
+                .resizable().aspectRatio(contentMode: .fit)
+                .frame(width: 100, height: 80)
+                .padding(5)
+        } else {
+            Image(uiImage: self.image)
+                .resizable().aspectRatio(contentMode: .fit)
+                .frame(width: 100, height: 80)
+                .padding(5)
+                .background(RoundedRectangle(cornerRadius: 6).stroke(.blue, lineWidth: 2))
+        }
+    }
+    
     public var body: some View {
-        Button(action: {
-            self.pickerModel.isPresentedSourcePicker = true
-            self.pickerModel.imageFieldToEdit = imageKey
-        }) {
-            HStack(alignment: .center, content: {
-                
-                if self.image.isEmpty() {
-                    Image(systemName: "photo.badge.plus.fill")
-                        .resizable().aspectRatio(contentMode: .fit).frame(width: 55).padding(5)
+        VStack {
+            Button(action: {
+                if pageConfig.isViewMode {
+                    self.pickerModel.isPresentedImagePreview = true
+                    self.pickerModel.previewImage = image
                 } else {
-                    Image(uiImage: self.image)
-                        .resizable().aspectRatio(contentMode: .fit)
-                        .frame(width: 55).padding(5)
-                        .background(RoundedRectangle(cornerRadius: 6).stroke(.blue, lineWidth: 2))
+                    self.pickerModel.isPresentedSourcePicker = true
+                    self.pickerModel.imageFieldToEdit = imageKey
                 }
-                VStack(alignment: .leading, content: {
-                    Text("\(imageKey.rawValue)")
-                    Text("photo")
-                })
-                if showDivider {
-                    Divider()
-                }
-            })
-            .padding(5)
-        }.disabled(pageConfig.isViewMode)
+            }) {
+                imageView()
+            }
+            Text("\(imageKey.rawValue)").required(isActive: ProductPageConfig.requiredImageFields.contains(imageKey) && pageConfig.isNewMode)
+        }
+        .padding(5)
     }
 }
 
 #Preview {
-    ProductImageButton(showDivider: false, imageKey: .front, image: .constant(UIImage.init(systemName: "pensil")!))
+    ProductImageButton(imageKey: .front, image: .constant(UIImage.init(systemName: "pensil")!))
 }

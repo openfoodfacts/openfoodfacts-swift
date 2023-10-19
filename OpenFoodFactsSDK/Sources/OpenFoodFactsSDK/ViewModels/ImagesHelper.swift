@@ -17,4 +17,7 @@ class ImagesHelper: ObservableObject {
     @Published var source = UIImagePickerController.SourceType.camera
     
     @Published var imageFieldToEdit = ImageField.front
+    
+    @Published var isPresentedImagePreview = false
+    @Published var previewImage = UIImage()
 }

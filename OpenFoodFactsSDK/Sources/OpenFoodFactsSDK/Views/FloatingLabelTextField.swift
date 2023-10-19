@@ -10,9 +10,13 @@ import SwiftUI
 
 struct FloatingLabelTextField: View {
     
+    var title: String?
     var placeholder: String
     
     @Binding var text: String
+    
+    var isRequired: Bool = false
+    
     @FocusState private var isFocused: Bool
     
     @EnvironmentObject var pageConfig: ProductPageConfig
@@ -24,6 +28,7 @@ struct FloatingLabelTextField: View {
                 .foregroundColor(isFocused ? .blue : .gray)
                 .offset(y: (isFocused || !text.isEmpty) ? -26 : 0)
                 .font(.system(size: (isFocused || !text.isEmpty) ? 13 : 16))
+                .required(isActive: isRequired && !isFocused)
             
             TextField("", text: $text, onEditingChanged: { isEditing in
                 withAnimation {

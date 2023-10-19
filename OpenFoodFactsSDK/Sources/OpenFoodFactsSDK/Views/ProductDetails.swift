@@ -31,11 +31,9 @@ struct ProductDetails: View {
                     VStack(alignment: .leading, spacing: ProductDetails.lineSpacing, content: {
                         EditorHeader(title: "Basic details", systemImage: "pencil")
                         ExpandableText(text: "Fields with a star * - are a bare minimum.")
-                        FloatingLabelTextField(placeholder: "Product's name", text: $pageConfig.productName)
-                            .required(isActive: pageConfig.isNewMode)
-                        FloatingLabelTextField(placeholder: "Brand name", text: $pageConfig.brand)
-                        FloatingLabelTextField(placeholder: "Product's weight with units - 100g, 50ml, etc.", text: $pageConfig.weight)
-                            .required(isActive: pageConfig.isNewMode)
+                        FloatingLabelTextField(title: "Product's name", placeholder: "Product's name", text: $pageConfig.productName, isRequired: pageConfig.isNewMode)
+                        FloatingLabelTextField(title: "Brand", placeholder: "Brand name", text: $pageConfig.brand, isRequired: pageConfig.isNewMode)
+                        FloatingLabelTextField(title: "Weight", placeholder: "Product's weight with units - 100g, 50ml, etc.", text: $pageConfig.weight, isRequired: pageConfig.isNewMode)
                         HStack {
                             Text("Product's package language")
                             Spacer()

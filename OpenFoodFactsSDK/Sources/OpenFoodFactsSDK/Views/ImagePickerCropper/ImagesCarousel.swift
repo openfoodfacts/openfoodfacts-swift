@@ -16,11 +16,16 @@ struct ImagesCarousel: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 5, content: {
                 ForEach(Array(ImageField.allCases.enumerated()), id: \.1) { index,imageField in
-                    ProductImageButton(
-                        showDivider: index < ImageField.allCases.count-1,
-                        imageKey: imageField,
-                        image: pageConfig.binding(for: imageField)
-                    ).required(isActive: ProductPageConfig.requiredImageFields.contains(imageField) && pageConfig.isNewMode)
+                    HStack {
+                        ProductImageButton(
+                            imageKey: imageField,
+                            image: pageConfig.binding(for: imageField)
+                        )
+                        
+                        if index < ImageField.allCases.count-1 {
+                            Divider()
+                        }
+                    }
                 }
             })
         }.frame(minWidth: 0, maxWidth: .infinity).cornerRadius(6)

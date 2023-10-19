@@ -12,7 +12,7 @@ import OpenFoodFactsSDK
 
 struct ContentView: View {
     
-    @State var barcode: String = "5900102025473"
+    @State var barcode: String = "5701377101134"
     @State var isProductEditorPresent: Bool = false
     @State var isInvalidBarcode: Bool = false
     

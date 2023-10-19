@@ -16,7 +16,7 @@ class ProductPageConfig: ObservableObject {
     static let requiredNutrients = ["energy-kcal", "proteins", "carbohydrates", "fat"]
     static let requiredImageFields = [ ImageField.front, ImageField.nutrition ]
     
-    @Published var pageState = ProductPageState.new // TODO: workaround until editing will be implemented
+    @Published var pageState = ProductPageState.view // TODO: workaround until editing will be implemented
     
     @Published var nutrientsMeta: NutrientMetadata?
     @Published var orderedNutrients: OrderedNutrients?
@@ -143,7 +143,7 @@ class ProductPageConfig: ObservableObject {
         if let nutrients = orderedNutrients?.nutrients, let productNutrients = product.nutriments {
             for on in nutrients {
                 let key = "\(on.id)_\(self.dataFor.rawValue)"
-                let unitKey = "\(key)_unit"
+                let unitKey = "\(on.id)_unit"
                 
                 if productNutrients.keys.contains(unitKey), 
                     let unitStr = productNutrients[unitKey] as? String,
@@ -152,7 +152,7 @@ class ProductPageConfig: ObservableObject {
                 }
                 let hasKey = productNutrients.keys.contains(key)
                 if hasKey, let value = productNutrients[key] as? Double {
-                    on.value = String(describing: value)
+                    on.value = on.convertWeightToG(value).formattedString()
                 }
                 on.displayInEditForm = hasKey
                 on.important = hasKey

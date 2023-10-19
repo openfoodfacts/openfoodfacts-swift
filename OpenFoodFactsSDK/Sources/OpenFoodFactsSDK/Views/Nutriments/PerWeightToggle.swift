@@ -19,7 +19,7 @@ struct PerWeightToggle: View {
         if pageConfig.isViewMode {
             ZStack(alignment: .center) {
                 Text(dataFor.label()).underline()
-            }.frame(width: .infinity)
+            }
         } else {
             HStack(alignment: .center, spacing: 10) {
                 Button(action: {

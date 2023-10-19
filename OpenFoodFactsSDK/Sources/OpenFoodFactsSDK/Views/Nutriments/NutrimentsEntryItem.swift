@@ -13,22 +13,25 @@ struct NutrimentsEntryItem: View {
     var deletable: Bool
     
     @ObservedObject var nutrient: OrderedNutrient
-    @EnvironmentObject var productConfig: ProductPageConfig
+    @EnvironmentObject var pageConfig: ProductPageConfig
     
     var onDelete: (() -> Void)?
     
     public var body: some View {
         HStack {
-            if deletable && productConfig.isNewMode {
+            if deletable && pageConfig.isNewMode {
                 Button("", systemImage: "trash", action: {
                     onDelete?()
                 })
             }
             VStack(alignment: .leading, content: {
-                FloatingLabelTextField(placeholder: nutrient.name, text: $nutrient.value)
-                    .numbersOnly($nutrient.value, includeDecimal: true)
-                    .disableAutocorrection(true)
-                    .disabled(productConfig.isViewMode)
+                FloatingLabelTextField(
+                    placeholder: nutrient.name,
+                    text: $nutrient.value,
+                    isRequired: pageConfig.isNewMode && ProductPageConfig.requiredNutrients.contains(nutrient.id))
+                .numbersOnly($nutrient.value, includeDecimal: true)
+                .disableAutocorrection(true)
+                .disabled(pageConfig.isViewMode)
                 Divider()
             })
             Spacer()
@@ -38,11 +41,11 @@ struct NutrimentsEntryItem: View {
                 }
             }, label: {
                 Text(nutrient.currentUnit.rawValue).padding().frame(width: 80, height: 30)
-            }).background(Color.blue).cornerRadius(6).foregroundColor(Color.white).disabled(productConfig.isViewMode)
+            }).background(Color.blue).cornerRadius(6).foregroundColor(Color.white).disabled(pageConfig.isViewMode)
         }
         .onAppear {
-            if productConfig.isNewMode {
-                nutrient.currentUnit = productConfig.nutrientsMeta?.nutrients?[nutrient.id]?.unit?.en ?? Unit.g
+            if pageConfig.isNewMode {
+                nutrient.currentUnit = pageConfig.nutrientsMeta?.nutrients?[nutrient.id]?.unit?.en ?? Unit.g
             }
         }
     }

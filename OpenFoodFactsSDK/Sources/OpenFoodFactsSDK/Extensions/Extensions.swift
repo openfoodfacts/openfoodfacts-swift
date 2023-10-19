@@ -18,6 +18,21 @@ extension Binding where Value: Equatable {
     }
 }
 
+extension Double {
+    
+    static var commonFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 18  // Or another maximum value as needed
+        formatter.minimumFractionDigits = 0  // This will strip trailing zeros
+        return formatter
+    }()
+
+    func formattedString() -> String {
+        return Double.commonFormatter.string(from: NSNumber(value: self)) ?? "\(self)"
+    }
+}
+
 extension View {
     
     func hidden(_ isActive: Bool) -> some View {

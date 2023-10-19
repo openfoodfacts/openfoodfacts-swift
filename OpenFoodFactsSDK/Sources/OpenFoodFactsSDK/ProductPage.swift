@@ -1,8 +1,6 @@
 //
 //  EditProductPage.swift
-//  TODO: move * required to placeholder, separate placeholder and title for FloatingLabel
-//  TODO: fix nutriments conversion
-//  TODO: fix gallery size and styling
+//
 //  TODO: send entered product data
 //  TODO: error handling
 // -------------------------
@@ -91,6 +89,13 @@ public struct ProductPage: View {
         } message: {
             Text("The image is too small! Minimum WxH 640x160")
         }
+        .fullScreenCover(isPresented: $imagesHelper.isPresentedImagePreview, content: {
+            ImageViewer(
+                viewerShown: $imagesHelper.isPresentedImagePreview,
+                image: $imagesHelper.previewImage,
+                closeButtonTopRight: true
+            )
+        })
         .fullScreenCover(isPresented: $imagesHelper.isPresented) {
             ImagePickerView(
                 isPresented: $imagesHelper.isPresented,
@@ -115,9 +120,12 @@ public struct ProductPage: View {
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
-                Button("Submit") {
-                    isPresented = false
-                }.hidden(pageConfig.isViewMode)
+                if pageConfig.isNewMode {
+                    Button("Submit") {
+                        if (!pageConfig.isInitialised) { return }
+                        isPresented = false
+                    }
+                }
             }
         }
     }

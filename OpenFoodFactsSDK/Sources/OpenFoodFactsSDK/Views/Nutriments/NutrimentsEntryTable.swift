@@ -19,7 +19,7 @@ public struct NutrimentsEntryTable: View {
         
         VStack(spacing: 10, content: {
             
-            FloatingLabelTextField(placeholder: "Serving size, for e.g. 15g", text: $pageConfig.servingSize).required(isActive: pageConfig.isNewMode)
+            FloatingLabelTextField(title: "Serving size", placeholder: "Serving size, for e.g. 15g", text: $pageConfig.servingSize, isRequired: pageConfig.isNewMode)
                 .numbersOnly($pageConfig.servingSize, includeDecimal: true)
                 .disableAutocorrection(true)
             PerWeightToggle(dataFor: $pageConfig.dataFor)
@@ -27,7 +27,7 @@ public struct NutrimentsEntryTable: View {
             ForEach(displayed(), id: \.id) { nutrient in
                 NutrimentsEntryItem(deletable: !required.contains(nutrient), nutrient: nutrient) {
                     pageConfig.selectedNutrients.remove(nutrient.id)
-                }.required(isActive: pageConfig.isNewMode && ProductPageConfig.requiredNutrients.contains(nutrient.id))
+                }
             }
             if pageConfig.isNewMode {
                 Button(action: {
@@ -45,15 +45,16 @@ public struct NutrimentsEntryTable: View {
                 .cornerRadius(8)
             }
         })
-        .onChange(of: pageConfig.orderedNutrients) { newValue in
+        .sheet(isPresented: $showingModal, content: {
+            AddNutrimentsAlert(isPresented: $showingModal, selected: $pageConfig.selectedNutrients, items: notSelected())
+        })
+        .onAppear() {
+            if pageConfig.isViewMode { return }
             if let importantNutrients = pageConfig.orderedNutrients?.nutrients.filter({ $0.important && $0.displayInEditForm }) {
                 self.required = importantNutrients
                 pageConfig.selectedNutrients = Set(self.required.map { $0.id })
             }
         }
-        .sheet(isPresented: $showingModal, content: {
-            AddNutrimentsAlert(isPresented: $showingModal, selected: $pageConfig.selectedNutrients, items: notSelected())
-        })
     }
     
     private func notSelected() -> [OrderedNutrient] {
