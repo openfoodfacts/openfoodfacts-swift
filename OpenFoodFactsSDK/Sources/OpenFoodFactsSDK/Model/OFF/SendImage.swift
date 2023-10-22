@@ -12,28 +12,29 @@
 import Foundation
 import UIKit
 
-enum ImageField: String, CaseIterable, Decodable {
+public enum ImageField: String, CaseIterable, Decodable {
    case front = "front"
    case nutrition = "nutrition"
    case ingredients = "ingredients"
 //   case packaging = "packaging"
 //   case other = "other"
    
-   init(from decoder: Decoder) throws {
+   public init(from decoder: Decoder) throws {
        let container = try decoder.singleValueContainer()
        let size = try container.decode(String.self)
        self = ImageField(rawValue: size) ?? .front
    }
 }
 
-struct SendImage {
+public struct SendImage {
     
     var barcode: String
-    var image: UIImage?
-    var imageUri: String?
+    var image: UIImage
     var imageField: ImageField
     
-    init(barcode: String, image: UIImage, imageUri: String, imageField: ImageField = .front) {
+    var imageUri: String?
+    
+    init(barcode: String, imageField: ImageField = .front, image: UIImage, imageUri: String? = nil) {
         self.barcode = barcode
         self.image = image
         self.imageField = imageField

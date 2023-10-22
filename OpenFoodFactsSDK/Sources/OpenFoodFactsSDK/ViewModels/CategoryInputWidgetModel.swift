@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import SwiftUI
 
+@MainActor
 class CategoryInputWidgetModel: ObservableObject {
     
     @Published var suggestions = [String]()
@@ -32,7 +33,6 @@ class CategoryInputWidgetModel: ObservableObject {
     }
     
     // TODO: take into account language and country code
-    @MainActor
     func fetchSuggestions(query: String) async {
         do {
             suggestions = try await OpenFoodAPIClient.shared.getSuggestions(query: query, country: OFFConfig.shared.country, language: OFFConfig.shared.uiLanguage)

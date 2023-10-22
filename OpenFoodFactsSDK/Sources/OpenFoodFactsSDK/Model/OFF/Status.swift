@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Status: Codable {
+public struct Status: Codable {
     static let wrongUserOrPasswordErrorMessage = "Incorrect user name or password"
 
     let status: Int?

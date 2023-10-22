@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductQueryConfiguration {
+public struct ProductQueryConfiguration {
     let barcode: String
     var languages: [OpenFoodFactsLanguage]
     var fields: [ProductField]?
@@ -24,7 +24,7 @@ struct ProductQueryConfiguration {
     func getParametersMap() -> [String: String] {
         var result = [String: String]()
         
-        var queryLanguages = [OpenFoodFactsLanguage]()
+        let queryLanguages = [OpenFoodFactsLanguage]()
         if !queryLanguages.isEmpty {
             result["lc"] = queryLanguages.map { $0.info.code }.joined(separator: ",")
             result["tags_lc"] = queryLanguages.first?.info.code ?? ""

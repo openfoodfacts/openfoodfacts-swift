@@ -1,5 +1,5 @@
 //
-//  UriHelper.swift
+//  HttpHelper.swift
 //
 //  General functions for sending http requests (post, get, multipart, ...)
 //
@@ -52,9 +52,10 @@ class HttpHelper {
 /// The data / body of the request has to be provided as map. (key, value)
 /// The files to send have to be provided as map containing the source file uri.
 /// As result a json object of the "type" Status is expected.
-    func doMultipartRequest(uri: URL, body: [String: String], sendImage: SendImage) async throws -> URLResponse {
+    func doMultipartRequest(uri: URL, body: [String: String], sendImage: SendImage) async throws -> Data {
         
         var allQueryParams = body
+        mergeWithGlobalUser(baseDict: &allQueryParams)
         mergeWithUserAgent(baseDict: &allQueryParams)
         
         let boundary = "Boundary-\(UUID().uuidString)"
@@ -64,15 +65,17 @@ class HttpHelper {
         
         var data = Data()
         
+        // Fields
         for (key, value) in allQueryParams {
             data.append("--\(boundary)\r\n")
             data.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
             data.append("\(value)\r\n")
         }
         
-        if let file = sendImage.image, let fileData = file.pngData() {
+        // Files
+        if let fileData = sendImage.image.pngData() {
             data.append("--\(boundary)\r\n")
-            data.append("Content-Disposition: form-data; name=\"\(sendImage.getImageName())\"; filename=\"\(fileData.hashValue)\"\r\n")
+            data.append("Content-Disposition: form-data; name=\"\(sendImage.getImageDataKey())\"; filename=\"\(fileData.hashValue)\"\r\n")
             data.append("Content-Type: application/octet-stream\r\n\r\n")
             data.append(fileData)
             data.append("\r\n")
@@ -84,8 +87,8 @@ class HttpHelper {
         request.allHTTPHeaderFields = buildHeaders(contentType: "multipart/form-data; boundary=\(boundary)")
         
         do {
-            let (_, response) = try await URLSession.shared.data(for: request)
-            return response
+            let (data, _) = try await URLSession.shared.data(for: request)
+            return data
         } catch {
             throw error
         }

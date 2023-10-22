@@ -51,8 +51,8 @@
       </BuildableProductRunnable>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "CG_NUMERICS_SHOW_BACKTRACE"
-            value = "YES"
+            key = "IDELogRedirectionPolicy"
+            value = "oslogToStdio"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

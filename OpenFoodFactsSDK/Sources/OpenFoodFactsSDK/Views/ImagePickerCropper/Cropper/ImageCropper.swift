@@ -10,17 +10,18 @@ struct ImageCropper: UIViewControllerRepresentable {
     
   @Binding var image: UIImage
   @Binding var isPresented: Bool
-  @Binding var imageIsTooSmall: Bool
+  @Binding var isAlertPresented: Bool
+  @Binding var alertTitle: String
+  @Binding var alertMessage: String
     
   func makeCoordinator() -> Coordinator {
-      return Coordinator(image: $image, isPresented: $isPresented, imageIsTooSmall: $imageIsTooSmall)
+      return Coordinator(parent: self)
   }
   
   func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
   
   func makeUIViewController(context: Context) -> some UIViewController {
-    let img = self.image
-    let cropViewController = CropViewController(image: img)
+    let cropViewController = CropViewController(image: self.image)
     cropViewController.delegate = context.coordinator
     return cropViewController
   }
@@ -28,31 +29,29 @@ struct ImageCropper: UIViewControllerRepresentable {
 
 class Coordinator: NSObject, CropViewControllerDelegate {
     
-  @Binding var image: UIImage
-  @Binding var isPresented: Bool
-  @Binding var imageIsTooSmall: Bool
+  var parent: ImageCropper
   
-  init(image: Binding<UIImage>, isPresented: Binding<Bool>, imageIsTooSmall: Binding<Bool>) {
-      _image = image
-      _isPresented = isPresented
-      _imageIsTooSmall = imageIsTooSmall
+  init(parent: ImageCropper) {
+      self.parent = parent
   }
   
   func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
     withAnimation {
-      isPresented = false
+        parent.isPresented = false
     }
     
     if (!image.isPictureBigEnough()) {
-        imageIsTooSmall = true
+        parent.isAlertPresented = true
+        parent.alertTitle = "Invalid image"
+        parent.alertMessage = "The image is too small! Minimum WxH 640x160"
     } else {
-      self.image = image
+        self.parent.image = image
     }
   }
   
   func cropViewController(_ cropViewController: CropViewController, didFinishCancelled cancelled: Bool) {
     withAnimation {
-      isPresented = false
+        parent.isPresented = false
     }
   }
 }

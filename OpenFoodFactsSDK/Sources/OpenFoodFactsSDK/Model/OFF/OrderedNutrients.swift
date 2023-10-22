@@ -18,7 +18,7 @@ let nextWeightUnits: [Unit: Unit] = [
    Unit.microG: Unit.g,
 ]
 
-struct OrderedNutrients: Codable, Equatable {
+public struct OrderedNutrients: Codable, Equatable {
     let nutrients: [OrderedNutrient]
 
     enum CodingKeys: String, CodingKey {
@@ -26,8 +26,8 @@ struct OrderedNutrients: Codable, Equatable {
     }
 }
 
-class OrderedNutrient: ObservableObject, Codable, Equatable, Identifiable, CustomStringConvertible {
-    let id: String
+public class OrderedNutrient: ObservableObject, Codable, Equatable, Identifiable, CustomStringConvertible {
+    public let id: String
     let name: String
     var important: Bool
     var displayInEditForm: Bool
@@ -37,7 +37,7 @@ class OrderedNutrient: ObservableObject, Codable, Equatable, Identifiable, Custo
     @Published var value: String = ""
     @Published var currentUnit: Unit = .g
     
-    static func == (lhs: OrderedNutrient, rhs: OrderedNutrient) -> Bool {
+    public static func == (lhs: OrderedNutrient, rhs: OrderedNutrient) -> Bool {
         return lhs.id == rhs.id  // or whatever properties you think define equality
     }
     
@@ -65,7 +65,7 @@ class OrderedNutrient: ObservableObject, Codable, Equatable, Identifiable, Custo
         return value
     }
     
-    var description: String {
+    public var description: String {
         return "OrderedNutrient(id: \(id), name: \(name), important: \(important), displayInEditForm: \(displayInEditForm), currentUnit: \(currentUnit), value: \(value))"
     }
 }

@@ -65,8 +65,7 @@ public struct OFFApi {
         case .events:
             subdomain = "events"
         }
-        var host = "\(subdomain).\(domain)"
         
-        return host
+        return "\(subdomain).\(domain)"
     }
 }

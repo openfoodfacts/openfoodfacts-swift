@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductResponse: Decodable {
+public struct ProductResponse: Decodable {
     
     /// Possible value for [status]: the operation failed.
     static let statusFailure = "failure"

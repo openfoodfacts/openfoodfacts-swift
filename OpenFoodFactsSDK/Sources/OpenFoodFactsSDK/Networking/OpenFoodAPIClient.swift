@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  OpenFoodAPIClient.swift
+//
 //
 //  Created by Henadzi Rabkin on 02/10/2023.
 //
@@ -8,13 +8,12 @@
 import Foundation
 import UIKit
 
-class OpenFoodAPIClient {
+final public class OpenFoodAPIClient {
     
-    public static let shared: OpenFoodAPIClient = {
-        let instance = OpenFoodAPIClient()
-        return instance
-    }()
-
+    public static let shared: OpenFoodAPIClient = OpenFoodAPIClient()
+    
+    private init() {}
+    
 /// Returns the nutrient hierarchy specific to a country, localized.
 /// ```dart
 ///   OrderedNutrients orderedNutrients =
@@ -27,15 +26,14 @@ class OpenFoodAPIClient {
 ///   print(orderedNutrients.nutrients[5].name);  // Fiber
 ///   print(orderedNutrients.nutrients[10].name); // Vitamin A
 /// ```
-    func getOrderedNutrients(country: OpenFoodFactsCountry, language: OpenFoodFactsLanguage) async throws -> OrderedNutrients {
+    public func getOrderedNutrients() async throws -> OrderedNutrients {
         
         guard let uri = UriHelper.getPostUri(path: "/cgi/nutrients.pl") else {
             throw NSError(domain: "Couldn't compose uri for \(#function) call", code: 400)
         }
-        
         let queryParameters: [String: String] = [
-            "cc": country.rawValue,
-            "lc": language.info.code
+            "cc": OFFConfig.shared.country.rawValue,
+            "lc": OFFConfig.shared.uiLanguage.info.code
         ]
         
         do {
@@ -55,7 +53,7 @@ class OpenFoodAPIClient {
     /// cf. https://openfoodfacts.github.io/openfoodfacts-server/reference/api-v3/#get-/api/v3/taxonomy_suggestions
     /// //TODO: 1. extend with TagType taxonomyType, 2. use language / country
     /// Consider using [SuggestionManager].
-    func getSuggestions(query: String = "", country: OpenFoodFactsCountry, language: OpenFoodFactsLanguage, limit: Int = 15) async throws -> [String] {
+    public func getSuggestions(query: String = "", country: OpenFoodFactsCountry, language: OpenFoodFactsLanguage, limit: Int = 15) async throws -> [String] {
         
         let queryParameters: [String: String] = [
             "tagtype": "categories",
@@ -90,7 +88,7 @@ class OpenFoodAPIClient {
         }
     }
     
-    func fetchProductImages(imageUrls: [ImageField: String?]) async throws -> [ImageField: UIImage] {
+    public func fetchProductImages(imageUrls: [ImageField: String?]) async throws -> [ImageField: UIImage] {
         var downloadedImages: [ImageField: UIImage] = [:]
         
         try await withThrowingTaskGroup(of: (ImageField, UIImage).self) { group in
@@ -106,7 +104,7 @@ class OpenFoodAPIClient {
         return downloadedImages
     }
     
-    func fetchProductImage(withUrl url: String?) async throws -> UIImage 
+    public func fetchProductImage(withUrl url: String?) async throws -> UIImage
     {
         guard let unwrappedUrl = url, let imgUrl = URL(string: unwrappedUrl) else { return UIImage() }
         do {
@@ -120,7 +118,7 @@ class OpenFoodAPIClient {
         }
     }
     
-    func fetchNutrientsMetadata() async throws -> NutrientMetadata 
+    public func fetchNutrientsMetadata() async throws -> NutrientMetadata
     {
         guard let uri = UriHelper.getTaxonomiesUri(path: "/data/taxonomies/nutrients.json") else {
             throw NSError(domain: "Couldn't compose uri for \(#function) call", code: 400)
@@ -134,7 +132,7 @@ class OpenFoodAPIClient {
         }
     }
     
-    func getProduct(config: ProductQueryConfiguration) async throws -> ProductResponse {
+    public func getProduct(config: ProductQueryConfiguration) async throws -> ProductResponse {
         
         let queryParameters = config.getParametersMap()
         
@@ -154,27 +152,29 @@ class OpenFoodAPIClient {
     ///
     /// Please read the language mechanics explanation if you intend to display
     /// or update data in specific language: https://github.com/openfoodfacts/openfoodfacts-dart/blob/master/DOCUMENTATION.md#about-languages-mechanics
-    func saveProduct(product: [String: String]) async throws -> Status {
+    public func saveProduct(product: [String: String]) async throws {
         
         var queryComponents = [String: String]()
-        queryComponents.merge(OFFConfig.shared.globalUser?.toMap() ?? [:]) { (current, _) in current }
-        queryComponents.merge(product) { (current, _) in current }
-        
         queryComponents["lc"] = OFFConfig.shared.productsLanguage.rawValue
         queryComponents["cc"] = OFFConfig.shared.country.rawValue
+        
+        queryComponents.merge(product) { (current, _) in current }
         
         guard let saveProductUri = UriHelper.getPostUri(path: "/cgi/product_jqm2.pl") else {
             throw NSError(domain: "\(#function) couldn't construct uri", code: 409)
         }
         
         do {
-            let (data, _) = try await URLSession.shared.data(for: URLRequest(url: saveProductUri))
+            let data = try await HttpHelper.shared.doPostRequest(uri: saveProductUri, body: product, addCredentialsToBody: true)
             guard let dataStr = String(data: data, encoding: .utf8) else {
                 throw NSError(domain: "\(#function) missing data", code: 422)
             }
-            return Status.fromApiResponse(dataStr)
+            let status = Status.fromApiResponse(dataStr)
+            if status.status != 1 {
+                throw NSError(domain: "\(String(describing: status.error))", code: 409)
+            }
         } catch {
-            throw NSError(domain: error.localizedDescription, code: 409)
+            throw error
         }
     }
     
@@ -204,19 +204,20 @@ class OpenFoodAPIClient {
 ///
 ///   print("Upload was successful");
 /// ```
-    func addProductImage(imageData: SendImage) async throws {
+    public func addProductImage(imageData: SendImage) async throws {
         
         guard let imageUri = UriHelper.getUri(path: "/cgi/product_image_upload.pl", addUserAgentParameters: false) else {
             throw NSError(domain: "Couldn't compose uri for \(#function) call", code: 400)
         }
         
         do {
-            var response = try await HttpHelper.shared.doMultipartRequest(uri: imageUri, body: imageData.toJson(), sendImage: imageData)
-            
-            if let httpResponse = response as? HTTPURLResponse {
-                if httpResponse.statusCode != 200 {
-                    throw NSError(domain: "Server Error", code: httpResponse.statusCode, userInfo: ["Reason": httpResponse.statusCode.description])
-                }
+            let data = try await HttpHelper.shared.doMultipartRequest(uri: imageUri, body: imageData.toJson(), sendImage: imageData)
+            guard let dataStr = String(data: data, encoding: .utf8) else {
+                throw NSError(domain: "\(#function) missing data", code: 422)
+            }
+            let status = Status.fromApiResponse(dataStr)
+            if status.status != 1 {
+                throw NSError(domain: "\(String(describing: status.error))", code: 409)
             }
         } catch {
             throw error
