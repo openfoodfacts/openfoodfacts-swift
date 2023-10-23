@@ -8,6 +8,8 @@ Open Food Facts is powered by contributors from around the world and is constant
 ## How to use ?
 See `ExampleApp` for two scenarious of starting screen from scanning product or entering it manually
 
+You can integrate the SDK into your iOS app using SPM (Swift Package Manager) by searching the repo using github's url
+
 There are two modes for now: new and view
 
 SDK has screen to view or submit product
