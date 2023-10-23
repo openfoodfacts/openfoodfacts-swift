@@ -3,7 +3,7 @@
 //  ContentView
 //
 //  Sample codes:
-//  exists 5900102025473, missing 5701377101134
+//  existing 5900102025473 [pl] / 8711258029584 [nl], missing 5701377101134 [pl]
 //
 //  Created by Henadzi Rabkin on 16/10/2023.
 //
@@ -12,7 +12,7 @@ import OpenFoodFactsSDK
 
 struct ContentView: View {
     
-    @State var barcode: String = "5701377101134"
+    @State var barcode: String = ""
     @State var isProductEditorPresent: Bool = false
     @State var isInvalidBarcode: Bool = false
     

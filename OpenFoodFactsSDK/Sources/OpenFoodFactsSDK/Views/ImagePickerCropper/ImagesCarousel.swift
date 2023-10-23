@@ -15,7 +15,7 @@ struct ImagesCarousel: View {
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 5, content: {
-                ForEach(Array(ImageField.allCases.enumerated()), id: \.1) { index,imageField in
+                ForEach(Array(displayImages().enumerated()), id: \.1) { index,imageField in
                     HStack {
                         ProductImageButton(
                             imageKey: imageField,
@@ -29,6 +29,12 @@ struct ImagesCarousel: View {
                 }
             })
         }.frame(minWidth: 0, maxWidth: .infinity).cornerRadius(6)
+    }
+    
+    private func displayImages() -> [ImageField] {
+        return ImageField.allCases.filter { imageField in
+            return pageConfig.isNewMode || !pageConfig.images[imageField]!.isEmpty()
+        }
     }
 }
 

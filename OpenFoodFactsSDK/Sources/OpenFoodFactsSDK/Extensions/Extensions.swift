@@ -28,8 +28,15 @@ extension Double {
         return formatter
     }()
 
-    func formattedString() -> String {
+    func toString() -> String {
         return Double.commonFormatter.string(from: NSNumber(value: self)) ?? "\(self)"
+    }
+}
+
+extension String {
+    
+    func toDouble() -> Double? {
+        return Double.commonFormatter.number(from: self)?.doubleValue
     }
 }
 

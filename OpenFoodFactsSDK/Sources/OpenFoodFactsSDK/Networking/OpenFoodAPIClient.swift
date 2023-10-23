@@ -26,7 +26,7 @@ final public class OpenFoodAPIClient {
 ///   print(orderedNutrients.nutrients[5].name);  // Fiber
 ///   print(orderedNutrients.nutrients[10].name); // Vitamin A
 /// ```
-    public func getOrderedNutrients() async throws -> OrderedNutrients {
+    public func getOrderedNutrients() async throws -> [OrderedNutrient] {
         
         guard let uri = UriHelper.getPostUri(path: "/cgi/nutrients.pl") else {
             throw NSError(domain: "Couldn't compose uri for \(#function) call", code: 400)
@@ -38,13 +38,22 @@ final public class OpenFoodAPIClient {
         
         do {
             let data = try await HttpHelper.shared.doPostRequest(uri: uri, body: queryParameters, addCredentialsToBody: false)
-                    
+            
             guard let jsonString = String(data: data, encoding: .utf8),
                   let jsonData = jsonString.data(using: .utf8) else {
                 throw NSError(domain: "Couldn't convert JSON string to Data", code: 422)
             }
             let downloadedOrderedNutrients = try JSONDecoder().decode(OrderedNutrients.self, from: jsonData)
-            return downloadedOrderedNutrients
+            
+            var allOrderedNutrients = [OrderedNutrient]()
+            for nutrient in downloadedOrderedNutrients.nutrients {
+                allOrderedNutrients.append(nutrient)
+                if let subnutrients = nutrient.subNutrients {
+                    allOrderedNutrients.append(contentsOf: subnutrients)
+                }
+            }
+            
+            return allOrderedNutrients
         } catch {
             throw error
         }
@@ -155,7 +164,7 @@ final public class OpenFoodAPIClient {
     public func saveProduct(product: [String: String]) async throws {
         
         var queryComponents = [String: String]()
-        queryComponents["lc"] = OFFConfig.shared.productsLanguage.rawValue
+        queryComponents["lc"] = OFFConfig.shared.productsLanguage.info.code
         queryComponents["cc"] = OFFConfig.shared.country.rawValue
         
         queryComponents.merge(product) { (current, _) in current }
@@ -181,29 +190,6 @@ final public class OpenFoodAPIClient {
 /// Send one image to the server.
 /// The image will be added to the product specified in the SendImage
 /// Returns a Status object as result.
-///
-/// ```dart
-///   User myUser = User(userId: "username", password: "secret_password");
-///
-///   String barcode = "0000000000000";
-///
-///   SendImage image = SendImage(
-///     lang: OpenFoodFactsLanguage.FRENCH,
-///     barcode: barcode,
-///     imageField: ImageField.FRONT,
-///     imageUri: Uri.parse("path_to_my_image"),
-///   );
-///
-///   Status status = await OpenFoodAPIClient.addProductImage(myUser, image);
-///
-///   if (status.status != 1) {
-///     print(
-///         "An error occured while sending the picture : ${status.statusVerbose}");
-///     return;
-///   }
-///
-///   print("Upload was successful");
-/// ```
     public func addProductImage(imageData: SendImage) async throws {
         
         guard let imageUri = UriHelper.getUri(path: "/cgi/product_image_upload.pl", addUserAgentParameters: false) else {

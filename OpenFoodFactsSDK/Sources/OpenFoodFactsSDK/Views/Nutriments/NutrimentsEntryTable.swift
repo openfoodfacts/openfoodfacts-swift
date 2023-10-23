@@ -19,8 +19,7 @@ public struct NutrimentsEntryTable: View {
         
         VStack(spacing: 10, content: {
             
-            FloatingLabelTextField(title: "Serving size", placeholder: "Serving size, for e.g. 15g", text: $pageConfig.servingSize, isRequired: pageConfig.isNewMode)
-                .numbersOnly($pageConfig.servingSize, includeDecimal: true)
+            FloatingLabelTextField(title: "Serving size", placeholder: "Serving size, for e.g. 15g", text: $pageConfig.servingSize)
                 .disableAutocorrection(true)
             PerWeightToggle(dataFor: $pageConfig.dataFor)
             
@@ -50,18 +49,17 @@ public struct NutrimentsEntryTable: View {
         })
         .onAppear() {
             if pageConfig.isViewMode { return }
-            if let importantNutrients = pageConfig.orderedNutrients?.nutrients.filter({ $0.important && $0.displayInEditForm }) {
-                self.required = importantNutrients
-                pageConfig.selectedNutrients = Set(self.required.map { $0.id })
-            }
+            
+            self.required = pageConfig.orderedNutrients.filter({ $0.important && $0.displayInEditForm })
+            pageConfig.selectedNutrients = Set(self.required.map { $0.id })
         }
     }
     
     private func notSelected() -> [OrderedNutrient] {
-        return pageConfig.orderedNutrients?.nutrients.filter { !pageConfig.selectedNutrients.contains($0.id) } ?? []
+        return pageConfig.orderedNutrients.filter { !pageConfig.selectedNutrients.contains($0.id) }
     }
     
     private func displayed() -> [OrderedNutrient] {
-        return pageConfig.orderedNutrients?.nutrients.filter { pageConfig.selectedNutrients.contains($0.id) } ?? []
+        return pageConfig.orderedNutrients.filter { pageConfig.selectedNutrients.contains($0.id) }
     }
 }

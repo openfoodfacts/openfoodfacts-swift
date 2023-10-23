@@ -1,7 +1,19 @@
 //
 //  EditProductPageViewModel.swift
 //
+// Nutriments and serving size validation disabled:
+// Required nutriments set to 0,0 if missing, serving size left empty if package has no info about it
 //
+//        if servingSize.isEmpty { missingFields.append("Serving size") }
+// Prefilled to 0,0 if missing on product compose
+//        let reqNutrientsSet = Set(ProductPageConfig.requiredNutrients)
+//        if let nutrients = orderedNutrients?.nutrients {
+//            orderedNutrients?.nutrients.forEach { nutrient in
+//                if ProductPageConfig.requiredNutrients.contains(nutrient.id) && nutrient.value.isEmpty {
+//                    missingFields.append("Nutrient \(nutrient.name)")
+//                }
+//            }
+//        }
 //  Created by Henadzi Rabkin on 08/10/2023.
 //
 import SwiftUI
@@ -11,7 +23,7 @@ enum ProductPageType {
 }
 
 enum ProductPageState {
-    case loading, completed, /*error,*/ productDetails
+    case loading, completed, productDetails
 }
 
 class ProductPageConfig: ObservableObject {
@@ -29,7 +41,7 @@ class ProductPageConfig: ObservableObject {
     }
     
     @Published var nutrientsMeta: NutrientMetadata?
-    @Published var orderedNutrients: OrderedNutrients?
+    @Published var orderedNutrients: [OrderedNutrient] = []
     
     @Published var isInitialised: Bool = false
     @Published var isProductJustUploaded: Bool = false
@@ -108,18 +120,8 @@ class ProductPageConfig: ObservableObject {
         
         if productName.isEmpty { missingFields.append("Name") }
         if weight.isEmpty { missingFields.append("Weight") }
-        if servingSize.isEmpty { missingFields.append("Serving size") }
         if images[ImageField.front]!.isEmpty() { missingFields.append("Front image") }
         if images[ImageField.nutrition]!.isEmpty() { missingFields.append("Nutrients image") }
-        
-        let reqNutrientsSet = Set(ProductPageConfig.requiredNutrients)
-        if let nutrients = orderedNutrients?.nutrients {
-            orderedNutrients?.nutrients.forEach { nutrient in
-                if ProductPageConfig.requiredNutrients.contains(nutrient.id) && nutrient.value.isEmpty {
-                    missingFields.append("Nutrient \(nutrient.name)")
-                }
-            }
-        }
         
         missingRequiredTitles = missingFields
     }
@@ -133,7 +135,7 @@ class ProductPageConfig: ObservableObject {
         
         self.productName = product.productName ?? ""
         self.brand = product.brands ?? ""
-        // ?.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespaces) } ?? []
+        
         if let cats = product.categories {
             self.categories = [ cats ]
         }
@@ -143,8 +145,8 @@ class ProductPageConfig: ObservableObject {
         self.dataFor = DataFor(rawValue: product.dataPer ?? "") ?? DataFor.hundredG
         self.packageLanguage = product.lang ?? OpenFoodFactsLanguage.UNDEFINED
         
-        if let nutrients = orderedNutrients?.nutrients, let productNutrients = product.nutriments {
-            for on in nutrients {
+        if let productNutrients = product.nutriments {
+            for on in orderedNutrients {
                 let key = "\(on.id)_\(self.dataFor.rawValue)"
                 let unitKey = "\(on.id)_unit"
                 
@@ -155,7 +157,7 @@ class ProductPageConfig: ObservableObject {
                 }
                 let hasKey = productNutrients.keys.contains(key)
                 if hasKey, let value = productNutrients[key] as? Double {
-                    on.value = on.convertWeightToG(value).formattedString()
+                    on.value = on.convertWeightToG(value).toString()
                 }
                 on.displayInEditForm = hasKey
                 on.important = hasKey
@@ -184,17 +186,17 @@ class ProductPageConfig: ObservableObject {
         pageState = .loading
         
         do {
-            try await composeAndSendProduct(barcode: barcode)
-        } catch {
-            self.errorMessage = NSError(domain: "Could not save product \(error.localizedDescription)", code: 409)
-        }
-        
-        do {
             try await sendAllImages(barcode: barcode)
         } catch {
             // Not critical
             // TODO: after incremental save is supported update this
             print("Some images failed to upload: \(error.localizedDescription)")
+        }
+        
+        do {
+            try await composeAndSendProduct(barcode: barcode)
+        } catch {
+            self.errorMessage = NSError(domain: "Could not save product \(error.localizedDescription)", code: 409)
         }
         
         self.pageState = .completed
@@ -209,24 +211,22 @@ class ProductPageConfig: ObservableObject {
         
         var product = [
             "code": barcode,
+            "product_name": self.productName,
             "brands": brand,
-            "lang": OFFConfig.shared.productsLanguage.rawValue,
+            "lang": OFFConfig.shared.productsLanguage.info.code,
             "quantity": self.weight,
             "serving_size": self.servingSize,
             "nutrition_data_per": self.dataFor.rawValue,
             "categories": categories.joined(separator: ",")
         ]
         
-        let productNutrients = orderedNutrients?.nutrients.filter { selectedNutrients.contains($0.id) } ?? []
+        let productNutrients = orderedNutrients.filter { selectedNutrients.contains($0.id) }
         let nuntrients = productNutrients.reduce(into: [String: String]()) { (result, element) in
-            if let doubleValue = Double(element.value) {
-                result["nutriment_\(element.id)"] = String(doubleValue)
-                result["nutriment_\(element.id)_unit"] = element.currentUnit.rawValue
-            }
+            let value = element.value.isEmpty ? "0,0" : element.value
+            result["nutriment_\(element.id)"] = value
+            result["nutriment_\(element.id)_unit"] = element.currentUnit.rawValue
         }
         product.merge(nuntrients) { (current, _) in current }
-        
-        print("\(#function): \(product)")
         
         try await OpenFoodAPIClient.shared.saveProduct(product: product)
     }

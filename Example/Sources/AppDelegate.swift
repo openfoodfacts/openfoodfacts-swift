@@ -15,7 +15,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         OFFConfig.shared.apiEnv = .staging
         OFFConfig.shared.country = OpenFoodFactsCountry.POLAND
-        OFFConfig.shared.productsLanguage = OpenFoodFactsLanguage.POLISH
+        OFFConfig.shared.productsLanguage = OpenFoodFactsLanguage.DUTCH
         return true
     }
 }

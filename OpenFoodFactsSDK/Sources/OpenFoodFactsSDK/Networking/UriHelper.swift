@@ -75,7 +75,7 @@ class UriHelper {
     // TODO: verify why this shit is needed
     static func replaceSubdomain(uri: URL) -> URL {
         return replaceSubdomainWithCodes(uri: uri,
-                                         languageCode: OFFConfig.shared.productsLanguage.rawValue,
+                                         languageCode: OFFConfig.shared.productsLanguage.info.code,
                                          countryCode: OFFConfig.shared.country.rawValue)
     }
     

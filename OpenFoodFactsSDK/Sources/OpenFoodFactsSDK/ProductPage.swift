@@ -1,12 +1,10 @@
 //
 //  EditProductPage.swift
 //
-//  TODO: send entered product data
-//  TODO: error handling
 // -------------------------
 //  TODO: support editing
 //  TODO: add localizations
-//  TODO: OCR
+//  TODO: OCR on client for nutriments, product name maybe
 //
 //  Created by Henadzi Rabkin on 15/10/2023.
 //

@@ -34,7 +34,7 @@ public class OFFConfig {
     /// Metadata
     public var country: OpenFoodFactsCountry = OpenFoodFactsCountry.USA
     public var uiLanguage: OpenFoodFactsLanguage = OpenFoodFactsLanguage.ENGLISH
-    public var productsLanguage: OpenFoodFactsLanguage = OpenFoodFactsLanguage.POLISH
+    public var productsLanguage: OpenFoodFactsLanguage = OpenFoodFactsLanguage.ENGLISH
     
     public static let shared: OFFConfig = {
         let instance = OFFConfig()

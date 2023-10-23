@@ -28,7 +28,7 @@ struct FloatingLabelTextField: View {
                 .foregroundColor(isFocused ? .blue : .gray)
                 .offset(y: (isFocused || !text.isEmpty) ? -26 : 0)
                 .font(.system(size: (isFocused || !text.isEmpty) ? 13 : 16))
-                .required(isActive: isRequired && !isFocused)
+                .required(isActive: isRequired && !isFocused && text.isEmpty)
             
             TextField("", text: $text, onEditingChanged: { isEditing in
                 withAnimation {
@@ -36,6 +36,7 @@ struct FloatingLabelTextField: View {
                 }
             })
             .clearButton(text: $text, isActive: pageConfig.isNewMode)
+            .autocorrectionDisabled()
             .textFieldStyle(PlainTextFieldStyle())
             .focused($isFocused)
         }
