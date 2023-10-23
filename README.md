@@ -12,27 +12,22 @@ There are two modes for now: new and view
 
 SDK has screen to view or submit product
 ```
-ProductPage(barcode: $barcode, isPresented: $isProductEditorPresent, onSubmit: { product in
-    // Send this product to your server
-}
+ProductPage(barcode: $barcode, isPresented: $isProductEditorPresent, submitProduct: $submitProduct)
 ```
+
+Before submitting new product you may create State reference `@State var submitProduct: [String: String]? = nil` and receive uploaded product by passing `submitProduct`, this is optional parameter
 
 ### Submit new
 
-<p float="center">
-  <img src="./readme-files/new/IMG_4579.PNG" width="25%" />
-  <img src="./readme-files/new/IMG_4582.PNG" width="25%" /> 
-  <img src="./readme-files/new/IMG_4584.PNG" width="25%" />
-  <img src="./readme-files/new/IMG_4585.PNG" width="25%" />
-</p>
+|      |      |      |      |
+|------|------|------|------|
+|![Screenshot1](./readme-files/new/IMG_4579.PNG)|![Screenshot2](./readme-files/new/IMG_4582.PNG)|![Screenshot3](./readme-files/new/IMG_4584.PNG)|![Screenshot4](./readme-files/new/IMG_4585.PNG)|
 
 ### View existing
 
-<p float="center">
-  <img src="./readme-files/view/IMG_4586.PNG" width="33.33%" />
-  <img src="./readme-files/view/IMG_4589.PNG" width="33.33%" /> 
-  <img src="./readme-files/view/IMG_4591.PNG" width="33.33%" />
-</p>
+|      |      |      |
+|------|------|------|
+|![Screenshot5](./readme-files/view/IMG_4586.PNG)|![Screenshot6](./readme-files/view/IMG_4589.PNG)|![Screenshot7](./readme-files/view/IMG_4591.PNG)|
 
 Edit mode is in progress
 
@@ -71,8 +66,6 @@ Editor/Viewer for barcode
 ```
 ProductPage(barcode: self.$barcode, isPresented: self.$isProductEditorPresent, submitProduct: $submitProduct)
 ```
-
-Before submitting new product you may create State reference `@State var submitProduct: [String: String]? = nil` and receive uploaded product by passing `submitProduct`, this is optional parameter
 
 
 ### Notes
