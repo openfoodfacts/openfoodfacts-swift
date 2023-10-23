@@ -72,7 +72,7 @@ struct RequiredField: ViewModifier {
     
     func body(content: Content) -> some View {
         HStack(alignment: .top) {
-            if isActive {
+            if isActive && OFFConfig.shared.useRequired {
                 Text("*").alignmentGuide(.top, computeValue: { dimension in
                     0
                 })

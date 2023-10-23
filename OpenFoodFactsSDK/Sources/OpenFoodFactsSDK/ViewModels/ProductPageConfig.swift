@@ -1,19 +1,6 @@
 //
 //  EditProductPageViewModel.swift
 //
-// Nutriments and serving size validation disabled:
-// Required nutriments set to 0,0 if missing, serving size left empty if package has no info about it
-//
-//        if servingSize.isEmpty { missingFields.append("Serving size") }
-// Prefilled to 0,0 if missing on product compose
-//        let reqNutrientsSet = Set(ProductPageConfig.requiredNutrients)
-//        if let nutrients = orderedNutrients?.nutrients {
-//            orderedNutrients?.nutrients.forEach { nutrient in
-//                if ProductPageConfig.requiredNutrients.contains(nutrient.id) && nutrient.value.isEmpty {
-//                    missingFields.append("Nutrient \(nutrient.name)")
-//                }
-//            }
-//        }
 //  Created by Henadzi Rabkin on 08/10/2023.
 //
 import SwiftUI
@@ -63,6 +50,8 @@ class ProductPageConfig: ObservableObject {
     
     @Published var errorMessage: NSError?
     @Published var missingRequiredTitles = [String]()
+    
+    @Published var submittedProduct: [String: String]? = nil
     
     func binding(for key: ImageField) -> Binding<UIImage> {
         return Binding<UIImage>(
@@ -123,7 +112,9 @@ class ProductPageConfig: ObservableObject {
         if images[ImageField.front]!.isEmpty() { missingFields.append("Front image") }
         if images[ImageField.nutrition]!.isEmpty() { missingFields.append("Nutrients image") }
         
-        missingRequiredTitles = missingFields
+        if OFFConfig.shared.useRequired {
+            missingRequiredTitles = missingFields
+        }
     }
     
     func getMissingFieldsMessage() -> String {
@@ -192,9 +183,10 @@ class ProductPageConfig: ObservableObject {
             // TODO: after incremental save is supported update this
             print("Some images failed to upload: \(error.localizedDescription)")
         }
-        
+        var product = [String: String]()
         do {
-            try await composeAndSendProduct(barcode: barcode)
+            product = try await composeProduct(barcode: barcode)
+            try await OpenFoodAPIClient.shared.saveProduct(product: product)
         } catch {
             self.errorMessage = NSError(domain: "Could not save product \(error.localizedDescription)", code: 409)
         }
@@ -202,12 +194,13 @@ class ProductPageConfig: ObservableObject {
         self.pageState = .completed
         DispatchQueue.main.asyncAfter(deadline: .now() + PageOverlay.completedAnimDuration) {
             self.pageState = ProductPageState.productDetails
+            self.isProductJustUploaded = true
+            self.submittedProduct = product
         }
-        self.isProductJustUploaded = true
     }
     
     @MainActor
-    private func composeAndSendProduct(barcode: String) async throws {
+    private func composeProduct(barcode: String) async throws -> [String: String] {
         
         var product = [
             "code": barcode,
@@ -228,7 +221,7 @@ class ProductPageConfig: ObservableObject {
         }
         product.merge(nuntrients) { (current, _) in current }
         
-        try await OpenFoodAPIClient.shared.saveProduct(product: product)
+        return product
     }
     
     private func sendAllImages(barcode: String) async throws {

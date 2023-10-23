@@ -14,18 +14,7 @@ final public class OpenFoodAPIClient {
     
     private init() {}
     
-/// Returns the nutrient hierarchy specific to a country, localized.
-/// ```dart
-///   OrderedNutrients orderedNutrients =
-///       await OpenFoodAPIClient.getOrderedNutrients(
-///     country: OpenFoodFactsCountry.GERMANY,
-///     language: OpenFoodFactsLanguage.ENGLISH,
-///   );
-///
-///   print(orderedNutrients.nutrients[0].name);  // Energy (kJ)
-///   print(orderedNutrients.nutrients[5].name);  // Fiber
-///   print(orderedNutrients.nutrients[10].name); // Vitamin A
-/// ```
+    /// Returns the nutrient hierarchy specific to a country, localized.
     public func getOrderedNutrients() async throws -> [OrderedNutrient] {
         
         guard let uri = UriHelper.getPostUri(path: "/cgi/nutrients.pl") else {
@@ -187,9 +176,9 @@ final public class OpenFoodAPIClient {
         }
     }
     
-/// Send one image to the server.
-/// The image will be added to the product specified in the SendImage
-/// Returns a Status object as result.
+    /// Send one image to the server.
+    /// The image will be added to the product specified in the SendImage
+    /// Returns a Status object as result.
     public func addProductImage(imageData: SendImage) async throws {
         
         guard let imageUri = UriHelper.getUri(path: "/cgi/product_image_upload.pl", addUserAgentParameters: false) else {

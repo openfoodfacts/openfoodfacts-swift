@@ -1,20 +1,6 @@
 //
 //  UserAgent.swift
 //
-//    do {
-//        // Encoding
-//        let userAgent = UserAgent(name: "AgentName", version: "1.0", system: "iOS", url: "http://example.com", comment: "Some comment")
-//        let jsonData = try JSONEncoder().encode(userAgent)
-//        if let jsonString = String(data: jsonData, encoding: .utf8) {
-//            print("JSON String : " + jsonString)
-//        }
-//
-//        // Decoding
-//        let decodedUserAgent = try JSONDecoder().decode(UserAgent.self, from: jsonData)
-//        print(decodedUserAgent)
-//    } catch let error {
-//        print("Error: \(error)")
-//    }
 //
 //  Created by Henadzi Rabkin on 02/10/2023.
 //
@@ -26,8 +12,14 @@ public struct UserAgent: Codable {
     var name: String?
     var version: String?
     var system: String?
-    var url: String?
     var comment: String?
+    
+    public init(name: String? = nil, version: String? = nil, system: String? = nil, comment: String? = nil) {
+        self.name = name
+        self.version = version
+        self.system = system
+        self.comment = comment
+    }
     
     func toMap(with uuid: String) -> [String: String] {
         var userAgent = [String: String]()

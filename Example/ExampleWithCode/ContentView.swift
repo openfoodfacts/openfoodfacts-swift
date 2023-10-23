@@ -16,6 +16,12 @@ struct ContentView: View {
     @State var isProductEditorPresent: Bool = false
     @State var isInvalidBarcode: Bool = false
     
+    @State var submitProduct: [String: String]? = nil {
+        didSet {
+            print(submitProduct ?? "")
+        }
+    }
+    
     var body: some View {
         NavigationView {
             VStack(alignment: .center) {
@@ -32,9 +38,8 @@ struct ContentView: View {
                     }
                 }
                 Spacer()
-                NavigationLink("", destination: ProductPage(barcode: self.$barcode, isPresented: self.$isProductEditorPresent, onSubmit: { product in
-                                // Send this product to your server
-               }), isActive: $isProductEditorPresent).opacity(0)
+                // added for testing that editor is loaded with NavigatorView
+                NavigationLink("", destination: ProductPage(barcode: self.$barcode, isPresented: self.$isProductEditorPresent, submitProduct: $submitProduct), isActive: $isProductEditorPresent).opacity(0)
             }
         }
         .alert("Invalid barcode", isPresented: $isInvalidBarcode) {

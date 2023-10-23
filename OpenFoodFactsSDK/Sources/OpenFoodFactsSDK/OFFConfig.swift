@@ -27,6 +27,7 @@ public class OFFConfig {
             }
         }
     }
+    public var useRequired = false
     /// Required property
     public var globalUser: User?
     /// Auto-generated can be overriden
@@ -86,7 +87,6 @@ public class OFFConfig {
             name: appName,
             version: version,
             system: system,
-            url: api.host(for: .world),
             comment: comment
         )
     }

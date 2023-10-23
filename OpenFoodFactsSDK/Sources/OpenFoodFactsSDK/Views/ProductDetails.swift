@@ -30,7 +30,9 @@ struct ProductDetails: View {
                     
                     VStack(alignment: .leading, spacing: ProductDetails.lineSpacing, content: {
                         EditorHeader(title: "Basic details", systemImage: "pencil")
-                        ExpandableText(text: "Fields with a star * - are a bare minimum.")
+                        if OFFConfig.shared.useRequired {
+                            ExpandableText(text: "Fields with a star * - are a bare minimum.")
+                        }
                         FloatingLabelTextField(title: "Product's name", placeholder: "Product's name", text: $pageConfig.productName, isRequired: pageConfig.isNewMode)
                         FloatingLabelTextField(title: "Brand", placeholder: "Brand name", text: $pageConfig.brand, isRequired: pageConfig.isNewMode)
                         FloatingLabelTextField(title: "Weight", placeholder: "Product's weight with units - 100g, 50ml, etc.", text: $pageConfig.weight, isRequired: pageConfig.isNewMode)
@@ -60,16 +62,16 @@ struct ProductDetails: View {
                     }).modifier(RoundedBackgroundCard())
                     
                     VStack(alignment: .leading, spacing: ProductDetails.lineSpacing, content: {
+                        EditorHeader(title: "Categories", systemImage: "fork.knife")
+                        ExpandableText(text: "Indicate only the most specific category. Parent categories will be automatically added." + "\n\n" + "Examples: Sardines in olive oil, Orange juice from concentrate")
+                        CategoryInputWidget(categories: $pageConfig.categories)
+                    }).modifier(RoundedBackgroundCard())
+                    
+                    VStack(alignment: .leading, spacing: ProductDetails.lineSpacing, content: {
                         EditorHeader(title: "Nutrition facts", systemImage: "leaf")
                         ExpandableText(text: "Indicate per what amount nutrient values: per 100g or per serving size")
                         NutrimentsEntryTable()
                         
-                    }).modifier(RoundedBackgroundCard())
-                    
-                    VStack(alignment: .leading, spacing: ProductDetails.lineSpacing, content: {
-                        EditorHeader(title: "Categories", systemImage: "fork.knife")
-                        ExpandableText(text: "Indicate only the most specific category. Parent categories will be automatically added." + "\n\n" + "Examples: Sardines in olive oil, Orange juice from concentrate")
-                        CategoryInputWidget(categories: $pageConfig.categories)
                     }).modifier(RoundedBackgroundCard())
                     
                     Spacer()

@@ -2,9 +2,11 @@
 //  EditProductPage.swift
 //
 // -------------------------
+//  TODO: verify kJ calculation and requirement to send it along with kCal https://github.com/openfoodfacts/openfoodfacts-dart/blob/master/lib/src/utils/nutriments_helper.dart
 //  TODO: support editing
 //  TODO: add localizations
 //  TODO: OCR on client for nutriments, product name maybe
+//  TODO: match OFF requirement from README
 //
 //  Created by Henadzi Rabkin on 15/10/2023.
 //
@@ -16,6 +18,7 @@ public struct ProductPage: View {
     
     @Binding public var barcode: String
     @Binding public var isPresented: Bool
+    @Binding public var uploadedProduct: [String: String]?
     
     @State private var isAlertPresent = false
     @State private var alertMessage = ""
@@ -24,12 +27,10 @@ public struct ProductPage: View {
     @StateObject var pageConfig = ProductPageConfig()
     @StateObject var imagesHelper = ImagesHelper()
     
-    let onSubmit: ((_ product: [String: String]) -> Void)?
-    
-    public init(barcode: Binding<String>, isPresented: Binding<Bool>, onSubmit: (([String: String]) -> Void)? = nil) {
+    public init(barcode: Binding<String>, isPresented: Binding<Bool>, submitProduct: Binding<[String: String]?> = Binding.constant(nil)) {
         _barcode = barcode
         _isPresented = isPresented
-        self.onSubmit = onSubmit
+        _uploadedProduct = submitProduct
     }
     
     public var body: some View {
@@ -59,7 +60,7 @@ public struct ProductPage: View {
                             ]
                         )
                     }
-                    .alert("What's next?", isPresented:  $pageConfig.isProductJustUploaded) {
+                    .alert("What's next?", isPresented: $pageConfig.isProductJustUploaded) {
                         Button("Leave") {
                             self.isPresented = false
                         }
@@ -120,6 +121,9 @@ public struct ProductPage: View {
                             alertTitle = "Missing required data"
                             isAlertPresent = true
                         }
+                    }
+                    .onChange(of: pageConfig.submittedProduct) { newValue in
+                        self.uploadedProduct = newValue
                     }
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
