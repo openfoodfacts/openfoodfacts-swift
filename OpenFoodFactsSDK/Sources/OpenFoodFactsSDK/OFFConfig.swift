@@ -14,7 +14,7 @@ public enum OFFEnvironment {
 }
 
 /// https://wiki.openfoodfacts.org/API/Write
-public class OFFConfig {
+final public class OFFConfig {
     
     var api = OFFApi()
     

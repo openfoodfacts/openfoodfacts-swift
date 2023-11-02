@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 
 @MainActor
-class CategoryInputWidgetModel: ObservableObject {
+final class CategoryInputWidgetModel: ObservableObject {
     
     @Published var suggestions = [String]()
     @Published var apiError: Error?

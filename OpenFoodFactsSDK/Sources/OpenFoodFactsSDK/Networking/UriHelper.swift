@@ -7,7 +7,7 @@
 
 import Foundation
 
-class UriHelper {
+final class UriHelper {
     
     private init() {}
     

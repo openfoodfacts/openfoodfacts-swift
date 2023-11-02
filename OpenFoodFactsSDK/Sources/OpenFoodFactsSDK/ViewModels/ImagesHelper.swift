@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class ImagesHelper: ObservableObject {
+final class ImagesHelper: ObservableObject {
     
     @Published var isPresented: Bool = false
     @Published var showingCropper: Bool = false

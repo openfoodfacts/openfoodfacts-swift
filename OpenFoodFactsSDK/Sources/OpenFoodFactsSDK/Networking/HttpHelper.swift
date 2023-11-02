@@ -8,7 +8,7 @@
 
 import Foundation
 
-class HttpHelper {
+final class HttpHelper {
     
     static let shared = HttpHelper()
     static let userAgent = "iOS API"

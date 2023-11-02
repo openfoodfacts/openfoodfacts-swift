@@ -13,7 +13,7 @@ enum ProductPageState {
     case loading, completed, productDetails
 }
 
-class ProductPageConfig: ObservableObject {
+final class ProductPageConfig: ObservableObject {
     
     static let requiredNutrients = ["energy-kcal", "proteins", "carbohydrates", "fat"]
     static let requiredImageFields = [ ImageField.front, ImageField.nutrition ]
@@ -226,7 +226,7 @@ class ProductPageConfig: ObservableObject {
     
     private func sendAllImages(barcode: String) async throws {
         
-        var sendImages = self.images.reduce(into: [SendImage]()) { (result, element) in
+        let sendImages = self.images.reduce(into: [SendImage]()) { (result, element) in
             if !element.value.isEmpty() {
                 result.append(SendImage(barcode: barcode, imageField: element.key, image: element.value))
             }
