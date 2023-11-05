@@ -7,6 +7,7 @@
 //  TODO: add localizations
 //  TODO: OCR on client for nutriments, product name maybe
 //  TODO: match OFF requirement from README
+//  TODO: coverage by tests
 //
 //  Created by Henadzi Rabkin on 15/10/2023.
 //
@@ -16,8 +17,9 @@ import SwiftUI
 
 public struct ProductPage: View {
     
+    @Environment(\.presentationMode) var presentationMode
+    
     @Binding public var barcode: String
-    @Binding public var isPresented: Bool
     @Binding public var uploadedProduct: [String: String]?
     
     @State private var isAlertPresent = false
@@ -27,9 +29,8 @@ public struct ProductPage: View {
     @StateObject var pageConfig = ProductPageConfig()
     @StateObject var imagesHelper = ImagesHelper()
     
-    public init(barcode: Binding<String>, isPresented: Binding<Bool>, submitProduct: Binding<[String: String]?> = Binding.constant(nil)) {
+    public init(barcode: Binding<String>, submitProduct: Binding<[String: String]?> = Binding.constant(nil)) {
         _barcode = barcode
-        _isPresented = isPresented
         _uploadedProduct = submitProduct
     }
     
@@ -62,7 +63,7 @@ public struct ProductPage: View {
                     }
                     .alert("What's next?", isPresented: $pageConfig.isProductJustUploaded) {
                         Button("Leave") {
-                            self.isPresented = false
+                            presentationMode.wrappedValue.dismiss()
                         }
                         Button("View") {
                             pageConfig.isProductJustUploaded = false
@@ -128,7 +129,7 @@ public struct ProductPage: View {
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             Button("Cancel") {
-                                isPresented = false
+                                presentationMode.wrappedValue.dismiss()
                             }
                         }
                         ToolbarItem(placement: .confirmationAction) {
@@ -159,5 +160,5 @@ public struct ProductPage: View {
 }
 
 #Preview {
-    ProductPage(barcode: .constant("5900259127761"), isPresented: .constant(true))
+    ProductPage(barcode: .constant("5900259127761"))
 }

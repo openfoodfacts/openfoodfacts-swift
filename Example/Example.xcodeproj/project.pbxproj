@@ -202,7 +202,7 @@
 			);
 			mainGroup = 1926CA042AC8553D004EAD53;
 			packageReferences = (
-				19CC78E32ACD702E00172137 /* XCLocalSwiftPackageReference "../OpenFoodFactsSDK" */,
+				19E1268B2AF7D86A00C0CD4A /* XCLocalSwiftPackageReference ".." */,
 			);
 			productRefGroup = 1926CA0E2AC8553D004EAD53 /* Products */;
 			projectDirPath = "";
@@ -547,9 +547,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		19CC78E32ACD702E00172137 /* XCLocalSwiftPackageReference "../OpenFoodFactsSDK" */ = {
+		19E1268B2AF7D86A00C0CD4A /* XCLocalSwiftPackageReference ".." */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../OpenFoodFactsSDK;
+			relativePath = ..;
 		};
 /* End XCLocalSwiftPackageReference section */
 

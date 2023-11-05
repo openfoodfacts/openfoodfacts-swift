@@ -5,12 +5,23 @@
 Swift package for the Open Food Facts API. Easily access to more than 1.9 million products from all around the world.
 Open Food Facts is powered by contributors from around the world and is constantly growing thanks to them.
 
+## Compatibility
+
+iOS 15+, verified compatibility only with Swift 5.9 for now
+
+## Prerequisits
+
+For adding product's pictures the SDK uses camera and gallery. App which integrates it should add NSCameraUsageDescription and NSPhotoLibraryUsageDescription.
+
 ## How to use ?
 See `ExampleApp` for two scenarious of starting screen from scanning product or entering it manually
 
 You can integrate the SDK into your iOS app using SPM (Swift Package Manager) by searching the repo using github's url
 
 There are two modes for now: new and view
+
+Sample codes:
+existing 5900102025473 [pl] / 8711258029584 [nl], missing 5701377101134 [pl]
 
 SDK has screen to view or submit product
 ```

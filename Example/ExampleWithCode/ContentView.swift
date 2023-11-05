@@ -13,42 +13,35 @@ import OpenFoodFactsSDK
 struct ContentView: View {
     
     @State var barcode: String = ""
-    @State var isProductEditorPresent: Bool = false
-    @State var isInvalidBarcode: Bool = false
-    
-    @State var submitProduct: [String: String]? = nil {
-        didSet {
-            print(submitProduct ?? "")
-        }
-    }
+    @State var isValidBarcode: Bool = false
+    @State var submitProduct: [String: String]? = nil
     
     var body: some View {
         NavigationView {
-            VStack(alignment: .center) {
+            VStack(alignment: .center, spacing: 10) {
                 Spacer()
-                TextField("Enter barcode for e.g. 5900102025473", text: $barcode)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-
-                Button("Start") {
-                    if barcode.isAValidBarcode() {
-                        isProductEditorPresent = true
-                    } else {
-                        isInvalidBarcode = true
+                Text("Expected format should have 7,8,12 or 13 digits.")
+                HStack {
+                    TextField("Enter barcode for e.g. 5900102025473", text: $barcode)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .onChange(of: barcode) { newValue in
+                        isValidBarcode = newValue.isAValidBarcode()
+                        print("\(barcode) and \(isValidBarcode)")
                     }
-                }
+                    .onChange(of: submitProduct) { newValue in
+                        print(submitProduct ?? "")
+                    }
+                    Image(systemName: isValidBarcode ? "checkmark" : "exclamationmark.octagon.fill")
+                        .renderingMode(.template).foregroundColor(isValidBarcode ? .green : .red)
+                }.padding()
+                // Added for testing that editor is loaded with NavigatorView
+                NavigationLink("Check", destination: ProductPage(barcode: self.$barcode, submitProduct: $submitProduct)).disabled(!isValidBarcode)
                 Spacer()
-                // added for testing that editor is loaded with NavigatorView
-                NavigationLink("", destination: ProductPage(barcode: self.$barcode, isPresented: self.$isProductEditorPresent, submitProduct: $submitProduct), isActive: $isProductEditorPresent).opacity(0)
             }
-        }
-        .alert("Invalid barcode", isPresented: $isInvalidBarcode) {
-            Button("OK") {
-                self.isInvalidBarcode = false
-            }
-        } message: {
-            Text("Barcode \(barcode) is invalid. Expected format should have 7,8,12 or 13 digits.")
         }
     }
 }
 
+#Preview {
+    ContentView()
+}
