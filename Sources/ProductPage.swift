@@ -19,9 +19,6 @@ public struct ProductPage: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @Binding public var barcode: String
-    @Binding public var uploadedProduct: [String: String]?
-    
     @State private var isAlertPresent = false
     @State private var alertMessage = ""
     @State private var alertTitle = ""
@@ -29,9 +26,12 @@ public struct ProductPage: View {
     @StateObject var pageConfig = ProductPageConfig()
     @StateObject var imagesHelper = ImagesHelper()
     
-    public init(barcode: Binding<String>, submitProduct: Binding<[String: String]?> = Binding.constant(nil)) {
-        _barcode = barcode
-        _uploadedProduct = submitProduct
+    public let barcode: String
+    public let onUploadingDone: ([String: String]?) -> Void
+    
+    public init(barcode: String, onUploadingDone: @escaping ([String : String]?) -> Void = { _ in }) {
+        self.barcode = barcode
+        self.onUploadingDone = onUploadingDone
     }
     
     public var body: some View {
@@ -40,7 +40,7 @@ public struct ProductPage: View {
             case .loading, .completed:
                 PageOverlay(state: $pageConfig.pageState, stateAfterCompleted: .productDetails)
             case .productDetails:
-                ProductDetails(barcode: $barcode)
+                ProductDetails(barcode: barcode)
                     .environmentObject(pageConfig)
                     .environmentObject(imagesHelper)
                     .actionSheet(isPresented: $imagesHelper.isPresentedSourcePicker) { () -> ActionSheet in
@@ -124,7 +124,7 @@ public struct ProductPage: View {
                         }
                     }
                     .onChange(of: pageConfig.submittedProduct) { newValue in
-                        self.uploadedProduct = newValue
+                        self.onUploadingDone(newValue)
                     }
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -160,5 +160,5 @@ public struct ProductPage: View {
 }
 
 #Preview {
-    ProductPage(barcode: .constant("5900259127761"))
+    ProductPage(barcode: "5900259127761")
 }

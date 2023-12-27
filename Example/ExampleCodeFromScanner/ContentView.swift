@@ -26,7 +26,9 @@ struct ContentView: View {
             }
         }
         .fullScreenCover(isPresented: $isEditingProduct) {
-            ProductPage(barcode: $barcode).onDisappear() {
+            ProductPage(barcode: barcode) { uploadedProduct in
+                print(uploadedProduct ?? "")
+            }.onDisappear() {
                 isScanning = true
             }
         }

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ProductDetails: View {
     
-    @Binding var barcode: String
+    let barcode: String
     
     @EnvironmentObject var pageConfig: ProductPageConfig
     @EnvironmentObject var pickerModel: ImagesHelper

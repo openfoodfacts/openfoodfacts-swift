@@ -14,7 +14,6 @@ struct ContentView: View {
     
     @State var barcode: String = ""
     @State var isValidBarcode: Bool = false
-    @State var submitProduct: [String: String]? = nil
     
     var body: some View {
         NavigationView {
@@ -28,14 +27,15 @@ struct ContentView: View {
                         isValidBarcode = newValue.isAValidBarcode()
                         print("\(barcode) and \(isValidBarcode)")
                     }
-                    .onChange(of: submitProduct) { newValue in
-                        print(submitProduct ?? "")
-                    }
                     Image(systemName: isValidBarcode ? "checkmark" : "exclamationmark.octagon.fill")
                         .renderingMode(.template).foregroundColor(isValidBarcode ? .green : .red)
                 }.padding()
                 // Added for testing that editor is loaded with NavigatorView
-                NavigationLink("Check", destination: ProductPage(barcode: self.$barcode, submitProduct: $submitProduct)).disabled(!isValidBarcode)
+                NavigationLink("Check") {
+                    ProductPage(barcode: self.barcode) { product in
+                        print(product ?? "")
+                    }.disabled(!isValidBarcode)
+                }
                 Spacer()
             }
         }

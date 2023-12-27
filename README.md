@@ -25,10 +25,10 @@ existing 5900102025473 [pl] / 8711258029584 [nl], missing 5701377101134 [pl]
 
 SDK has screen to view or submit product
 ```
-ProductPage(barcode: $barcode, isPresented: $isProductEditorPresent, submitProduct: $submitProduct)
-```
+ProductPage(barcode: barcode) { uploadedProduct in
 
-Before submitting new product you may create State reference `@State var submitProduct: [String: String]? = nil` and receive uploaded product by passing `submitProduct`, this is optional parameter
+}
+```
 
 ### Submit new
 
