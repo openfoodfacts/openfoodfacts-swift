@@ -105,3 +105,19 @@ extension UIImage {
         return self.size.width >= UIImage.minimumWidth || self.size.height >= UIImage.minimumHeight
     }
 }
+
+public extension [String: String]? {
+    
+    public func json() -> String {
+        guard let dictionary = self else {
+            return "Product is nil"
+        }
+        
+        do {
+            let data = try JSONSerialization.data(withJSONObject: dictionary, options: [])
+            return String(data: data, encoding: .utf8) ?? "Empty"
+        } catch {
+            return "Error serializing product: \(error)"
+        }
+    }
+}

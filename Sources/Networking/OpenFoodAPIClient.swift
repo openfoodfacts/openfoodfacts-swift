@@ -44,6 +44,39 @@ final public class OpenFoodAPIClient {
             
             return allOrderedNutrients
         } catch {
+            print("\(#function) \(error)")
+            throw error
+        }
+    }
+    
+    public func getProduct(config: ProductQueryConfiguration) async throws -> ProductResponse {
+        
+        let queryParameters = config.getParametersMap()
+        
+        guard let uriPath = UriHelper.getUri(path: "/api/v3/product/\(config.barcode)", queryParameters: queryParameters) else {
+            throw NSError(domain: "Couldn't compose uri for \(#function) call", code: 400)
+        }
+        do {
+            let data  = try await HttpHelper.shared.doGetRequest(uri: uriPath)
+            let response = try JSONDecoder().decode(ProductResponse.self, from: data)
+            return response
+        } catch {
+            print("\(#function) \(error)")
+            throw error
+        }
+    }
+    
+    public func fetchNutrientsMetadata() async throws -> NutrientMetadata
+    {
+        guard let uri = UriHelper.getTaxonomiesUri(path: "/data/taxonomies/nutrients.json") else {
+            throw NSError(domain: "Couldn't compose uri for \(#function) call", code: 400)
+        }
+        do {
+            let data  = try await HttpHelper.shared.doGetRequest(uri: uri, addCredentialsToHeader: true)
+            let nutrientsData = try JSONDecoder().decode(NutrientMetadata.self, from: data)
+            return nutrientsData
+        } catch {
+            print("\(#function) \(error)")
             throw error
         }
     }
@@ -82,6 +115,7 @@ final public class OpenFoodAPIClient {
             }
             return result
         } catch {
+            print("\(#function) \(error)")
             throw error
         }
     }
@@ -112,36 +146,7 @@ final public class OpenFoodAPIClient {
             }
             return downloadedImage
         } catch {
-            throw NSError(domain: error.localizedDescription, code: 409)
-        }
-    }
-    
-    public func fetchNutrientsMetadata() async throws -> NutrientMetadata
-    {
-        guard let uri = UriHelper.getTaxonomiesUri(path: "/data/taxonomies/nutrients.json") else {
-            throw NSError(domain: "Couldn't compose uri for \(#function) call", code: 400)
-        }
-        do {
-            let data  = try await HttpHelper.shared.doGetRequest(uri: uri, addCredentialsToHeader: true)
-            let nutrientsData = try JSONDecoder().decode(NutrientMetadata.self, from: data)
-            return nutrientsData
-        } catch {
-            throw error
-        }
-    }
-    
-    public func getProduct(config: ProductQueryConfiguration) async throws -> ProductResponse {
-        
-        let queryParameters = config.getParametersMap()
-        
-        guard let uriPath = UriHelper.getUri(path: "/api/v3/product/\(config.barcode)", queryParameters: queryParameters) else {
-            throw NSError(domain: "Couldn't compose uri for \(#function) call", code: 400)
-        }
-        do {
-            let data  = try await HttpHelper.shared.doGetRequest(uri: uriPath)
-            let response = try JSONDecoder().decode(ProductResponse.self, from: data)
-            return response
-        } catch {
+            print("\(#function) \(error)")
             throw error
         }
     }

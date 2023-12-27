@@ -9,8 +9,8 @@ enum ProductPageType {
     case view, new
 }
 
-enum ProductPageState {
-    case loading, completed, productDetails
+enum ProductPageState: Sendable {
+    case loading, completed, productDetails, error
 }
 
 final class ProductPageConfig: ObservableObject {
@@ -48,9 +48,7 @@ final class ProductPageConfig: ObservableObject {
     }
     @Published var images = Dictionary(uniqueKeysWithValues: ImageField.allCases.map { ($0, UIImage()) })
     
-    @Published var errorMessage: NSError?
-    @Published var missingRequiredTitles = [String]()
-    
+    @Published var errorMessage: ErrorAlert?
     @Published var submittedProduct: [String: String]? = nil
     
     func binding(for key: ImageField) -> Binding<UIImage> {
@@ -67,10 +65,11 @@ final class ProductPageConfig: ObservableObject {
         return pageType == .new
     }
     
-    @MainActor
     func fetchData(barcode: String) async {
         
-        self.pageState = .loading
+        await MainActor.run {
+            self.pageState = .loading
+        }
         
         do {
             async let taskOrderedNutrients = OpenFoodAPIClient.shared.getOrderedNutrients()
@@ -81,29 +80,40 @@ final class ProductPageConfig: ObservableObject {
             let productResponse = try await taskProductResponse
             let nutrientsMeta = try await taskNutrientsMeta
             
-            self.pageState = .completed
+            let pageType = await determinePageType(response: productResponse)
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + PageOverlay.completedAnimDuration) {
-                self.pageState = ProductPageState.productDetails
+            await MainActor.run {
+                self.pageState = .completed
+                self.orderedNutrients = orderedNutrients
+                self.nutrientsMeta = nutrientsMeta
+                self.isInitialised = true
+                self.pageType = pageType
             }
-            
-            self.orderedNutrients = orderedNutrients
-            self.nutrientsMeta = nutrientsMeta
-            if productResponse.hasProduct(), let product = productResponse.product {
-                await self.unwrapExistingProduct(product: product)
-                self.pageType = ProductPageType.view
-            } else {
-                self.pageType = ProductPageType.new
+            try await Task.sleep(nanoseconds: 1_000_000_000 * UInt64(PageOverlay.completedAnimDuration))
+            await MainActor.run {
+                self.pageState = .productDetails
             }
-            self.isInitialised = true
             
         } catch {
-            self.errorMessage = NSError(domain: error.localizedDescription, code: 409)
+            await MainActor.run {
+                self.pageState = .error
+                self.errorMessage = ErrorAlert(message: error.localizedDescription, title: "Error")
+            }
         }
     }
     
+    func determinePageType(response: ProductResponse) async -> ProductPageType {
+        if response.hasProduct(), let product = response.product {
+            await self.unwrapExistingProduct(product: product)
+            return ProductPageType.view
+        }
+        return ProductPageType.new
+    }
+    
     /// Bare minimum marked with .required() view modifier
-    func getMissingFields() {
+    func getMissingFields() -> [String] {
+        
+        if !OFFConfig.shared.useRequired { return [] }
         
         var missingFields = [String]()
         
@@ -112,13 +122,11 @@ final class ProductPageConfig: ObservableObject {
         if images[ImageField.front]!.isEmpty() { missingFields.append("Front image") }
         if images[ImageField.nutrition]!.isEmpty() { missingFields.append("Nutrients image") }
         
-        if OFFConfig.shared.useRequired {
-            missingRequiredTitles = missingFields
-        }
+        return missingFields
     }
     
     func getMissingFieldsMessage() -> String {
-        return missingRequiredTitles.map { "'\($0)'" }.joined(separator: ", ")
+        return getMissingFields().map { "'\($0)'" }.joined(separator: ", ")
     }
     
     @MainActor
@@ -188,7 +196,8 @@ final class ProductPageConfig: ObservableObject {
             product = try await composeProduct(barcode: barcode)
             try await OpenFoodAPIClient.shared.saveProduct(product: product)
         } catch {
-            self.errorMessage = NSError(domain: "Could not save product \(error.localizedDescription)", code: 409)
+            self.pageState = .error
+            self.errorMessage = ErrorAlert(message: "Could not save product \(error.localizedDescription)", title: "Error")
         }
         
         self.pageState = .completed
@@ -199,7 +208,6 @@ final class ProductPageConfig: ObservableObject {
         }
     }
     
-    @MainActor
     private func composeProduct(barcode: String) async throws -> [String: String] {
         
         var product = [

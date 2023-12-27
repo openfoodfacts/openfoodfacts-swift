@@ -10,9 +10,7 @@ struct ImageCropper: UIViewControllerRepresentable {
     
   @Binding var image: UIImage
   @Binding var isPresented: Bool
-  @Binding var isAlertPresented: Bool
-  @Binding var alertTitle: String
-  @Binding var alertMessage: String
+  @Binding var errorMessage: ErrorAlert?
     
   func makeCoordinator() -> Coordinator {
       return Coordinator(parent: self)
@@ -41,9 +39,7 @@ class Coordinator: NSObject, CropViewControllerDelegate {
     }
     
     if (!image.isPictureBigEnough()) {
-        parent.isAlertPresented = true
-        parent.alertTitle = "Invalid image"
-        parent.alertMessage = "The image is too small! Minimum WxH 640x160"
+        parent.errorMessage = ErrorAlert(message: "Invalid image", title: "The image is too small! Minimum WxH 640x160")
     } else {
         self.parent.image = image
     }

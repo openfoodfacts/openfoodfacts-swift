@@ -11,8 +11,6 @@ struct PageOverlay: View {
     
     @Binding var state: ProductPageState
     
-    var stateAfterCompleted: ProductPageState = .productDetails
-    
     @State private var rotation: Double = 0
     @State private var currentlyAnimatingIndex = 0
     
@@ -39,10 +37,10 @@ struct PageOverlay: View {
         case .completed:
             LoadingCircle(color: .green, rotation: $rotation, autoRepeat: false, trimEnd: 0.3 + CGFloat(rotation / 360))
             CompletedCheckmark(rotation: $rotation)
-//        case .error:
-//            ErrorCircle()
-//            ErrorMark()
-        case .productDetails: 
+        case .error:
+            ErrorCircle()
+            ErrorMark()
+        case .productDetails:
             EmptyView()
         }
     }

@@ -15,15 +15,17 @@
 import Foundation
 import SwiftUI
 
+struct ErrorAlert: Identifiable {
+    let id = UUID()
+    let message: String
+    let title: String
+}
+
 public struct ProductPage: View {
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     
-    @State private var isAlertPresent = false
-    @State private var alertMessage = ""
-    @State private var alertTitle = ""
-    
-    @StateObject var pageConfig = ProductPageConfig()
+    @ObservedObject var pageConfig = ProductPageConfig()
     @StateObject var imagesHelper = ImagesHelper()
     
     public let barcode: String
@@ -37,14 +39,13 @@ public struct ProductPage: View {
     public var body: some View {
         Group {
             switch pageConfig.pageState {
-            case .loading, .completed:
-                PageOverlay(state: $pageConfig.pageState, stateAfterCompleted: .productDetails)
+            case .loading, .completed, .error:
+                PageOverlay(state: $pageConfig.pageState)
             case .productDetails:
                 ProductDetails(barcode: barcode)
                     .environmentObject(pageConfig)
                     .environmentObject(imagesHelper)
                     .actionSheet(isPresented: $imagesHelper.isPresentedSourcePicker) { () -> ActionSheet in
-                        
                         ActionSheet(
                             title: Text("Choose source"),
                             message: Text("Please choose your preferred source to add product's image"),
@@ -60,26 +61,6 @@ public struct ProductPage: View {
                                 .cancel()
                             ]
                         )
-                    }
-                    .alert("What's next?", isPresented: $pageConfig.isProductJustUploaded) {
-                        Button("Leave") {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                        Button("View") {
-                            pageConfig.isProductJustUploaded = false
-                            Task {
-                                await pageConfig.fetchData(barcode: barcode)
-                            }
-                        }
-                    } message: {
-                        Text("Would you like to view uploaded product or leave?")
-                    }
-                    .alert(alertTitle, isPresented:  $isAlertPresent) {
-                        Button("OK") {
-                            self.isAlertPresent = false
-                        }
-                    } message: {
-                        Text(alertMessage)
                     }
                     .fullScreenCover(isPresented: $imagesHelper.isPresentedImagePreview, content: {
                         ImageViewer(
@@ -97,65 +78,65 @@ public struct ProductPage: View {
                             imagesHelper.showingCropper = withImage
                         }.ignoresSafeArea()
                         
-                    }.fullScreenCover(isPresented: $imagesHelper.showingCropper, content: {
+                    }
+                    .fullScreenCover(isPresented: $imagesHelper.showingCropper, content: {
                         ImageCropper(
                             image: pageConfig.binding(for: imagesHelper.imageFieldToEdit),
                             isPresented: $imagesHelper.showingCropper,
-                            isAlertPresented: $isAlertPresent,
-                            alertTitle: $alertTitle,
-                            alertMessage: $alertMessage
+                            errorMessage: $pageConfig.errorMessage
                         ).ignoresSafeArea()
                     })
-                    .onChange(of: pageConfig.errorMessage) { newValue in
-                        if let error = newValue {
-                            alertTitle = "Error"
-                            alertMessage = error.localizedDescription
+                    .alert("What's next?", isPresented: $pageConfig.isProductJustUploaded) {
+                        Button("Leave") {
+                            dismiss()
                         }
-                    }
-                    .onChange(of: pageConfig.missingRequiredTitles) { newValue in
-                        
-                        if pageConfig.missingRequiredTitles.isEmpty {
-                            // Send data, show success animation
-                            pageConfig.pageState = .loading
-                        } else {
-                            alertMessage = "Fields: \(self.pageConfig.getMissingFieldsMessage())"
-                            alertTitle = "Missing required data"
-                            isAlertPresent = true
+                        Button("View") {
+                            pageConfig.isProductJustUploaded = false
+                            Task {
+                                await pageConfig.fetchData(barcode: barcode)
+                            }
                         }
+                    } message: {
+                        Text("Would you like to view uploaded product or leave?")
                     }
                     .onChange(of: pageConfig.submittedProduct) { newValue in
                         self.onUploadingDone(newValue)
                     }
                     .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
+                        ToolbarItem(placement: .topBarLeading) {
                             Button("Cancel") {
-                                presentationMode.wrappedValue.dismiss()
+                                dismiss()
                             }
                         }
-                        ToolbarItem(placement: .confirmationAction) {
-                            if pageConfig.isNewMode {
-                                Button("Submit") {
-                                    if (!pageConfig.isInitialised) { return }
-                                    pageConfig.getMissingFields()
-                                    
-                                    if (pageConfig.missingRequiredTitles.isEmpty) {
-                                        Task {
-                                            await pageConfig.uploadAllProductData(barcode: barcode)
-                                        }
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("Submit") {
+                                if (pageConfig.getMissingFields().isEmpty) {
+                                    Task {
+                                        await pageConfig.uploadAllProductData(barcode: barcode)
                                     }
+                                } else {
+                                    pageConfig.errorMessage = ErrorAlert(
+                                        message: "Fields: \(self.pageConfig.getMissingFieldsMessage())",
+                                        title: "Missing required data")
                                 }
-                            }
+                            }.disabled(!pageConfig.isInitialised)
                         }
                     }
             }
         }
         .navigationBarBackButtonHidden()
+        .alert(item: $pageConfig.errorMessage, content: { alert in
+            Alert(title: Text(alert.title), message: Text(alert.message), dismissButton: .cancel(Text("OK"), action: {
+                self.pageConfig.errorMessage = nil
+                dismiss()
+            }))
+        })
         .onAppear(perform: {
             UIApplication.shared.addTapGestureRecognizer()
+            Task(priority: .userInitiated) {
+                await pageConfig.fetchData(barcode: barcode)
+            }
         })
-        .task {
-            await pageConfig.fetchData(barcode: barcode)
-        }
     }
 }
 

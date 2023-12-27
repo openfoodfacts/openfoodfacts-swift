@@ -13,7 +13,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
-        OFFConfig.shared.apiEnv = .staging
+        OFFConfig.shared.apiEnv = .production
         OFFConfig.shared.country = OpenFoodFactsCountry.POLAND
         OFFConfig.shared.productsLanguage = OpenFoodFactsLanguage.DUTCH
         return true

@@ -10,28 +10,24 @@ import Vision
 
 extension BarcodeScannerController: AVCaptureVideoDataOutputSampleBufferDelegate {
     
-    
     func handleDetectedBarcode(request: VNRequest, error: Error?) {
         if let nsError = error as NSError? {
             print(nsError.localizedDescription)
             return
         }
         
-        if self.isCheckingEntry { return }
-        guard let results = request.results as? [VNBarcodeObservation],
-              let result = results.first, let barcode = result.payloadStringValue else {
-            return
-        }
-        
-        self.pauseCapturing()
-        self.delegate?.stoppedCapturing()
-        
-        DispatchQueue.main.async {
-            self.overlayView.animateMatch(isMatch: true) {
-                self.isCheckingEntry = false
-                self.delegate?.didFindCode(code: barcode)
+        guard let results = request.results as? [VNBarcodeObservation] else { return }
+        if let result = results.first,
+            let barcode = result.payloadStringValue {
+            self.pauseCapturing()
+            self.delegate?.stoppedCapturing()
+            DispatchQueue.main.async {
+                self.overlayView.animateMatch(isMatch: true) {
+                    self.delegate?.didFindCode(code: barcode)
+                }
             }
         }
+        
     }
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {

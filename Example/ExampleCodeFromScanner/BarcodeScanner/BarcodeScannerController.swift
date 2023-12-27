@@ -29,12 +29,9 @@ class BarcodeScannerController: UIViewController {
     private var previewLayer: AVCaptureVideoPreviewLayer!
     var overlayView: ScannerOverlayView!
     
-    var isCheckingEntry = false
     var initialised = false
     
     internal let sessionQueue = DispatchQueue(label: "captureQueue", qos: .background)
-    
-    let blurEffectView = UIVisualEffectView(effect: nil)
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -102,18 +99,22 @@ class BarcodeScannerController: UIViewController {
             }
             videoCaptureDevice.unlockForConfiguration()
         } catch {}
-
-        // Add device input
+        
         do {
+            if let inputs = self.captureSession.inputs as? [AVCaptureDeviceInput] {
+                for input in inputs {
+                    self.captureSession.removeInput(input)
+                }
+            }
             let input = try AVCaptureDeviceInput(device: videoCaptureDevice)
-            captureSession.addInput(input)
+            self.captureSession.addInput(input)
         } catch {
             print("Could not create device input: \(error)")
         }
         
         self.captureSession.beginConfiguration()
         
-        captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720;
+        self.captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720;
         // Add video output.
         let videoOutput = AVCaptureVideoDataOutput()
 
@@ -123,12 +124,11 @@ class BarcodeScannerController: UIViewController {
         // calls captureOutput()
         videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "processing"))
         
-        captureSession.addOutput(videoOutput)
+        self.captureSession.addOutput(videoOutput)
         for connection in videoOutput.connections {
             connection.videoOrientation = .portrait
         }
-        captureSession.commitConfiguration()
-        
+        self.captureSession.commitConfiguration()
         self.initialised = true
         self.resumeCapturing()
         
@@ -144,9 +144,9 @@ class BarcodeScannerController: UIViewController {
     func resumeCapturing() {
         DispatchQueue.main.async {
             self.overlayView.resetStroke()
-            self.sessionQueue.async {
-                self.captureSession.startRunning()
-            }
+        }
+        self.sessionQueue.async {
+            self.captureSession.startRunning()
         }
     }
     
@@ -199,15 +199,5 @@ class BarcodeScannerController: UIViewController {
         } catch {
             print("Error toggling flash: \(error)")
         }
-    }
-    
-    @objc private func xmarkButtonTapped() {
-        dismiss(animated: true)
-    }
-    
-    func animateBlurEffectView(show: Bool) {
-        UIView.animate(withDuration: 0.25, animations: {
-            self.blurEffectView.effect = show ? UIBlurEffect(style: .dark) : nil
-        })
     }
 }
