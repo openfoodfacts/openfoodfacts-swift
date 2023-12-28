@@ -23,7 +23,7 @@ There are two modes for now: new and view
 Sample codes:
 existing 5900102025473 [pl] / 8711258029584 [nl], missing 5701377101134 [pl]
 
-SDK has screen to view or submit product
+SDK has screen to view or submit product (in OFF's Product json "scheme")
 ```
 ProductPage(barcode: barcode) { uploadedProduct in
 

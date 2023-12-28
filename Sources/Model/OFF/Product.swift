@@ -14,14 +14,28 @@ public enum DataFor: String {
     func label() -> String {
         switch self {
         case .hundredG:
-            return "per 100 g"
+            return "per 100 g/ml"
         case .serving:
             return "per serving"
         }
     }
 }
 
-public struct Product: Decodable {
+public struct Product: Decodable, Equatable {
+    
+    public static func == (lhs: Product, rhs: Product) -> Bool {
+        return  lhs.code == rhs.code &&
+                lhs.productName == rhs.productName &&
+                lhs.brands == rhs.brands &&
+                lhs.servingSize == rhs.servingSize &&
+                lhs.quantity == rhs.quantity &&
+                lhs.dataPer == rhs.dataPer &&
+                lhs.categories == rhs.categories &&
+                lhs.imageFront == rhs.imageFront &&
+                lhs.imageIngredients == rhs.imageIngredients &&
+                lhs.imageNutrition == rhs.imageNutrition &&
+                lhs.nutriments?.count == rhs.nutriments?.count
+    }
     
     let code: String
     let productName: String?

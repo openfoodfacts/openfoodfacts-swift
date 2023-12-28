@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum OpenFoodFactsLanguage: String, CaseIterable, Identifiable {
+public enum OpenFoodFactsLanguage: String, CaseIterable, Identifiable, Equatable {
     public var id: Self { self }
     
     case AFAR

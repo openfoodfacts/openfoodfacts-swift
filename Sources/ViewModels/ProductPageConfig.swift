@@ -31,7 +31,6 @@ final class ProductPageConfig: ObservableObject {
     @Published var orderedNutrients: [OrderedNutrient] = []
     
     @Published var isInitialised: Bool = false
-    @Published var isProductJustUploaded: Bool = false
     
     @Published var productName = ""
     @Published var brand = ""
@@ -49,7 +48,7 @@ final class ProductPageConfig: ObservableObject {
     @Published var images = Dictionary(uniqueKeysWithValues: ImageField.allCases.map { ($0, UIImage()) })
     
     @Published var errorMessage: ErrorAlert?
-    @Published var submittedProduct: [String: String]? = nil
+    @Published var submittedProduct: Product? = nil
     
     func binding(for key: ImageField) -> Binding<UIImage> {
         return Binding<UIImage>(
@@ -187,16 +186,15 @@ final class ProductPageConfig: ObservableObject {
         
         async let _ = sendAllImages(barcode: barcode)
         do {
-            let product = try await composeProduct(barcode: barcode)
-            try await OpenFoodAPIClient.shared.saveProduct(product: product)
+            let productBody = try await composeProductBody(barcode: barcode)
+            try await OpenFoodAPIClient.shared.saveProduct(product: productBody)
             await MainActor.run {
                 self.pageState = .completed
             }
             try await Task.sleep(nanoseconds: 1_000_000_000 * UInt64(PageOverlay.completedAnimDuration))
             await MainActor.run {
                 self.pageState = ProductPageState.productDetails
-                self.isProductJustUploaded = true
-                self.submittedProduct = product
+                self.submittedProduct = productBody.convertToProduct()
             }
         } catch {
             await MainActor.run {
@@ -206,7 +204,7 @@ final class ProductPageConfig: ObservableObject {
         }
     }
     
-    private func composeProduct(barcode: String) async throws -> [String: String] {
+    private func composeProductBody(barcode: String) async throws -> [String: String] {
         
         var product = [
             "code": barcode,

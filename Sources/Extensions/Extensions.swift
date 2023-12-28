@@ -64,6 +64,11 @@ public extension String {
     func isAValidBarcode() -> Bool {
         return [7, 8, 12, 13].contains(self.count)
     }
+    
+    func removingPrefix(_ prefix: String) -> String {
+        guard self.hasPrefix(prefix) else { return self }
+        return String(self.dropFirst(prefix.count))
+    }
 }
 
 extension Data {
@@ -123,13 +128,37 @@ public extension [String: String]? {
 }
 
 public extension [String: String] {
-    
+        
     public func json() -> String {
         do {
             let data = try JSONSerialization.data(withJSONObject: self, options: [])
             return String(data: data, encoding: .utf8) ?? "Empty"
         } catch {
             return "Error serializing product: \(error)"
+        }
+    }
+    
+    public func convertToProduct() -> Product? {
+        do {
+            var originalDictionary = self
+            let prefix = "nutriment_"
+            
+            let modifiedDictionary = originalDictionary
+                .filter { $0.key.hasPrefix(prefix) && !$0.key.hasSuffix("_unit") }
+                .reduce(into: [String: String]()) { (result, keyValue) in
+                    let newKey = keyValue.key.replacing(prefix, with: "")
+                    result[newKey + "_\(self["nutrition_data_per"])"] = keyValue.value
+                }
+            
+            let unmodifiedPart = originalDictionary.filter { !$0.key.hasPrefix(prefix) }
+            let finalDictionary = unmodifiedPart.merging(modifiedDictionary) { (current, _) in current }
+            
+            let data = try JSONSerialization.data(withJSONObject: finalDictionary)
+            let product = try JSONDecoder().decode(Product.self, from: data)
+            return product
+        } catch {
+            print(error)
+            return nil
         }
     }
 }

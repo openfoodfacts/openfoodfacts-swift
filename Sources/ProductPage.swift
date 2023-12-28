@@ -29,9 +29,9 @@ public struct ProductPage: View {
     @StateObject var imagesHelper = ImagesHelper()
     
     public let barcode: String
-    public let onUploadingDone: ([String: String]?) -> Void
+    public let onUploadingDone: (Product?) -> Void
     
-    public init(barcode: String, onUploadingDone: @escaping ([String : String]?) -> Void = { _ in }) {
+    public init(barcode: String, onUploadingDone: @escaping (Product?) -> Void = { _ in }) {
         self.barcode = barcode
         self.onUploadingDone = onUploadingDone
     }
@@ -77,7 +77,6 @@ public struct ProductPage: View {
                         ) { withImage in
                             imagesHelper.showingCropper = withImage
                         }.ignoresSafeArea()
-                        
                     }
                     .fullScreenCover(isPresented: $imagesHelper.showingCropper, content: {
                         ImageCropper(
@@ -86,21 +85,9 @@ public struct ProductPage: View {
                             errorMessage: $pageConfig.errorMessage
                         ).ignoresSafeArea()
                     })
-                    .alert("What's next?", isPresented: $pageConfig.isProductJustUploaded) {
-                        Button("Leave") {
-                            dismiss()
-                        }
-                        Button("View") {
-                            pageConfig.isProductJustUploaded = false
-                            Task {
-                                await pageConfig.fetchData(barcode: barcode)
-                            }
-                        }
-                    } message: {
-                        Text("Would you like to view uploaded product or leave?")
-                    }
                     .onChange(of: pageConfig.submittedProduct) { newValue in
                         self.onUploadingDone(newValue)
+                        dismiss()
                     }
                     .toolbar {
                         ToolbarItem(placement: .topBarLeading) {
@@ -128,6 +115,7 @@ public struct ProductPage: View {
         .alert(item: $pageConfig.errorMessage, content: { alert in
             Alert(title: Text(alert.title), message: Text(alert.message), dismissButton: .cancel(Text("OK"), action: {
                 self.pageConfig.errorMessage = nil
+                if self.pageConfig.pageState == .error { dismiss() }
             }))
         })
         .onAppear(perform: {

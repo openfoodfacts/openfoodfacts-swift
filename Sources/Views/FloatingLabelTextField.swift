@@ -39,6 +39,7 @@ struct FloatingLabelTextField: View {
             .autocorrectionDisabled()
             .textFieldStyle(PlainTextFieldStyle())
             .focused($isFocused)
+            .disabled(pageConfig.isViewMode)
         }
         .padding([.top], 17)
     }
