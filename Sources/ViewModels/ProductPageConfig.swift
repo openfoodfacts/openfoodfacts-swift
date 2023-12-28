@@ -64,6 +64,8 @@ final class ProductPageConfig: ObservableObject {
         return pageType == .new
     }
     
+    // FIXME: move MainActor on class itself
+    
     func fetchData(barcode: String) async {
         
         await MainActor.run {
@@ -88,6 +90,7 @@ final class ProductPageConfig: ObservableObject {
                 self.isInitialised = true
                 self.pageType = pageType
             }
+            // FIXME: find a way to show animation states without such workarounds
             try await Task.sleep(nanoseconds: 1_000_000_000 * UInt64(PageOverlay.completedAnimDuration))
             await MainActor.run {
                 self.pageState = .productDetails
@@ -184,17 +187,18 @@ final class ProductPageConfig: ObservableObject {
             self.pageState = .loading
         }
         
-        async let _ = sendAllImages(barcode: barcode)
+        await sendAllImages(barcode: barcode)
         do {
             let productBody = try await composeProductBody(barcode: barcode)
             try await OpenFoodAPIClient.shared.saveProduct(product: productBody)
+            let productResponse = try await OpenFoodAPIClient.shared.getProduct(config: ProductQueryConfiguration(barcode: barcode))
             await MainActor.run {
                 self.pageState = .completed
             }
             try await Task.sleep(nanoseconds: 1_000_000_000 * UInt64(PageOverlay.completedAnimDuration))
             await MainActor.run {
                 self.pageState = ProductPageState.productDetails
-                self.submittedProduct = productBody.convertToProduct()
+                self.submittedProduct = productResponse.product
             }
         } catch {
             await MainActor.run {

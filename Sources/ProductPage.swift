@@ -85,10 +85,6 @@ public struct ProductPage: View {
                             errorMessage: $pageConfig.errorMessage
                         ).ignoresSafeArea()
                     })
-                    .onChange(of: pageConfig.submittedProduct) { newValue in
-                        self.onUploadingDone(newValue)
-                        dismiss()
-                    }
                     .toolbar {
                         ToolbarItem(placement: .topBarLeading) {
                             Button("Cancel") {
@@ -112,6 +108,10 @@ public struct ProductPage: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .onChange(of: pageConfig.submittedProduct) { newValue in
+            self.onUploadingDone(newValue)
+            dismiss()
+        }
         .alert(item: $pageConfig.errorMessage, content: { alert in
             Alert(title: Text(alert.title), message: Text(alert.message), dismissButton: .cancel(Text("OK"), action: {
                 self.pageConfig.errorMessage = nil

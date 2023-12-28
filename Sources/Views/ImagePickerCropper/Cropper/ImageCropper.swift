@@ -34,15 +34,16 @@ class Coordinator: NSObject, CropViewControllerDelegate {
   }
   
   func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
-    withAnimation {
-        parent.isPresented = false
-    }
     
+    // FIXME: it doesn't work, image has original size
     if (!image.isPictureBigEnough()) {
         parent.errorMessage = ErrorAlert(message: "Invalid image", title: "The image is too small! Minimum WxH 640x160")
     } else {
         self.parent.image = image
     }
+      withAnimation {
+          parent.isPresented = false
+      }
   }
   
   func cropViewController(_ cropViewController: CropViewController, didFinishCancelled cancelled: Bool) {

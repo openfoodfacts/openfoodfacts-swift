@@ -111,21 +111,22 @@ extension UIImage {
     }
 }
 
-public extension [String: String]? {
-    
-    public func json() -> String {
-        guard let dictionary = self else {
-            return "Product is nil"
-        }
-        
+public extension Product {
+    func json() -> String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
         do {
-            let data = try JSONSerialization.data(withJSONObject: dictionary, options: [])
-            return String(data: data, encoding: .utf8) ?? "Empty"
+            let jsonData = try encoder.encode(self)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                return jsonString
+            }
+            return "Couldn't encode json string from the data"
         } catch {
-            return "Error serializing product: \(error)"
+           return "Error while encoding Product to JSON: \(error)"
         }
     }
 }
+
 
 public extension [String: String] {
         

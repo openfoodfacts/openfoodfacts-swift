@@ -32,8 +32,8 @@ struct ContentView: View {
                 }.padding()
                 // Added for testing that editor is loaded with NavigatorView
                 NavigationLink("Check") {
-                    ProductPage(barcode: self.barcode) { product in
-                        print(product.json())
+                    ProductPage(barcode: self.barcode) { uploadedProduct in
+                        print(uploadedProduct?.json() ?? "returned product is nil")
                     }
                 }.disabled(!isValidBarcode)
                 Spacer()

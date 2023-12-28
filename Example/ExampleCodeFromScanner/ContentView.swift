@@ -26,7 +26,7 @@ struct ContentView: View {
             BarcodeScannerScreen(barcode: $barcode, isCapturing: $isScanning).ignoresSafeArea(.all)
             .navigationDestination(isPresented: $isEditing, destination: {
                 ProductPage(barcode: barcode) { uploadedProduct in
-                    print(uploadedProduct ?? "")
+                    print(uploadedProduct?.json() ?? "returned product is nil")
                 }.onDisappear() {
                     resetState()
                 }

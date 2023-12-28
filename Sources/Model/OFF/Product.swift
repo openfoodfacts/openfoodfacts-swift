@@ -21,7 +21,7 @@ public enum DataFor: String {
     }
 }
 
-public struct Product: Decodable, Equatable {
+public struct Product: Codable, Equatable {
     
     public static func == (lhs: Product, rhs: Product) -> Bool {
         return  lhs.code == rhs.code &&
@@ -96,6 +96,37 @@ public struct Product: Decodable, Equatable {
             self.lang = OpenFoodFactsLanguage.UNDEFINED
         }
     }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(code, forKey: .code)
+        try container.encodeIfPresent(brands, forKey: .brands)
+        try container.encodeIfPresent(productName, forKey: .productName)
+        try container.encodeIfPresent(quantity, forKey: .quantity)
+        try container.encodeIfPresent(servingSize, forKey: .servingSize)
+        try container.encodeIfPresent(dataPer, forKey: .dataPer)
+        try container.encodeIfPresent(categories, forKey: .categories)
+        try container.encodeIfPresent(imageFront, forKey: .imageFront)
+        try container.encodeIfPresent(imageIngredients, forKey: .imageIngredients)
+        try container.encodeIfPresent(imageNutrition, forKey: .imageNutrition)
+        
+        if let nutriments = self.nutriments {
+            var nutrimentsContainer = container.nestedContainer(keyedBy: AnyCodingKey.self, forKey: .nutriments)
+            for (key, value) in nutriments {
+                let key = AnyCodingKey(stringValue: key)!
+                switch value {
+                case let doubleValue as Double:
+                    try nutrimentsContainer.encode(doubleValue, forKey: key)
+                case let stringValue as String:
+                    try nutrimentsContainer.encode(stringValue, forKey: key)
+                default:
+                    break
+                }
+            }
+        }
+        
+        try container.encodeIfPresent(lang?.info.code, forKey: .lang)
+    }
 }
 
 private struct AnyCodingKey: CodingKey {
@@ -108,5 +139,10 @@ private struct AnyCodingKey: CodingKey {
     
     init?(intValue: Int) {
         return nil
+    }
+    
+    init(_ key: CodingKey) {
+        self.stringValue = key.stringValue
+        self.intValue = key.intValue
     }
 }
