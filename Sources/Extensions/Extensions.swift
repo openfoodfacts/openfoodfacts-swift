@@ -121,3 +121,15 @@ public extension [String: String]? {
         }
     }
 }
+
+public extension [String: String] {
+    
+    public func json() -> String {
+        do {
+            let data = try JSONSerialization.data(withJSONObject: self, options: [])
+            return String(data: data, encoding: .utf8) ?? "Empty"
+        } catch {
+            return "Error serializing product: \(error)"
+        }
+    }
+}

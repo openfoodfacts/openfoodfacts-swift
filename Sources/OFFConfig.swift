@@ -27,7 +27,7 @@ final public class OFFConfig {
             }
         }
     }
-    public var useRequired = false
+    public var useRequired = true
     /// Required property
     public var globalUser: User?
     /// Auto-generated can be overriden

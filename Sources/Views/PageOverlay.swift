@@ -26,6 +26,10 @@ struct PageOverlay: View {
             progressView()
                 .frame(width: 150, height: 150, alignment: .center)
         )
+        .onAppear {
+            rotation = 0
+            currentlyAnimatingIndex = 0
+        }
     }
     
     @ViewBuilder

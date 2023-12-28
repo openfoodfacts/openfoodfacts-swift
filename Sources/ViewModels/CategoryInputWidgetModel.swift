@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import SwiftUI
 
+@MainActor
 final class CategoryInputWidgetModel: ObservableObject {
     
     @Published var suggestions = [String]()
@@ -21,7 +22,7 @@ final class CategoryInputWidgetModel: ObservableObject {
     
     init() {
         $newCategory
-            .debounce(for: 0.5, scheduler: RunLoop.main)
+            .debounce(for: 0.25, scheduler: RunLoop.main)
             .sink { [weak self] newText in
                 guard let strongSelf = self else { return }
                 Task {
@@ -34,15 +35,9 @@ final class CategoryInputWidgetModel: ObservableObject {
     // TODO: take into account language and country code
     func fetchSuggestions(query: String) async {
         do {
-            let data = try await OpenFoodAPIClient.shared.getSuggestions(query: query, country: OFFConfig.shared.country, language: OFFConfig.shared.uiLanguage)
-            print(data)
-            await MainActor.run {
-                suggestions = data
-            }
+            self.suggestions = try await OpenFoodAPIClient.shared.getSuggestions(query: query, country: OFFConfig.shared.country, language: OFFConfig.shared.uiLanguage)
         } catch {
-            await MainActor.run {
-                self.apiError = error
-            }
+            self.apiError = error
         }
     }
 }

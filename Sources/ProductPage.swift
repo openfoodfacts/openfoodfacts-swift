@@ -128,7 +128,6 @@ public struct ProductPage: View {
         .alert(item: $pageConfig.errorMessage, content: { alert in
             Alert(title: Text(alert.title), message: Text(alert.message), dismissButton: .cancel(Text("OK"), action: {
                 self.pageConfig.errorMessage = nil
-                dismiss()
             }))
         })
         .onAppear(perform: {

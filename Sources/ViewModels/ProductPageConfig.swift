@@ -179,32 +179,30 @@ final class ProductPageConfig: ObservableObject {
         }
     }
     
-    @MainActor
     func uploadAllProductData(barcode: String) async {
         
-        pageState = .loading
-        
-        do {
-            try await sendAllImages(barcode: barcode)
-        } catch {
-            // Not critical
-            // TODO: after incremental save is supported update this
-            print("Some images failed to upload: \(error.localizedDescription)")
+        await MainActor.run {
+            self.pageState = .loading
         }
-        var product = [String: String]()
+        
+        async let _ = sendAllImages(barcode: barcode)
         do {
-            product = try await composeProduct(barcode: barcode)
+            let product = try await composeProduct(barcode: barcode)
             try await OpenFoodAPIClient.shared.saveProduct(product: product)
+            await MainActor.run {
+                self.pageState = .completed
+            }
+            try await Task.sleep(nanoseconds: 1_000_000_000 * UInt64(PageOverlay.completedAnimDuration))
+            await MainActor.run {
+                self.pageState = ProductPageState.productDetails
+                self.isProductJustUploaded = true
+                self.submittedProduct = product
+            }
         } catch {
-            self.pageState = .error
-            self.errorMessage = ErrorAlert(message: "Could not save product \(error.localizedDescription)", title: "Error")
-        }
-        
-        self.pageState = .completed
-        DispatchQueue.main.asyncAfter(deadline: .now() + PageOverlay.completedAnimDuration) {
-            self.pageState = ProductPageState.productDetails
-            self.isProductJustUploaded = true
-            self.submittedProduct = product
+            await MainActor.run {
+                self.pageState = .error
+                self.errorMessage = ErrorAlert(message: "Could not save product \(error.localizedDescription)", title: "Error")
+            }
         }
     }
     
@@ -232,7 +230,7 @@ final class ProductPageConfig: ObservableObject {
         return product
     }
     
-    private func sendAllImages(barcode: String) async throws {
+    private func sendAllImages(barcode: String) async {
         
         let sendImages = self.images.reduce(into: [SendImage]()) { (result, element) in
             if !element.value.isEmpty() {
