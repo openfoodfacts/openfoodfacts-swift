@@ -26,9 +26,12 @@ public struct Product: Codable, Equatable {
     public static func == (lhs: Product, rhs: Product) -> Bool {
         return  lhs.code == rhs.code &&
                 lhs.productName == rhs.productName &&
+                lhs.productNameEn == rhs.productNameEn &&
                 lhs.brands == rhs.brands &&
                 lhs.servingSize == rhs.servingSize &&
+                lhs.servingQuantity == rhs.servingQuantity &&
                 lhs.quantity == rhs.quantity &&
+                lhs.packagingQuantity == rhs.packagingQuantity &&
                 lhs.dataPer == rhs.dataPer &&
                 lhs.categories == rhs.categories &&
                 lhs.imageFront == rhs.imageFront &&
@@ -39,31 +42,39 @@ public struct Product: Codable, Equatable {
     
     let code: String
     let productName: String?
+    let productNameEn: String?
     let brands: String?
     let lang: OpenFoodFactsLanguage?
     let quantity: String?
+    let packagingQuantity: Double?
     let servingSize: String?
+    let servingQuantity: Double?
     let dataPer: String?
     let categories: String?
     var nutriments: [String: Any]?
     let imageFront: String?
     let imageIngredients: String?
     let imageNutrition: String?
+    let keywords: [String]?
     
     enum CodingKeys: String, CodingKey {
         case code
         case lang
         case brands
         case quantity
+        case packagingQuantity = "product_quantity"
         case categories
         case images
         case productName = "product_name"
+        case productNameEn = "product_name_en"
         case servingSize = "serving_size"
+        case servingQuantity = "serving_quantity"
         case dataPer = "nutrition_data_per"
         case nutriments = "nutriments"
         case imageFront = "image_front_url"
         case imageIngredients = "image_ingredients_url"
         case imageNutrition = "image_nutrition_url"
+        case keywords = "_keywords"
     }
     
     public init(from decoder: Decoder) throws {
@@ -71,6 +82,7 @@ public struct Product: Codable, Equatable {
         code = try container.decode(String.self, forKey: .code)
         brands = try container.decodeIfPresent(String.self, forKey: .brands)
         productName = try container.decodeIfPresent(String.self, forKey: .productName)
+        productNameEn = try container.decodeIfPresent(String.self, forKey: .productNameEn)
         quantity = try container.decodeIfPresent(String.self, forKey: .quantity)
         servingSize = try container.decodeIfPresent(String.self, forKey: .servingSize)
         dataPer = try container.decodeIfPresent(String.self, forKey: .dataPer)
@@ -78,6 +90,25 @@ public struct Product: Codable, Equatable {
         imageFront = try container.decodeIfPresent(String.self, forKey: .imageFront)
         imageIngredients = try container.decodeIfPresent(String.self, forKey: .imageIngredients)
         imageNutrition = try container.decodeIfPresent(String.self, forKey: .imageNutrition)
+        keywords = try container.decodeIfPresent([String].self, forKey: .keywords)
+        
+        if let packagingQuantityValue = try? container.decode(Double.self, forKey: .packagingQuantity) {
+            packagingQuantity = packagingQuantityValue
+        } else if let packagingQuantityString = try? container.decode(String.self, forKey: .packagingQuantity),
+                  let packagingQuantityValue = Double(packagingQuantityString) {
+            packagingQuantity = packagingQuantityValue
+        } else {
+            packagingQuantity = nil
+        }
+
+        if let servingQuantityValue = try? container.decode(Double.self, forKey: .servingQuantity) {
+            servingQuantity = servingQuantityValue
+        } else if let servingQuantityString = try? container.decode(String.self, forKey: .servingQuantity),
+                  let servingQuantityValue = Double(servingQuantityString) {
+            servingQuantity = servingQuantityValue
+        } else {
+            servingQuantity = nil
+        }
         
         if let nutrimentsContainer = try? container.nestedContainer(keyedBy: AnyCodingKey.self, forKey: .nutriments) {
             var nutriments: [String: Any] = [:]
@@ -102,13 +133,17 @@ public struct Product: Codable, Equatable {
         try container.encode(code, forKey: .code)
         try container.encodeIfPresent(brands, forKey: .brands)
         try container.encodeIfPresent(productName, forKey: .productName)
+        try container.encodeIfPresent(productNameEn, forKey: .productNameEn)
         try container.encodeIfPresent(quantity, forKey: .quantity)
+        try container.encodeIfPresent(packagingQuantity, forKey: .packagingQuantity)
         try container.encodeIfPresent(servingSize, forKey: .servingSize)
+        try container.encodeIfPresent(servingQuantity, forKey: .servingQuantity)
         try container.encodeIfPresent(dataPer, forKey: .dataPer)
         try container.encodeIfPresent(categories, forKey: .categories)
         try container.encodeIfPresent(imageFront, forKey: .imageFront)
         try container.encodeIfPresent(imageIngredients, forKey: .imageIngredients)
         try container.encodeIfPresent(imageNutrition, forKey: .imageNutrition)
+        try container.encodeIfPresent(keywords, forKey: .keywords)
         
         if let nutriments = self.nutriments {
             var nutrimentsContainer = container.nestedContainer(keyedBy: AnyCodingKey.self, forKey: .nutriments)
