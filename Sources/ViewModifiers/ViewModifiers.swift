@@ -24,16 +24,23 @@ struct NumbersOnlyViewModifier: ViewModifier {
     @Binding var text: String
     var includeDecimal: Bool
     
+    let separators = {
+        var separators = [".", ","]
+        if let local = Locale.current.decimalSeparator {
+            separators.append(local)
+        }
+        return separators.joined()
+    }()
+    
     func body(content: Content) -> some View {
         content
             .keyboardType(includeDecimal ? .decimalPad : .numberPad)
             .onReceive(Just(text)) { newValue in
                 var numbers = "0123456789"
-                let decimalSeparator: String = Locale.current.decimalSeparator ?? "."
                 if includeDecimal {
-                    numbers += decimalSeparator
+                    numbers += separators
                 }
-                if newValue.components(separatedBy: decimalSeparator).count-1 > 1 {
+                if newValue.components(separatedBy: CharacterSet(charactersIn: separators)).count - 1 > 1 {
                     let filtered = newValue
                     self.text = String(filtered.dropLast())
                 } else {

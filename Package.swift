@@ -15,7 +15,7 @@ let package = Package(
             targets: ["OpenFoodFactsSDK"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/nrivard/BarcodeView.git", .upToNextMajor(from: "0.1.4")),
+        .package(url: "https://github.com/hrabkin/BarcodeView.git", branch: "master"),
         .package(url: "https://github.com/TimOliver/TOCropViewController.git", from: "2.6.1")
     ],
     targets: [

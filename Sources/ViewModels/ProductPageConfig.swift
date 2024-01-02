@@ -64,16 +64,13 @@ final class ProductPageConfig: ObservableObject {
         return pageType == .new
     }
     
-    // FIXME: move MainActor on class itself
-    
+    @MainActor
     func fetchData(barcode: String) async {
         
-        await MainActor.run {
-            self.pageState = .loading
-        }
+        self.pageState = .loading
         
         do {
-            async let taskOrderedNutrients = OpenFoodAPIClient.shared.getOrderedNutrients()
+            async let taskOrderedNutrients = try await OpenFoodAPIClient.shared.getOrderedNutrients()
             async let taskProductResponse = OpenFoodAPIClient.shared.getProduct(config: ProductQueryConfiguration(barcode: barcode))
             async let taskNutrientsMeta = OpenFoodAPIClient.shared.fetchNutrientsMetadata()
 
@@ -81,26 +78,19 @@ final class ProductPageConfig: ObservableObject {
             let productResponse = try await taskProductResponse
             let nutrientsMeta = try await taskNutrientsMeta
             
-            let pageType = await determinePageType(response: productResponse)
+            self.orderedNutrients = orderedNutrients
+            self.nutrientsMeta = nutrientsMeta
             
-            await MainActor.run {
-                self.pageState = .completed
-                self.orderedNutrients = orderedNutrients
-                self.nutrientsMeta = nutrientsMeta
-                self.isInitialised = true
-                self.pageType = pageType
-            }
+            self.pageState = .completed
+            self.isInitialised = true
+            self.pageType = await determinePageType(response: productResponse)
             // FIXME: find a way to show animation states without such workarounds
             try await Task.sleep(nanoseconds: 1_000_000_000 * UInt64(PageOverlay.completedAnimDuration))
-            await MainActor.run {
-                self.pageState = .productDetails
-            }
+            self.pageState = .productDetails
             
         } catch {
-            await MainActor.run {
-                self.pageState = .error
-                self.errorMessage = ErrorAlert(message: error.localizedDescription, title: "Error")
-            }
+            self.pageState = .error
+            self.errorMessage = ErrorAlert(message: error.localizedDescription, title: "Error")
         }
     }
     
@@ -134,14 +124,18 @@ final class ProductPageConfig: ObservableObject {
     @MainActor
     func unwrapExistingProduct(product: Product) async {
         
-        self.productName = product.productName ?? ""
+        self.productName = product.productName ?? product.productNameEn ?? ""
         self.brand = product.brands ?? ""
+        
+        if self.productName.isEmpty && !self.brand.isEmpty, let q = product.quantity {
+            self.productName = "\(self.brand) - \(q)"
+        }
         
         if let cats = product.categories {
             self.categories = [ cats ]
         }
-        self.weight = product.quantity ?? ""
-        self.servingSize = product.servingSize ?? ""
+        self.weight = String(product.packagingQuantity ?? 100)
+        self.servingSize = String(product.servingQuantity ?? 100)
         
         self.dataFor = DataFor(rawValue: product.dataPer ?? "") ?? DataFor.hundredG
         self.packageLanguage = product.lang ?? OpenFoodFactsLanguage.UNDEFINED
@@ -211,14 +205,16 @@ final class ProductPageConfig: ObservableObject {
     private func composeProductBody(barcode: String) async throws -> [String: String] {
         
         var product = [
-            "code": barcode,
-            "product_name": self.productName,
-            "brands": brand,
-            "lang": OFFConfig.shared.productsLanguage.info.code,
-            "quantity": self.weight,
-            "serving_size": self.servingSize,
-            "nutrition_data_per": self.dataFor.rawValue,
-            "categories": categories.joined(separator: ",")
+            Product.CodingKeys.code.rawValue: barcode,
+            Product.CodingKeys.productName.rawValue: self.productName,
+            Product.CodingKeys.brands.rawValue: brand,
+            Product.CodingKeys.lang.rawValue: OFFConfig.shared.productsLanguage.info.code,
+            Product.CodingKeys.quantity.rawValue: String(self.weight),
+            Product.CodingKeys.packagingQuantity.rawValue: String(self.weight),
+            Product.CodingKeys.servingSize.rawValue: String(self.servingSize),
+            Product.CodingKeys.servingQuantity.rawValue: String(self.servingSize),
+            Product.CodingKeys.dataPer.rawValue: self.dataFor.rawValue,
+            Product.CodingKeys.categories.rawValue: categories.joined(separator: ",")
         ]
         
         let productNutrients = orderedNutrients.filter { selectedNutrients.contains($0.id) }

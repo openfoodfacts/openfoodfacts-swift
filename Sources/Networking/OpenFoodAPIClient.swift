@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final public class OpenFoodAPIClient {
+final public actor OpenFoodAPIClient {
     
     public static let shared: OpenFoodAPIClient = OpenFoodAPIClient()
     

@@ -16,7 +16,7 @@ struct ContentView: View {
     @State private var isScanning = true
     
     private func resetState() {
-        isEditing = false
+        isInvalidCode = false
         barcode = ""
         isScanning = true
     }
@@ -27,10 +27,14 @@ struct ContentView: View {
             .navigationDestination(isPresented: $isEditing, destination: {
                 ProductPage(barcode: barcode) { uploadedProduct in
                     print(uploadedProduct?.json() ?? "returned product is nil")
-                }.onDisappear() {
                     resetState()
                 }
             })
+            .onChange(of: isEditing) { newValue in
+                if newValue == false {
+                    resetState()
+                }
+            }
             .onChange(of: barcode) { newValue in
                 if newValue.isEmpty { return }
                 print("Found barcode \(barcode) which \(barcode.isAValidBarcode() ? "Valid" : "Invalid")")

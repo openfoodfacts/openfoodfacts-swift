@@ -18,9 +18,6 @@ public struct NutrimentsEntryTable: View {
     public var body: some View {
         
         VStack(spacing: 10, content: {
-            
-            FloatingLabelTextField(title: "Serving size", placeholder: "Serving size, for e.g. 15g", text: $pageConfig.servingSize)
-                .disableAutocorrection(true)
             PerWeightToggle(dataFor: $pageConfig.dataFor)
             
             ForEach(displayed(), id: \.id) { nutrient in

@@ -30,12 +30,12 @@ struct ProductDetails: View {
                     
                     VStack(alignment: .leading, spacing: ProductDetails.lineSpacing, content: {
                         EditorHeader(title: "Basic details", systemImage: "pencil")
-                        if OFFConfig.shared.useRequired {
+                        if OFFConfig.shared.useRequired && pageConfig.isNewMode {
                             ExpandableText(text: "Fields with a star * - are a bare minimum.")
                         }
                         FloatingLabelTextField(title: "Product's name", placeholder: "Product's name", text: $pageConfig.productName, isRequired: pageConfig.isNewMode)
                         FloatingLabelTextField(title: "Brand", placeholder: "Brand name", text: $pageConfig.brand, isRequired: pageConfig.isNewMode)
-                        FloatingLabelTextField(title: "Weight", placeholder: "Product's weight with units - 100g, 50ml, etc.", text: $pageConfig.weight, isRequired: pageConfig.isNewMode)
+                        FloatingLabelTextField(title: "Weight", placeholder: "Product's weight in grams, for e.g. '100'", text: $pageConfig.weight, isRequired: pageConfig.isNewMode, mode: .onlyDigits)
                         HStack {
                             Text("Product's package language")
                             Spacer()
@@ -70,6 +70,7 @@ struct ProductDetails: View {
                     VStack(alignment: .leading, spacing: ProductDetails.lineSpacing, content: {
                         EditorHeader(title: "Nutrition facts", systemImage: "leaf")
                         ExpandableText(text: "Indicate per what amount nutrient values: per 100g or per serving size")
+                        FloatingLabelTextField(title: "Serving size", placeholder: "Serving size, for e.g. '15'", text: $pageConfig.servingSize, mode: .onlyDigits)
                         NutrimentsEntryTable()
                         
                     }).modifier(RoundedBackgroundCard())
