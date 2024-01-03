@@ -21,7 +21,7 @@ public enum DataFor: String {
     }
 }
 
-public struct Product: Codable, Equatable {
+public struct Product: Codable, Equatable, Sendable {
     
     public static func == (lhs: Product, rhs: Product) -> Bool {
         return  lhs.code == rhs.code &&
@@ -144,6 +144,7 @@ public struct Product: Codable, Equatable {
         try container.encodeIfPresent(imageIngredients, forKey: .imageIngredients)
         try container.encodeIfPresent(imageNutrition, forKey: .imageNutrition)
         try container.encodeIfPresent(keywords, forKey: .keywords)
+        try container.encodeIfPresent(self.lang?.rawValue, forKey: .lang)
         
         if let nutriments = self.nutriments {
             var nutrimentsContainer = container.nestedContainer(keyedBy: AnyCodingKey.self, forKey: .nutriments)
