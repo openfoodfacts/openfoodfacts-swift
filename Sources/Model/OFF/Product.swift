@@ -40,22 +40,22 @@ public struct Product: Codable, Equatable {
                 lhs.nutriments?.count == rhs.nutriments?.count
     }
     
-    let code: String
-    let productName: String?
-    let productNameEn: String?
-    let brands: String?
-    let lang: OpenFoodFactsLanguage?
-    let quantity: String?
-    let packagingQuantity: Double?
-    let servingSize: String?
-    let servingQuantity: Double?
-    let dataPer: String?
-    let categories: String?
-    var nutriments: [String: Any]?
-    let imageFront: String?
-    let imageIngredients: String?
-    let imageNutrition: String?
-    let keywords: [String]?
+    public let code: String
+    public let productName: String?
+    public let productNameEn: String?
+    public let brands: String?
+    public let lang: OpenFoodFactsLanguage?
+    public let quantity: String?
+    public let packagingQuantity: Double?
+    public let servingSize: String?
+    public let servingQuantity: Double?
+    public let dataPer: String?
+    public let categories: String?
+    public var nutriments: [String: Any]?
+    public let imageFront: String?
+    public let imageIngredients: String?
+    public let imageNutrition: String?
+    public let keywords: [String]?
     
     enum CodingKeys: String, CodingKey {
         case code
