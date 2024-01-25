@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "barcodeview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hrabkin/BarcodeView.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "1c18b3236db7ac03146981d26a8258b5e62117c8"
+      }
+    },
+    {
+      "identity" : "tocropviewcontroller",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/TimOliver/TOCropViewController.git",
+      "state" : {
+        "revision" : "d0470491f56e734731bbf77991944c0dfdee3e0e",
+        "version" : "2.6.1"
+      }
+    },
+    {
+      "identity" : "viewinspector",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nalexn/ViewInspector",
+      "state" : {
+        "revision" : "07c090d73e0169c342a4ed46e9010be2781eca1e",
+        "version" : "0.9.8"
+      }
+    }
+  ],
+  "version" : 2
+}
