@@ -37,74 +37,76 @@ public struct ProductPage: View {
     }
     
     public var body: some View {
-        Group {
-            switch pageConfig.pageState {
-            case .loading, .completed, .error:
-                PageOverlay(state: $pageConfig.pageState)
-            case .productDetails:
-                ProductDetails(barcode: barcode)
-                    .environmentObject(pageConfig)
-                    .environmentObject(imagesHelper)
-                    .actionSheet(isPresented: $imagesHelper.isPresentedSourcePicker) { () -> ActionSheet in
-                        ActionSheet(
-                            title: Text("Choose source"),
-                            message: Text("Please choose your preferred source to add product's image"),
-                            buttons: [
-                                .default(Text("Camera"), action: {
-                                    self.imagesHelper.isPresented = true
-                                    self.imagesHelper.source = .camera
-                                }),
-                                .default(Text("Gallery"), action: {
-                                    self.imagesHelper.isPresented = true
-                                    self.imagesHelper.source = .photoLibrary
-                                }),
-                                .cancel()
-                            ]
-                        )
-                    }
-                    .fullScreenCover(isPresented: $imagesHelper.isPresentedImagePreview, content: {
-                        ImageViewer(
-                            viewerShown: $imagesHelper.isPresentedImagePreview,
-                            image: $imagesHelper.previewImage,
-                            closeButtonTopRight: true
-                        )
-                    })
-                    .fullScreenCover(isPresented: $imagesHelper.isPresented) {
-                        ImagePickerView(
-                            isPresented: $imagesHelper.isPresented,
-                            image: pageConfig.binding(for: imagesHelper.imageFieldToEdit),
-                            source: $imagesHelper.source
-                        ) { withImage in
-                            imagesHelper.showingCropper = withImage
-                        }.ignoresSafeArea()
-                    }
-                    .fullScreenCover(isPresented: $imagesHelper.showingCropper, content: {
-                        ImageCropper(
-                            image: pageConfig.binding(for: imagesHelper.imageFieldToEdit),
-                            isPresented: $imagesHelper.showingCropper,
-                            errorMessage: $pageConfig.errorMessage
-                        ).ignoresSafeArea()
-                    })
-                    .toolbar {
-                        ToolbarItem(placement: .topBarLeading) {
-                            Button("Cancel") {
-                                dismiss()
+        NavigationView {
+            Group {
+                switch pageConfig.pageState {
+                case .loading, .completed, .error:
+                    PageOverlay(state: $pageConfig.pageState)
+                case .productDetails:
+                    ProductDetails(barcode: barcode)
+                        .environmentObject(pageConfig)
+                        .environmentObject(imagesHelper)
+                        .actionSheet(isPresented: $imagesHelper.isPresentedSourcePicker) { () -> ActionSheet in
+                            ActionSheet(
+                                title: Text("Choose source"),
+                                message: Text("Please choose your preferred source to add product's image"),
+                                buttons: [
+                                    .default(Text("Camera"), action: {
+                                        self.imagesHelper.isPresented = true
+                                        self.imagesHelper.source = .camera
+                                    }),
+                                    .default(Text("Gallery"), action: {
+                                        self.imagesHelper.isPresented = true
+                                        self.imagesHelper.source = .photoLibrary
+                                    }),
+                                    .cancel()
+                                ]
+                            )
+                        }
+                        .fullScreenCover(isPresented: $imagesHelper.isPresentedImagePreview, content: {
+                            ImageViewer(
+                                viewerShown: $imagesHelper.isPresentedImagePreview,
+                                image: $imagesHelper.previewImage,
+                                closeButtonTopRight: true
+                            )
+                        })
+                        .fullScreenCover(isPresented: $imagesHelper.isPresented) {
+                            ImagePickerView(
+                                isPresented: $imagesHelper.isPresented,
+                                image: pageConfig.binding(for: imagesHelper.imageFieldToEdit),
+                                source: $imagesHelper.source
+                            ) { withImage in
+                                imagesHelper.showingCropper = withImage
+                            }.ignoresSafeArea()
+                        }
+                        .fullScreenCover(isPresented: $imagesHelper.showingCropper, content: {
+                            ImageCropper(
+                                image: pageConfig.binding(for: imagesHelper.imageFieldToEdit),
+                                isPresented: $imagesHelper.showingCropper,
+                                errorMessage: $pageConfig.errorMessage
+                            ).ignoresSafeArea()
+                        })
+                        .toolbar {
+                            ToolbarItem(placement: .topBarLeading) {
+                                Button("Cancel") {
+                                    dismiss()
+                                }
+                            }
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button("Submit") {
+                                    if (pageConfig.getMissingFields().isEmpty) {
+                                        Task {
+                                            await pageConfig.uploadAllProductData(barcode: barcode)
+                                        }
+                                    } else {
+                                        pageConfig.errorMessage = ErrorAlert(
+                                            message: "Fields: \(self.pageConfig.getMissingFieldsMessage())",
+                                            title: "Missing required data")
+                                    }
+                                }.disabled(!pageConfig.isInitialised)
                             }
                         }
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button("Submit") {
-                                if (pageConfig.getMissingFields().isEmpty) {
-                                    Task {
-                                        await pageConfig.uploadAllProductData(barcode: barcode)
-                                    }
-                                } else {
-                                    pageConfig.errorMessage = ErrorAlert(
-                                        message: "Fields: \(self.pageConfig.getMissingFieldsMessage())",
-                                        title: "Missing required data")
-                                }
-                            }.disabled(!pageConfig.isInitialised)
-                        }
-                    }
+                }
             }
         }
         .navigationBarBackButtonHidden()

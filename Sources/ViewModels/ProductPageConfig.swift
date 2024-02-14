@@ -81,11 +81,8 @@ final class ProductPageConfig: ObservableObject {
             self.orderedNutrients = orderedNutrients
             self.nutrientsMeta = nutrientsMeta
             
-            self.pageState = .completed
             self.isInitialised = true
             self.pageType = await determinePageType(response: productResponse)
-            // FIXME: find a way to show animation states without such workarounds
-            try await Task.sleep(nanoseconds: 1_000_000_000 * UInt64(PageOverlay.completedAnimDuration))
             self.pageState = .productDetails
             
         } catch {
