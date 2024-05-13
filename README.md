@@ -115,5 +115,7 @@ You can check the terms of use here : [Terms of use](https://world.openfoodfacts
 If you use this SDK, feel free to open a PR to add your application in this list.
 
 ## Authors
-Written by FoodIntake. Used by FoodIntake iOS app
-Checkout here https://foodintake.space
+This project is sponsored by [FoodIntake](https://foodintake.space)
+
+![Foodintake-AI-Calorie-Pal-Reddit](https://github.com/hrabkin/openfoodfacts-swift/assets/2230377/60a84e1e-2d16-42a2-9694-4d673cd67b95)
+
