@@ -115,3 +115,5 @@ You can check the terms of use here : [Terms of use](https://world.openfoodfacts
 If you use this SDK, feel free to open a PR to add your application in this list.
 
 ## Authors
+Written by FoodIntake. Used by FoodIntake iOS app
+Checkout here https://foodintake.space
