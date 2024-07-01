@@ -3,10 +3,10 @@
     {
       "identity" : "barcodeview",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/nrivard/BarcodeView.git",
+      "location" : "https://github.com/hrabkin/BarcodeView.git",
       "state" : {
-        "revision" : "ba08384079911583d0fe1d684141eefdef77a777",
-        "version" : "0.1.4"
+        "branch" : "master",
+        "revision" : "1c18b3236db7ac03146981d26a8258b5e62117c8"
       }
     },
     {
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/TimOliver/TOCropViewController.git",
       "state" : {
-        "revision" : "d0470491f56e734731bbf77991944c0dfdee3e0e",
-        "version" : "2.6.1"
+        "revision" : "a634cb7cdfd580006e79a6e74e64417fe9e9783b",
+        "version" : "2.7.4"
       }
     },
     {
