@@ -111,7 +111,10 @@ See NOTICE with all dependencies of OpenFoodFactsSDK and their licensing
 The database in under the OdBL. This means attributing the source and also contributing back any additions (photos, data), which this package makes easy to do.
 You can check the terms of use here : [Terms of use](https://world.openfoodfacts.org/terms-of-use).
 
-## Third party applications
-If you use this SDK, feel free to open a PR to add your application in this list.
+## Applications using this SDK
+If you use this SDK, Feel [free to open a PR to add your application in this list](https://github.com/openfoodfacts/openfoodfacts-swift/edit/main/README.md).
 
 ## Authors
+## Contributors
+
+[![Drag Racing](https://contrib.rocks/image?repo=openfoodfacts/openfoodfacts-swift)](https://github.com/openfoodfacts/openfoodfacts-swift/graphs/contributors)
