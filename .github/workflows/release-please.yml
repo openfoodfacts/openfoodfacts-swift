@@ -14,7 +14,7 @@
           uses: GoogleCloudPlatform/release-please-action@v4
           with:
             token: ${{ secrets.GITHUB_TOKEN }}
-            release-type: dart
+            release-type: swift
 
 #        - name: Chekout code
 #          if: ${{ steps.release.outputs.release_created }}
