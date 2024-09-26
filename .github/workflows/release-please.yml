@@ -1,14 +1,13 @@
- name: Release Please 
- on:
-   push:
-     branches:
-       - main
- jobs:
-   release:
-     runs-on: ubuntu-latest
-     if: github.repository_owner  == 'openfoodfacts'
-     steps:
-       - uses: GoogleCloudPlatform/release-please-action@v4
-         with:
-           token: ${{ secrets.GITHUB_TOKEN }}
-           release-type: simple
+name: Run release-please
+on:
+  push:
+    branches:
+      - main
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: GoogleCloudPlatform/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: simple
