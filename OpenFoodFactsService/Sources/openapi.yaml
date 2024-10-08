@@ -1164,7 +1164,7 @@ paths:
         It returns all the details of that product response.
 
         '
-      operationId: get-product-by-barcode
+      operationId: getProductByBarcode
   /api/v2/product/{barcode}?fields=knowledge_panels:
     get:
       tags:
@@ -1207,12 +1207,12 @@ paths:
         and by the official mobile application
 
         '
-      operationId: get-product-by-barcode-knowledge-panels
+      operationId: getProductByBarcodeKnowledgePanels
   /cgi/ingredients.pl:
     parameters: []
     get:
       summary: Performing OCR on a Product
-      operationId: get-cgi-ingredients.pl
+      operationId: getIngredients
       responses:
         '200':
           description: OK
@@ -1234,7 +1234,7 @@ paths:
   /cgi/product_image_crop.pl:
     post:
       summary: Crop A Photo
-      operationId: post-cgi-product_image_crop.pl
+      operationId: productImageCrop
       responses:
         '200':
           description: OK
@@ -1259,7 +1259,7 @@ paths:
       - Write Requests
     get:
       summary: Rotate A Photo
-      operationId: get-cgi-product_image_crop.pl
+      operationId: getProductImageCrop
       responses:
         '200':
           description: OK
@@ -1280,6 +1280,7 @@ paths:
       - Write Requests
   /cgi/product_image_unselect.pl:
     post:
+      operationId: postProductImageUnselect
       summary: Unselect A Photo
       requestBody:
         required: true
@@ -1310,7 +1311,7 @@ paths:
   /cgi/product_jqm2.pl:
     post:
       summary: Add or Edit A Product
-      operationId: post-cgi-product_jqm2.pl
+      operationId: postProduct
       responses:
         '200':
           description: OK
@@ -1350,7 +1351,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/search_for_products'
-      operationId: get-search
+      operationId: searchProducts
       description: "Search request allows you to get products that match your search\
         \ criteria.\n\nIt allows you create many custom APIs for your use case.\n\n\
         If the search query parameter has 2 possible values, they are seperated by\
@@ -1421,7 +1422,7 @@ paths:
             application/json:
               schema:
                 type: array
-      operationId: get-cgi-suggest.pl
+      operationId: getSuggestions
       parameters:
       - $ref: '#/components/parameters/tagtype'
       - $ref: '#/components/parameters/term'
@@ -1448,7 +1449,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/get_nutrients'
-      operationId: get-cgi-nutrients.pl
+      operationId: getNutrients
       parameters:
       - $ref: '#/components/parameters/cc'
       - $ref: '#/components/parameters/lc'
@@ -1478,7 +1479,7 @@ paths:
       tags:
       - Read Requests
       - Personal search
-      operationId: get-attribute-groups
+      operationId: getAttributeGroups
       responses:
         '200':
           description: OK
@@ -1498,7 +1499,7 @@ paths:
       tags:
       - Read Requests
       - Personal search
-      operationId: get-preferences
+      operationId: getPreferences
       parameters:
       - $ref: '#/components/parameters/lc'
       responses:

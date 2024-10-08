@@ -14,7 +14,7 @@ import HTTPTypes
 /// and contribute to the products database. You can create great apps to
 /// help people make better food choices and also provide data to enhance the database.
 ///
-public struct Client: APIProtocol {
+public struct OpenFoodFactsAPI: APIProtocol {
     /// The underlying HTTP client.
     private let client: UniversalClient
     /// Creates a new client.
@@ -48,11 +48,11 @@ public struct Client: APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/product/{barcode}`.
-    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}/get(get-product-by-barcode)`.
-    public func get_hyphen_product_hyphen_by_hyphen_barcode(_ input: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Input) async throws -> Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Output {
+    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}/get(getProductByBarcode)`.
+    public func getProductByBarcode(_ input: Operations.getProductByBarcode.Input) async throws -> Operations.getProductByBarcode.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.id,
+            forOperation: Operations.getProductByBarcode.id,
             serializer: { input in
                 let path = try converter.renderedPath(
                     template: "/api/v2/product/{}",
@@ -75,7 +75,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Output.Ok.Body
+                    let body: Operations.getProductByBarcode.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -118,11 +118,11 @@ public struct Client: APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/product/{barcode}?fields=knowledge_panels`.
-    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}?fields=knowledge_panels/get(get-product-by-barcode-knowledge-panels)`.
-    public func get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels(_ input: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Input) async throws -> Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output {
+    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}?fields=knowledge_panels/get(getProductByBarcodeKnowledgePanels)`.
+    public func getProductByBarcodeKnowledgePanels(_ input: Operations.getProductByBarcodeKnowledgePanels.Input) async throws -> Operations.getProductByBarcodeKnowledgePanels.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.id,
+            forOperation: Operations.getProductByBarcodeKnowledgePanels.id,
             serializer: { input in
                 let path = try converter.renderedPath(
                     template: "/api/v2/product/{}?fields=knowledge_panels",
@@ -145,7 +145,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output.Ok.Body
+                    let body: Operations.getProductByBarcodeKnowledgePanels.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -155,7 +155,7 @@ public struct Client: APIProtocol {
                     switch chosenContentType {
                     case "application/json":
                         body = try await converter.getResponseBodyAsJSON(
-                            Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output.Ok.Body.jsonPayload.self,
+                            Operations.getProductByBarcodeKnowledgePanels.Output.Ok.Body.jsonPayload.self,
                             from: responseBody,
                             transforming: { value in
                                 .json(value)
@@ -183,11 +183,11 @@ public struct Client: APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/ingredients.pl`.
-    /// - Remark: Generated from `#/paths//cgi/ingredients.pl/get(get-cgi-ingredients.pl)`.
-    public func get_hyphen_cgi_hyphen_ingredients_period_pl(_ input: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Input) async throws -> Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Output {
+    /// - Remark: Generated from `#/paths//cgi/ingredients.pl/get(getIngredients)`.
+    public func getIngredients(_ input: Operations.getIngredients.Input) async throws -> Operations.getIngredients.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.id,
+            forOperation: Operations.getIngredients.id,
             serializer: { input in
                 let path = try converter.renderedPath(
                     template: "/cgi/ingredients.pl",
@@ -236,7 +236,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Output.Ok.Body
+                    let body: Operations.getIngredients.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -276,11 +276,11 @@ public struct Client: APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/product_image_crop.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/get(get-cgi-product_image_crop.pl)`.
-    public func get_hyphen_cgi_hyphen_product_image_crop_period_pl(_ input: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Input) async throws -> Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Output {
+    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/get(getProductImageCrop)`.
+    public func getProductImageCrop(_ input: Operations.getProductImageCrop.Input) async throws -> Operations.getProductImageCrop.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.id,
+            forOperation: Operations.getProductImageCrop.id,
             serializer: { input in
                 let path = try converter.renderedPath(
                     template: "/cgi/product_image_crop.pl",
@@ -329,7 +329,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Output.Ok.Body
+                    let body: Operations.getProductImageCrop.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -368,11 +368,11 @@ public struct Client: APIProtocol {
     ///
     ///
     /// - Remark: HTTP `POST /cgi/product_image_crop.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/post(post-cgi-product_image_crop.pl)`.
-    public func post_hyphen_cgi_hyphen_product_image_crop_period_pl(_ input: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Input) async throws -> Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Output {
+    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/post(productImageCrop)`.
+    public func productImageCrop(_ input: Operations.productImageCrop.Input) async throws -> Operations.productImageCrop.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.id,
+            forOperation: Operations.productImageCrop.id,
             serializer: { input in
                 let path = try converter.renderedPath(
                     template: "/cgi/product_image_crop.pl",
@@ -565,7 +565,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Output.Ok.Body
+                    let body: Operations.productImageCrop.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -600,11 +600,11 @@ public struct Client: APIProtocol {
     /// Unselect A Photo
     ///
     /// - Remark: HTTP `POST /cgi/product_image_unselect.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_image_unselect.pl/post`.
-    public func post_sol_cgi_sol_product_image_unselect_period_pl(_ input: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Input) async throws -> Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Output {
+    /// - Remark: Generated from `#/paths//cgi/product_image_unselect.pl/post(postProductImageUnselect)`.
+    public func postProductImageUnselect(_ input: Operations.postProductImageUnselect.Input) async throws -> Operations.postProductImageUnselect.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.id,
+            forOperation: Operations.postProductImageUnselect.id,
             serializer: { input in
                 let path = try converter.renderedPath(
                     template: "/cgi/product_image_unselect.pl",
@@ -676,7 +676,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Output.Ok.Body
+                    let body: Operations.postProductImageUnselect.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -686,7 +686,7 @@ public struct Client: APIProtocol {
                     switch chosenContentType {
                     case "application/json":
                         body = try await converter.getResponseBodyAsJSON(
-                            Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Output.Ok.Body.jsonPayload.self,
+                            Operations.postProductImageUnselect.Output.Ok.Body.jsonPayload.self,
                             from: responseBody,
                             transforming: { value in
                                 .json(value)
@@ -718,11 +718,11 @@ public struct Client: APIProtocol {
     ///
     ///
     /// - Remark: HTTP `POST /cgi/product_jqm2.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_jqm2.pl/post(post-cgi-product_jqm2.pl)`.
-    public func post_hyphen_cgi_hyphen_product_jqm2_period_pl(_ input: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Input) async throws -> Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Output {
+    /// - Remark: Generated from `#/paths//cgi/product_jqm2.pl/post(postProduct)`.
+    public func postProduct(_ input: Operations.postProduct.Input) async throws -> Operations.postProduct.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.id,
+            forOperation: Operations.postProduct.id,
             serializer: { input in
                 let path = try converter.renderedPath(
                     template: "/cgi/product_jqm2.pl",
@@ -961,7 +961,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Output.Ok.Body
+                    let body: Operations.postProduct.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -1061,11 +1061,11 @@ public struct Client: APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/search`.
-    /// - Remark: Generated from `#/paths//api/v2/search/get(get-search)`.
-    public func get_hyphen_search(_ input: Operations.get_hyphen_search.Input) async throws -> Operations.get_hyphen_search.Output {
+    /// - Remark: Generated from `#/paths//api/v2/search/get(searchProducts)`.
+    public func searchProducts(_ input: Operations.searchProducts.Input) async throws -> Operations.searchProducts.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.get_hyphen_search.id,
+            forOperation: Operations.searchProducts.id,
             serializer: { input in
                 let path = try converter.renderedPath(
                     template: "/api/v2/search",
@@ -1247,7 +1247,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.get_hyphen_search.Output.Ok.Body
+                    let body: Operations.searchProducts.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -1288,11 +1288,11 @@ public struct Client: APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/suggest.pl`.
-    /// - Remark: Generated from `#/paths//cgi/suggest.pl/get(get-cgi-suggest.pl)`.
-    public func get_hyphen_cgi_hyphen_suggest_period_pl(_ input: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Input) async throws -> Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Output {
+    /// - Remark: Generated from `#/paths//cgi/suggest.pl/get(getSuggestions)`.
+    public func getSuggestions(_ input: Operations.getSuggestions.Input) async throws -> Operations.getSuggestions.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.id,
+            forOperation: Operations.getSuggestions.id,
             serializer: { input in
                 let path = try converter.renderedPath(
                     template: "/cgi/suggest.pl",
@@ -1327,7 +1327,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Output.Ok.Body
+                    let body: Operations.getSuggestions.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -1365,11 +1365,11 @@ public struct Client: APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/nutrients.pl`.
-    /// - Remark: Generated from `#/paths//cgi/nutrients.pl/get(get-cgi-nutrients.pl)`.
-    public func get_hyphen_cgi_hyphen_nutrients_period_pl(_ input: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Input) async throws -> Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Output {
+    /// - Remark: Generated from `#/paths//cgi/nutrients.pl/get(getNutrients)`.
+    public func getNutrients(_ input: Operations.getNutrients.Input) async throws -> Operations.getNutrients.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.id,
+            forOperation: Operations.getNutrients.id,
             serializer: { input in
                 let path = try converter.renderedPath(
                     template: "/cgi/nutrients.pl",
@@ -1404,7 +1404,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Output.Ok.Body
+                    let body: Operations.getNutrients.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -1449,11 +1449,11 @@ public struct Client: APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/attribute_groups`.
-    /// - Remark: Generated from `#/paths//api/v2/attribute_groups/get(get-attribute-groups)`.
-    public func get_hyphen_attribute_hyphen_groups(_ input: Operations.get_hyphen_attribute_hyphen_groups.Input) async throws -> Operations.get_hyphen_attribute_hyphen_groups.Output {
+    /// - Remark: Generated from `#/paths//api/v2/attribute_groups/get(getAttributeGroups)`.
+    public func getAttributeGroups(_ input: Operations.getAttributeGroups.Input) async throws -> Operations.getAttributeGroups.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.get_hyphen_attribute_hyphen_groups.id,
+            forOperation: Operations.getAttributeGroups.id,
             serializer: { input in
                 let path = try converter.renderedPath(
                     template: "/api/v2/attribute_groups",
@@ -1481,7 +1481,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.get_hyphen_attribute_hyphen_groups.Output.Ok.Body
+                    let body: Operations.getAttributeGroups.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -1518,11 +1518,11 @@ public struct Client: APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/preferences`.
-    /// - Remark: Generated from `#/paths//api/v2/preferences/get(get-preferences)`.
-    public func get_hyphen_preferences(_ input: Operations.get_hyphen_preferences.Input) async throws -> Operations.get_hyphen_preferences.Output {
+    /// - Remark: Generated from `#/paths//api/v2/preferences/get(getPreferences)`.
+    public func getPreferences(_ input: Operations.getPreferences.Input) async throws -> Operations.getPreferences.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.get_hyphen_preferences.id,
+            forOperation: Operations.getPreferences.id,
             serializer: { input in
                 let path = try converter.renderedPath(
                     template: "/api/v2/preferences",
@@ -1550,7 +1550,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.get_hyphen_preferences.Output.Ok.Body
+                    let body: Operations.getPreferences.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [

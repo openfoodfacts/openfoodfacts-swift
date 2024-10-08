@@ -18,8 +18,8 @@ public protocol APIProtocol: Sendable {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/product/{barcode}`.
-    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}/get(get-product-by-barcode)`.
-    func get_hyphen_product_hyphen_by_hyphen_barcode(_ input: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Input) async throws -> Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Output
+    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}/get(getProductByBarcode)`.
+    func getProductByBarcode(_ input: Operations.getProductByBarcode.Input) async throws -> Operations.getProductByBarcode.Output
     /// Get Knowledge panels for a specific product by barcode
     /// (special case of get product)
     ///
@@ -31,16 +31,16 @@ public protocol APIProtocol: Sendable {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/product/{barcode}?fields=knowledge_panels`.
-    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}?fields=knowledge_panels/get(get-product-by-barcode-knowledge-panels)`.
-    func get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels(_ input: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Input) async throws -> Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output
+    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}?fields=knowledge_panels/get(getProductByBarcodeKnowledgePanels)`.
+    func getProductByBarcodeKnowledgePanels(_ input: Operations.getProductByBarcodeKnowledgePanels.Input) async throws -> Operations.getProductByBarcodeKnowledgePanels.Output
     /// Performing OCR on a Product
     ///
     /// Open Food Facts uses optical character recognition (OCR) to retrieve nutritional data and other information from the product labels.
     ///
     ///
     /// - Remark: HTTP `GET /cgi/ingredients.pl`.
-    /// - Remark: Generated from `#/paths//cgi/ingredients.pl/get(get-cgi-ingredients.pl)`.
-    func get_hyphen_cgi_hyphen_ingredients_period_pl(_ input: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Input) async throws -> Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Output
+    /// - Remark: Generated from `#/paths//cgi/ingredients.pl/get(getIngredients)`.
+    func getIngredients(_ input: Operations.getIngredients.Input) async throws -> Operations.getIngredients.Output
     /// Rotate A Photo
     ///
     /// Although we recommend rotating photos manually and uploading a new version of the image,
@@ -49,8 +49,8 @@ public protocol APIProtocol: Sendable {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/product_image_crop.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/get(get-cgi-product_image_crop.pl)`.
-    func get_hyphen_cgi_hyphen_product_image_crop_period_pl(_ input: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Input) async throws -> Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Output
+    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/get(getProductImageCrop)`.
+    func getProductImageCrop(_ input: Operations.getProductImageCrop.Input) async throws -> Operations.getProductImageCrop.Output
     /// Crop A Photo
     ///
     /// Cropping is only relevant for editing existing products.
@@ -58,13 +58,13 @@ public protocol APIProtocol: Sendable {
     ///
     ///
     /// - Remark: HTTP `POST /cgi/product_image_crop.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/post(post-cgi-product_image_crop.pl)`.
-    func post_hyphen_cgi_hyphen_product_image_crop_period_pl(_ input: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Input) async throws -> Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Output
+    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/post(productImageCrop)`.
+    func productImageCrop(_ input: Operations.productImageCrop.Input) async throws -> Operations.productImageCrop.Output
     /// Unselect A Photo
     ///
     /// - Remark: HTTP `POST /cgi/product_image_unselect.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_image_unselect.pl/post`.
-    func post_sol_cgi_sol_product_image_unselect_period_pl(_ input: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Input) async throws -> Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Output
+    /// - Remark: Generated from `#/paths//cgi/product_image_unselect.pl/post(postProductImageUnselect)`.
+    func postProductImageUnselect(_ input: Operations.postProductImageUnselect.Input) async throws -> Operations.postProductImageUnselect.Output
     /// Add or Edit A Product
     ///
     /// This updates a product.
@@ -75,8 +75,8 @@ public protocol APIProtocol: Sendable {
     ///
     ///
     /// - Remark: HTTP `POST /cgi/product_jqm2.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_jqm2.pl/post(post-cgi-product_jqm2.pl)`.
-    func post_hyphen_cgi_hyphen_product_jqm2_period_pl(_ input: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Input) async throws -> Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Output
+    /// - Remark: Generated from `#/paths//cgi/product_jqm2.pl/post(postProduct)`.
+    func postProduct(_ input: Operations.postProduct.Input) async throws -> Operations.postProduct.Output
     /// Search for Products
     ///
     /// Search request allows you to get products that match your search criteria.
@@ -145,8 +145,8 @@ public protocol APIProtocol: Sendable {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/search`.
-    /// - Remark: Generated from `#/paths//api/v2/search/get(get-search)`.
-    func get_hyphen_search(_ input: Operations.get_hyphen_search.Input) async throws -> Operations.get_hyphen_search.Output
+    /// - Remark: Generated from `#/paths//api/v2/search/get(searchProducts)`.
+    func searchProducts(_ input: Operations.searchProducts.Input) async throws -> Operations.searchProducts.Output
     /// Get Suggestions to Aid Adding/Editing Products
     ///
     /// For example , Dave is looking for packaging_shapes that contain the term "fe",
@@ -156,16 +156,16 @@ public protocol APIProtocol: Sendable {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/suggest.pl`.
-    /// - Remark: Generated from `#/paths//cgi/suggest.pl/get(get-cgi-suggest.pl)`.
-    func get_hyphen_cgi_hyphen_suggest_period_pl(_ input: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Input) async throws -> Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Output
+    /// - Remark: Generated from `#/paths//cgi/suggest.pl/get(getSuggestions)`.
+    func getSuggestions(_ input: Operations.getSuggestions.Input) async throws -> Operations.getSuggestions.Output
     /// Get a nested list of nutrients that can be displayed in the nutrition facts table for a specific country and language
     ///
     /// Used to display the nutrition facts table of a product, or to display a form to input those nutrition facts.
     ///
     ///
     /// - Remark: HTTP `GET /cgi/nutrients.pl`.
-    /// - Remark: Generated from `#/paths//cgi/nutrients.pl/get(get-cgi-nutrients.pl)`.
-    func get_hyphen_cgi_hyphen_nutrients_period_pl(_ input: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Input) async throws -> Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Output
+    /// - Remark: Generated from `#/paths//cgi/nutrients.pl/get(getNutrients)`.
+    func getNutrients(_ input: Operations.getNutrients.Input) async throws -> Operations.getNutrients.Output
     /// Get the list of attributes available for personal search.
     ///
     /// Attributes are at the heart of personal search.
@@ -179,15 +179,15 @@ public protocol APIProtocol: Sendable {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/attribute_groups`.
-    /// - Remark: Generated from `#/paths//api/v2/attribute_groups/get(get-attribute-groups)`.
-    func get_hyphen_attribute_hyphen_groups(_ input: Operations.get_hyphen_attribute_hyphen_groups.Input) async throws -> Operations.get_hyphen_attribute_hyphen_groups.Output
+    /// - Remark: Generated from `#/paths//api/v2/attribute_groups/get(getAttributeGroups)`.
+    func getAttributeGroups(_ input: Operations.getAttributeGroups.Input) async throws -> Operations.getAttributeGroups.Output
     /// Get the weights corresponding to attributes preferences
     /// to compute personal product
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/preferences`.
-    /// - Remark: Generated from `#/paths//api/v2/preferences/get(get-preferences)`.
-    func get_hyphen_preferences(_ input: Operations.get_hyphen_preferences.Input) async throws -> Operations.get_hyphen_preferences.Output
+    /// - Remark: Generated from `#/paths//api/v2/preferences/get(getPreferences)`.
+    func getPreferences(_ input: Operations.getPreferences.Input) async throws -> Operations.getPreferences.Output
 }
 
 /// Convenience overloads for operation inputs.
@@ -199,12 +199,12 @@ extension APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/product/{barcode}`.
-    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}/get(get-product-by-barcode)`.
-    public func get_hyphen_product_hyphen_by_hyphen_barcode(
-        path: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Input.Path,
-        headers: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Input.Headers = .init()
-    ) async throws -> Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Output {
-        try await get_hyphen_product_hyphen_by_hyphen_barcode(Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Input(
+    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}/get(getProductByBarcode)`.
+    public func getProductByBarcode(
+        path: Operations.getProductByBarcode.Input.Path,
+        headers: Operations.getProductByBarcode.Input.Headers = .init()
+    ) async throws -> Operations.getProductByBarcode.Output {
+        try await getProductByBarcode(Operations.getProductByBarcode.Input(
             path: path,
             headers: headers
         ))
@@ -220,12 +220,12 @@ extension APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/product/{barcode}?fields=knowledge_panels`.
-    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}?fields=knowledge_panels/get(get-product-by-barcode-knowledge-panels)`.
-    public func get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels(
-        path: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Input.Path,
-        headers: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Input.Headers = .init()
-    ) async throws -> Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output {
-        try await get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels(Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Input(
+    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}?fields=knowledge_panels/get(getProductByBarcodeKnowledgePanels)`.
+    public func getProductByBarcodeKnowledgePanels(
+        path: Operations.getProductByBarcodeKnowledgePanels.Input.Path,
+        headers: Operations.getProductByBarcodeKnowledgePanels.Input.Headers = .init()
+    ) async throws -> Operations.getProductByBarcodeKnowledgePanels.Output {
+        try await getProductByBarcodeKnowledgePanels(Operations.getProductByBarcodeKnowledgePanels.Input(
             path: path,
             headers: headers
         ))
@@ -236,12 +236,12 @@ extension APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/ingredients.pl`.
-    /// - Remark: Generated from `#/paths//cgi/ingredients.pl/get(get-cgi-ingredients.pl)`.
-    public func get_hyphen_cgi_hyphen_ingredients_period_pl(
-        query: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Input.Query,
-        headers: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Input.Headers = .init()
-    ) async throws -> Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Output {
-        try await get_hyphen_cgi_hyphen_ingredients_period_pl(Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Input(
+    /// - Remark: Generated from `#/paths//cgi/ingredients.pl/get(getIngredients)`.
+    public func getIngredients(
+        query: Operations.getIngredients.Input.Query,
+        headers: Operations.getIngredients.Input.Headers = .init()
+    ) async throws -> Operations.getIngredients.Output {
+        try await getIngredients(Operations.getIngredients.Input(
             query: query,
             headers: headers
         ))
@@ -254,12 +254,12 @@ extension APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/product_image_crop.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/get(get-cgi-product_image_crop.pl)`.
-    public func get_hyphen_cgi_hyphen_product_image_crop_period_pl(
-        query: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Input.Query,
-        headers: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Input.Headers = .init()
-    ) async throws -> Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Output {
-        try await get_hyphen_cgi_hyphen_product_image_crop_period_pl(Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Input(
+    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/get(getProductImageCrop)`.
+    public func getProductImageCrop(
+        query: Operations.getProductImageCrop.Input.Query,
+        headers: Operations.getProductImageCrop.Input.Headers = .init()
+    ) async throws -> Operations.getProductImageCrop.Output {
+        try await getProductImageCrop(Operations.getProductImageCrop.Input(
             query: query,
             headers: headers
         ))
@@ -271,12 +271,12 @@ extension APIProtocol {
     ///
     ///
     /// - Remark: HTTP `POST /cgi/product_image_crop.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/post(post-cgi-product_image_crop.pl)`.
-    public func post_hyphen_cgi_hyphen_product_image_crop_period_pl(
-        headers: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Input.Headers = .init(),
-        body: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Input.Body
-    ) async throws -> Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Output {
-        try await post_hyphen_cgi_hyphen_product_image_crop_period_pl(Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Input(
+    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/post(productImageCrop)`.
+    public func productImageCrop(
+        headers: Operations.productImageCrop.Input.Headers = .init(),
+        body: Operations.productImageCrop.Input.Body
+    ) async throws -> Operations.productImageCrop.Output {
+        try await productImageCrop(Operations.productImageCrop.Input(
             headers: headers,
             body: body
         ))
@@ -284,12 +284,12 @@ extension APIProtocol {
     /// Unselect A Photo
     ///
     /// - Remark: HTTP `POST /cgi/product_image_unselect.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_image_unselect.pl/post`.
-    public func post_sol_cgi_sol_product_image_unselect_period_pl(
-        headers: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Input.Headers = .init(),
-        body: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Input.Body
-    ) async throws -> Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Output {
-        try await post_sol_cgi_sol_product_image_unselect_period_pl(Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Input(
+    /// - Remark: Generated from `#/paths//cgi/product_image_unselect.pl/post(postProductImageUnselect)`.
+    public func postProductImageUnselect(
+        headers: Operations.postProductImageUnselect.Input.Headers = .init(),
+        body: Operations.postProductImageUnselect.Input.Body
+    ) async throws -> Operations.postProductImageUnselect.Output {
+        try await postProductImageUnselect(Operations.postProductImageUnselect.Input(
             headers: headers,
             body: body
         ))
@@ -304,12 +304,12 @@ extension APIProtocol {
     ///
     ///
     /// - Remark: HTTP `POST /cgi/product_jqm2.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_jqm2.pl/post(post-cgi-product_jqm2.pl)`.
-    public func post_hyphen_cgi_hyphen_product_jqm2_period_pl(
-        headers: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Input.Headers = .init(),
-        body: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Input.Body
-    ) async throws -> Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Output {
-        try await post_hyphen_cgi_hyphen_product_jqm2_period_pl(Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Input(
+    /// - Remark: Generated from `#/paths//cgi/product_jqm2.pl/post(postProduct)`.
+    public func postProduct(
+        headers: Operations.postProduct.Input.Headers = .init(),
+        body: Operations.postProduct.Input.Body
+    ) async throws -> Operations.postProduct.Output {
+        try await postProduct(Operations.postProduct.Input(
             headers: headers,
             body: body
         ))
@@ -382,12 +382,12 @@ extension APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/search`.
-    /// - Remark: Generated from `#/paths//api/v2/search/get(get-search)`.
-    public func get_hyphen_search(
-        query: Operations.get_hyphen_search.Input.Query = .init(),
-        headers: Operations.get_hyphen_search.Input.Headers = .init()
-    ) async throws -> Operations.get_hyphen_search.Output {
-        try await get_hyphen_search(Operations.get_hyphen_search.Input(
+    /// - Remark: Generated from `#/paths//api/v2/search/get(searchProducts)`.
+    public func searchProducts(
+        query: Operations.searchProducts.Input.Query = .init(),
+        headers: Operations.searchProducts.Input.Headers = .init()
+    ) async throws -> Operations.searchProducts.Output {
+        try await searchProducts(Operations.searchProducts.Input(
             query: query,
             headers: headers
         ))
@@ -401,12 +401,12 @@ extension APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/suggest.pl`.
-    /// - Remark: Generated from `#/paths//cgi/suggest.pl/get(get-cgi-suggest.pl)`.
-    public func get_hyphen_cgi_hyphen_suggest_period_pl(
-        query: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Input.Query = .init(),
-        headers: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Input.Headers = .init()
-    ) async throws -> Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Output {
-        try await get_hyphen_cgi_hyphen_suggest_period_pl(Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Input(
+    /// - Remark: Generated from `#/paths//cgi/suggest.pl/get(getSuggestions)`.
+    public func getSuggestions(
+        query: Operations.getSuggestions.Input.Query = .init(),
+        headers: Operations.getSuggestions.Input.Headers = .init()
+    ) async throws -> Operations.getSuggestions.Output {
+        try await getSuggestions(Operations.getSuggestions.Input(
             query: query,
             headers: headers
         ))
@@ -417,12 +417,12 @@ extension APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/nutrients.pl`.
-    /// - Remark: Generated from `#/paths//cgi/nutrients.pl/get(get-cgi-nutrients.pl)`.
-    public func get_hyphen_cgi_hyphen_nutrients_period_pl(
-        query: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Input.Query = .init(),
-        headers: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Input.Headers = .init()
-    ) async throws -> Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Output {
-        try await get_hyphen_cgi_hyphen_nutrients_period_pl(Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Input(
+    /// - Remark: Generated from `#/paths//cgi/nutrients.pl/get(getNutrients)`.
+    public func getNutrients(
+        query: Operations.getNutrients.Input.Query = .init(),
+        headers: Operations.getNutrients.Input.Headers = .init()
+    ) async throws -> Operations.getNutrients.Output {
+        try await getNutrients(Operations.getNutrients.Input(
             query: query,
             headers: headers
         ))
@@ -440,12 +440,12 @@ extension APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/attribute_groups`.
-    /// - Remark: Generated from `#/paths//api/v2/attribute_groups/get(get-attribute-groups)`.
-    public func get_hyphen_attribute_hyphen_groups(
-        query: Operations.get_hyphen_attribute_hyphen_groups.Input.Query = .init(),
-        headers: Operations.get_hyphen_attribute_hyphen_groups.Input.Headers = .init()
-    ) async throws -> Operations.get_hyphen_attribute_hyphen_groups.Output {
-        try await get_hyphen_attribute_hyphen_groups(Operations.get_hyphen_attribute_hyphen_groups.Input(
+    /// - Remark: Generated from `#/paths//api/v2/attribute_groups/get(getAttributeGroups)`.
+    public func getAttributeGroups(
+        query: Operations.getAttributeGroups.Input.Query = .init(),
+        headers: Operations.getAttributeGroups.Input.Headers = .init()
+    ) async throws -> Operations.getAttributeGroups.Output {
+        try await getAttributeGroups(Operations.getAttributeGroups.Input(
             query: query,
             headers: headers
         ))
@@ -455,12 +455,12 @@ extension APIProtocol {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/preferences`.
-    /// - Remark: Generated from `#/paths//api/v2/preferences/get(get-preferences)`.
-    public func get_hyphen_preferences(
-        query: Operations.get_hyphen_preferences.Input.Query = .init(),
-        headers: Operations.get_hyphen_preferences.Input.Headers = .init()
-    ) async throws -> Operations.get_hyphen_preferences.Output {
-        try await get_hyphen_preferences(Operations.get_hyphen_preferences.Input(
+    /// - Remark: Generated from `#/paths//api/v2/preferences/get(getPreferences)`.
+    public func getPreferences(
+        query: Operations.getPreferences.Input.Query = .init(),
+        headers: Operations.getPreferences.Input.Headers = .init()
+    ) async throws -> Operations.getPreferences.Output {
+        try await getPreferences(Operations.getPreferences.Input(
             query: query,
             headers: headers
         ))
@@ -6527,9 +6527,9 @@ public enum Operations {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/product/{barcode}`.
-    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}/get(get-product-by-barcode)`.
-    public enum get_hyphen_product_hyphen_by_hyphen_barcode {
-        public static let id: Swift.String = "get-product-by-barcode"
+    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}/get(getProductByBarcode)`.
+    public enum getProductByBarcode {
+        public static let id: Swift.String = "getProductByBarcode"
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/api/v2/product/{barcode}/GET/path`.
             public struct Path: Sendable, Hashable {
@@ -6546,27 +6546,27 @@ public enum Operations {
                     self.barcode = barcode
                 }
             }
-            public var path: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Input.Path
+            public var path: Operations.getProductByBarcode.Input.Path
             /// - Remark: Generated from `#/paths/api/v2/product/{barcode}/GET/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_product_hyphen_by_hyphen_barcode.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getProductByBarcode.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_product_hyphen_by_hyphen_barcode.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getProductByBarcode.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Input.Headers
+            public var headers: Operations.getProductByBarcode.Input.Headers
             /// Creates a new `Input`.
             ///
             /// - Parameters:
             ///   - path:
             ///   - headers:
             public init(
-                path: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Input.Path,
-                headers: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Input.Headers = .init()
+                path: Operations.getProductByBarcode.Input.Path,
+                headers: Operations.getProductByBarcode.Input.Headers = .init()
             ) {
                 self.path = path
                 self.headers = headers
@@ -6592,26 +6592,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Output.Ok.Body
+                public var body: Operations.getProductByBarcode.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Output.Ok.Body) {
+                public init(body: Operations.getProductByBarcode.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// OK
             ///
-            /// - Remark: Generated from `#/paths//api/v2/product/{barcode}/get(get-product-by-barcode)/responses/200`.
+            /// - Remark: Generated from `#/paths//api/v2/product/{barcode}/get(getProductByBarcode)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Output.Ok)
+            case ok(Operations.getProductByBarcode.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.get_hyphen_product_hyphen_by_hyphen_barcode.Output.Ok {
+            public var ok: Operations.getProductByBarcode.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -6666,9 +6666,9 @@ public enum Operations {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/product/{barcode}?fields=knowledge_panels`.
-    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}?fields=knowledge_panels/get(get-product-by-barcode-knowledge-panels)`.
-    public enum get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels {
-        public static let id: Swift.String = "get-product-by-barcode-knowledge-panels"
+    /// - Remark: Generated from `#/paths//api/v2/product/{barcode}?fields=knowledge_panels/get(getProductByBarcodeKnowledgePanels)`.
+    public enum getProductByBarcodeKnowledgePanels {
+        public static let id: Swift.String = "getProductByBarcodeKnowledgePanels"
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/api/v2/product/{barcode}?fields=knowledge_panels/GET/path`.
             public struct Path: Sendable, Hashable {
@@ -6685,27 +6685,27 @@ public enum Operations {
                     self.barcode = barcode
                 }
             }
-            public var path: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Input.Path
+            public var path: Operations.getProductByBarcodeKnowledgePanels.Input.Path
             /// - Remark: Generated from `#/paths/api/v2/product/{barcode}?fields=knowledge_panels/GET/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getProductByBarcodeKnowledgePanels.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getProductByBarcodeKnowledgePanels.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Input.Headers
+            public var headers: Operations.getProductByBarcodeKnowledgePanels.Input.Headers
             /// Creates a new `Input`.
             ///
             /// - Parameters:
             ///   - path:
             ///   - headers:
             public init(
-                path: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Input.Path,
-                headers: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Input.Headers = .init()
+                path: Operations.getProductByBarcodeKnowledgePanels.Input.Path,
+                headers: Operations.getProductByBarcodeKnowledgePanels.Input.Headers = .init()
             ) {
                 self.path = path
                 self.headers = headers
@@ -6735,7 +6735,7 @@ public enum Operations {
                             }
                         }
                         /// - Remark: Generated from `#/paths/api/v2/product/{barcode}?fields=knowledge_panels/GET/responses/200/content/json/value2`.
-                        public var value2: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output.Ok.Body.jsonPayload.Value2Payload
+                        public var value2: Operations.getProductByBarcodeKnowledgePanels.Output.Ok.Body.jsonPayload.Value2Payload
                         /// Creates a new `jsonPayload`.
                         ///
                         /// - Parameters:
@@ -6743,7 +6743,7 @@ public enum Operations {
                         ///   - value2:
                         public init(
                             value1: Components.Schemas.get_product_by_barcode_base,
-                            value2: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output.Ok.Body.jsonPayload.Value2Payload
+                            value2: Operations.getProductByBarcodeKnowledgePanels.Output.Ok.Body.jsonPayload.Value2Payload
                         ) {
                             self.value1 = value1
                             self.value2 = value2
@@ -6758,12 +6758,12 @@ public enum Operations {
                         }
                     }
                     /// - Remark: Generated from `#/paths/api/v2/product/{barcode}?fields=knowledge_panels/GET/responses/200/content/application\/json`.
-                    case json(Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output.Ok.Body.jsonPayload)
+                    case json(Operations.getProductByBarcodeKnowledgePanels.Output.Ok.Body.jsonPayload)
                     /// The associated value of the enum case if `self` is `.json`.
                     ///
                     /// - Throws: An error if `self` is not `.json`.
                     /// - SeeAlso: `.json`.
-                    public var json: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output.Ok.Body.jsonPayload {
+                    public var json: Operations.getProductByBarcodeKnowledgePanels.Output.Ok.Body.jsonPayload {
                         get throws {
                             switch self {
                             case let .json(body):
@@ -6773,26 +6773,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output.Ok.Body
+                public var body: Operations.getProductByBarcodeKnowledgePanels.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output.Ok.Body) {
+                public init(body: Operations.getProductByBarcodeKnowledgePanels.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// OK
             ///
-            /// - Remark: Generated from `#/paths//api/v2/product/{barcode}?fields=knowledge_panels/get(get-product-by-barcode-knowledge-panels)/responses/200`.
+            /// - Remark: Generated from `#/paths//api/v2/product/{barcode}?fields=knowledge_panels/get(getProductByBarcodeKnowledgePanels)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output.Ok)
+            case ok(Operations.getProductByBarcodeKnowledgePanels.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.get_hyphen_product_hyphen_by_hyphen_barcode_hyphen_knowledge_hyphen_panels.Output.Ok {
+            public var ok: Operations.getProductByBarcodeKnowledgePanels.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -6842,9 +6842,9 @@ public enum Operations {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/ingredients.pl`.
-    /// - Remark: Generated from `#/paths//cgi/ingredients.pl/get(get-cgi-ingredients.pl)`.
-    public enum get_hyphen_cgi_hyphen_ingredients_period_pl {
-        public static let id: Swift.String = "get-cgi-ingredients.pl"
+    /// - Remark: Generated from `#/paths//cgi/ingredients.pl/get(getIngredients)`.
+    public enum getIngredients {
+        public static let id: Swift.String = "getIngredients"
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/cgi/ingredients.pl/GET/query`.
             public struct Query: Sendable, Hashable {
@@ -6877,27 +6877,27 @@ public enum Operations {
                     self.ocr_engine = ocr_engine
                 }
             }
-            public var query: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Input.Query
+            public var query: Operations.getIngredients.Input.Query
             /// - Remark: Generated from `#/paths/cgi/ingredients.pl/GET/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getIngredients.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getIngredients.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Input.Headers
+            public var headers: Operations.getIngredients.Input.Headers
             /// Creates a new `Input`.
             ///
             /// - Parameters:
             ///   - query:
             ///   - headers:
             public init(
-                query: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Input.Query,
-                headers: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Input.Headers = .init()
+                query: Operations.getIngredients.Input.Query,
+                headers: Operations.getIngredients.Input.Headers = .init()
             ) {
                 self.query = query
                 self.headers = headers
@@ -6923,26 +6923,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Output.Ok.Body
+                public var body: Operations.getIngredients.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Output.Ok.Body) {
+                public init(body: Operations.getIngredients.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// OK
             ///
-            /// - Remark: Generated from `#/paths//cgi/ingredients.pl/get(get-cgi-ingredients.pl)/responses/200`.
+            /// - Remark: Generated from `#/paths//cgi/ingredients.pl/get(getIngredients)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Output.Ok)
+            case ok(Operations.getIngredients.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.get_hyphen_cgi_hyphen_ingredients_period_pl.Output.Ok {
+            public var ok: Operations.getIngredients.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -6994,9 +6994,9 @@ public enum Operations {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/product_image_crop.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/get(get-cgi-product_image_crop.pl)`.
-    public enum get_hyphen_cgi_hyphen_product_image_crop_period_pl {
-        public static let id: Swift.String = "get-cgi-product_image_crop.pl"
+    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/get(getProductImageCrop)`.
+    public enum getProductImageCrop {
+        public static let id: Swift.String = "getProductImageCrop"
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/cgi/product_image_crop.pl/GET/query`.
             public struct Query: Sendable, Hashable {
@@ -7029,27 +7029,27 @@ public enum Operations {
                     self.angle = angle
                 }
             }
-            public var query: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Input.Query
+            public var query: Operations.getProductImageCrop.Input.Query
             /// - Remark: Generated from `#/paths/cgi/product_image_crop.pl/GET/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getProductImageCrop.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getProductImageCrop.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Input.Headers
+            public var headers: Operations.getProductImageCrop.Input.Headers
             /// Creates a new `Input`.
             ///
             /// - Parameters:
             ///   - query:
             ///   - headers:
             public init(
-                query: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Input.Query,
-                headers: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Input.Headers = .init()
+                query: Operations.getProductImageCrop.Input.Query,
+                headers: Operations.getProductImageCrop.Input.Headers = .init()
             ) {
                 self.query = query
                 self.headers = headers
@@ -7075,26 +7075,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Output.Ok.Body
+                public var body: Operations.getProductImageCrop.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Output.Ok.Body) {
+                public init(body: Operations.getProductImageCrop.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// OK
             ///
-            /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/get(get-cgi-product_image_crop.pl)/responses/200`.
+            /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/get(getProductImageCrop)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Output.Ok)
+            case ok(Operations.getProductImageCrop.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.get_hyphen_cgi_hyphen_product_image_crop_period_pl.Output.Ok {
+            public var ok: Operations.getProductImageCrop.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -7145,36 +7145,36 @@ public enum Operations {
     ///
     ///
     /// - Remark: HTTP `POST /cgi/product_image_crop.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/post(post-cgi-product_image_crop.pl)`.
-    public enum post_hyphen_cgi_hyphen_product_image_crop_period_pl {
-        public static let id: Swift.String = "post-cgi-product_image_crop.pl"
+    /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/post(productImageCrop)`.
+    public enum productImageCrop {
+        public static let id: Swift.String = "productImageCrop"
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/cgi/product_image_crop.pl/POST/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.productImageCrop.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.productImageCrop.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Input.Headers
+            public var headers: Operations.productImageCrop.Input.Headers
             /// - Remark: Generated from `#/paths/cgi/product_image_crop.pl/POST/requestBody`.
             @frozen public enum Body: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/cgi/product_image_crop.pl/POST/requestBody/content/multipart\/form-data`.
                 case multipartForm(OpenAPIRuntime.MultipartBody<Components.Schemas.crop_a_photo>)
             }
-            public var body: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Input.Body
+            public var body: Operations.productImageCrop.Input.Body
             /// Creates a new `Input`.
             ///
             /// - Parameters:
             ///   - headers:
             ///   - body:
             public init(
-                headers: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Input.Headers = .init(),
-                body: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Input.Body
+                headers: Operations.productImageCrop.Input.Headers = .init(),
+                body: Operations.productImageCrop.Input.Body
             ) {
                 self.headers = headers
                 self.body = body
@@ -7200,26 +7200,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Output.Ok.Body
+                public var body: Operations.productImageCrop.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Output.Ok.Body) {
+                public init(body: Operations.productImageCrop.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// OK
             ///
-            /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/post(post-cgi-product_image_crop.pl)/responses/200`.
+            /// - Remark: Generated from `#/paths//cgi/product_image_crop.pl/post(productImageCrop)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Output.Ok)
+            case ok(Operations.productImageCrop.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.post_hyphen_cgi_hyphen_product_image_crop_period_pl.Output.Ok {
+            public var ok: Operations.productImageCrop.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -7266,36 +7266,36 @@ public enum Operations {
     /// Unselect A Photo
     ///
     /// - Remark: HTTP `POST /cgi/product_image_unselect.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_image_unselect.pl/post`.
-    public enum post_sol_cgi_sol_product_image_unselect_period_pl {
-        public static let id: Swift.String = "post/cgi/product_image_unselect.pl"
+    /// - Remark: Generated from `#/paths//cgi/product_image_unselect.pl/post(postProductImageUnselect)`.
+    public enum postProductImageUnselect {
+        public static let id: Swift.String = "postProductImageUnselect"
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/cgi/product_image_unselect.pl/POST/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.post_sol_cgi_sol_product_image_unselect_period_pl.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.postProductImageUnselect.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.post_sol_cgi_sol_product_image_unselect_period_pl.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.postProductImageUnselect.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Input.Headers
+            public var headers: Operations.postProductImageUnselect.Input.Headers
             /// - Remark: Generated from `#/paths/cgi/product_image_unselect.pl/POST/requestBody`.
             @frozen public enum Body: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/cgi/product_image_unselect.pl/POST/requestBody/content/multipart\/form-data`.
                 case multipartForm(OpenAPIRuntime.MultipartBody<Components.Schemas.unselect_a_photo>)
             }
-            public var body: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Input.Body
+            public var body: Operations.postProductImageUnselect.Input.Body
             /// Creates a new `Input`.
             ///
             /// - Parameters:
             ///   - headers:
             ///   - body:
             public init(
-                headers: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Input.Headers = .init(),
-                body: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Input.Body
+                headers: Operations.postProductImageUnselect.Input.Headers = .init(),
+                body: Operations.postProductImageUnselect.Input.Body
             ) {
                 self.headers = headers
                 self.body = body
@@ -7341,12 +7341,12 @@ public enum Operations {
                         }
                     }
                     /// - Remark: Generated from `#/paths/cgi/product_image_unselect.pl/POST/responses/200/content/application\/json`.
-                    case json(Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Output.Ok.Body.jsonPayload)
+                    case json(Operations.postProductImageUnselect.Output.Ok.Body.jsonPayload)
                     /// The associated value of the enum case if `self` is `.json`.
                     ///
                     /// - Throws: An error if `self` is not `.json`.
                     /// - SeeAlso: `.json`.
-                    public var json: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Output.Ok.Body.jsonPayload {
+                    public var json: Operations.postProductImageUnselect.Output.Ok.Body.jsonPayload {
                         get throws {
                             switch self {
                             case let .json(body):
@@ -7356,26 +7356,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Output.Ok.Body
+                public var body: Operations.postProductImageUnselect.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Output.Ok.Body) {
+                public init(body: Operations.postProductImageUnselect.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// OK
             ///
-            /// - Remark: Generated from `#/paths//cgi/product_image_unselect.pl/post/responses/200`.
+            /// - Remark: Generated from `#/paths//cgi/product_image_unselect.pl/post(postProductImageUnselect)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Output.Ok)
+            case ok(Operations.postProductImageUnselect.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.post_sol_cgi_sol_product_image_unselect_period_pl.Output.Ok {
+            public var ok: Operations.postProductImageUnselect.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -7429,36 +7429,36 @@ public enum Operations {
     ///
     ///
     /// - Remark: HTTP `POST /cgi/product_jqm2.pl`.
-    /// - Remark: Generated from `#/paths//cgi/product_jqm2.pl/post(post-cgi-product_jqm2.pl)`.
-    public enum post_hyphen_cgi_hyphen_product_jqm2_period_pl {
-        public static let id: Swift.String = "post-cgi-product_jqm2.pl"
+    /// - Remark: Generated from `#/paths//cgi/product_jqm2.pl/post(postProduct)`.
+    public enum postProduct {
+        public static let id: Swift.String = "postProduct"
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/cgi/product_jqm2.pl/POST/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.postProduct.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.postProduct.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Input.Headers
+            public var headers: Operations.postProduct.Input.Headers
             /// - Remark: Generated from `#/paths/cgi/product_jqm2.pl/POST/requestBody`.
             @frozen public enum Body: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/cgi/product_jqm2.pl/POST/requestBody/content/multipart\/form-data`.
                 case multipartForm(OpenAPIRuntime.MultipartBody<Components.Schemas.combined_add_or_edit_a_product_and_change_ref_properties>)
             }
-            public var body: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Input.Body
+            public var body: Operations.postProduct.Input.Body
             /// Creates a new `Input`.
             ///
             /// - Parameters:
             ///   - headers:
             ///   - body:
             public init(
-                headers: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Input.Headers = .init(),
-                body: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Input.Body
+                headers: Operations.postProduct.Input.Headers = .init(),
+                body: Operations.postProduct.Input.Body
             ) {
                 self.headers = headers
                 self.body = body
@@ -7484,26 +7484,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Output.Ok.Body
+                public var body: Operations.postProduct.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Output.Ok.Body) {
+                public init(body: Operations.postProduct.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// OK
             ///
-            /// - Remark: Generated from `#/paths//cgi/product_jqm2.pl/post(post-cgi-product_jqm2.pl)/responses/200`.
+            /// - Remark: Generated from `#/paths//cgi/product_jqm2.pl/post(postProduct)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Output.Ok)
+            case ok(Operations.postProduct.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.post_hyphen_cgi_hyphen_product_jqm2_period_pl.Output.Ok {
+            public var ok: Operations.postProduct.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -7615,9 +7615,9 @@ public enum Operations {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/search`.
-    /// - Remark: Generated from `#/paths//api/v2/search/get(get-search)`.
-    public enum get_hyphen_search {
-        public static let id: Swift.String = "get-search"
+    /// - Remark: Generated from `#/paths//api/v2/search/get(searchProducts)`.
+    public enum searchProducts {
+        public static let id: Swift.String = "searchProducts"
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/api/v2/search/GET/query`.
             public struct Query: Sendable, Hashable {
@@ -7983,27 +7983,27 @@ public enum Operations {
                     self.page_size = page_size
                 }
             }
-            public var query: Operations.get_hyphen_search.Input.Query
+            public var query: Operations.searchProducts.Input.Query
             /// - Remark: Generated from `#/paths/api/v2/search/GET/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_search.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.searchProducts.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_search.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.searchProducts.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.get_hyphen_search.Input.Headers
+            public var headers: Operations.searchProducts.Input.Headers
             /// Creates a new `Input`.
             ///
             /// - Parameters:
             ///   - query:
             ///   - headers:
             public init(
-                query: Operations.get_hyphen_search.Input.Query = .init(),
-                headers: Operations.get_hyphen_search.Input.Headers = .init()
+                query: Operations.searchProducts.Input.Query = .init(),
+                headers: Operations.searchProducts.Input.Headers = .init()
             ) {
                 self.query = query
                 self.headers = headers
@@ -8029,26 +8029,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.get_hyphen_search.Output.Ok.Body
+                public var body: Operations.searchProducts.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.get_hyphen_search.Output.Ok.Body) {
+                public init(body: Operations.searchProducts.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// OK
             ///
-            /// - Remark: Generated from `#/paths//api/v2/search/get(get-search)/responses/200`.
+            /// - Remark: Generated from `#/paths//api/v2/search/get(searchProducts)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.get_hyphen_search.Output.Ok)
+            case ok(Operations.searchProducts.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.get_hyphen_search.Output.Ok {
+            public var ok: Operations.searchProducts.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -8101,9 +8101,9 @@ public enum Operations {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/suggest.pl`.
-    /// - Remark: Generated from `#/paths//cgi/suggest.pl/get(get-cgi-suggest.pl)`.
-    public enum get_hyphen_cgi_hyphen_suggest_period_pl {
-        public static let id: Swift.String = "get-cgi-suggest.pl"
+    /// - Remark: Generated from `#/paths//cgi/suggest.pl/get(getSuggestions)`.
+    public enum getSuggestions {
+        public static let id: Swift.String = "getSuggestions"
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/cgi/suggest.pl/GET/query`.
             public struct Query: Sendable, Hashable {
@@ -8124,27 +8124,27 @@ public enum Operations {
                     self.term = term
                 }
             }
-            public var query: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Input.Query
+            public var query: Operations.getSuggestions.Input.Query
             /// - Remark: Generated from `#/paths/cgi/suggest.pl/GET/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_cgi_hyphen_suggest_period_pl.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getSuggestions.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_cgi_hyphen_suggest_period_pl.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getSuggestions.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Input.Headers
+            public var headers: Operations.getSuggestions.Input.Headers
             /// Creates a new `Input`.
             ///
             /// - Parameters:
             ///   - query:
             ///   - headers:
             public init(
-                query: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Input.Query = .init(),
-                headers: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Input.Headers = .init()
+                query: Operations.getSuggestions.Input.Query = .init(),
+                headers: Operations.getSuggestions.Input.Headers = .init()
             ) {
                 self.query = query
                 self.headers = headers
@@ -8170,26 +8170,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Output.Ok.Body
+                public var body: Operations.getSuggestions.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Output.Ok.Body) {
+                public init(body: Operations.getSuggestions.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// OK
             ///
-            /// - Remark: Generated from `#/paths//cgi/suggest.pl/get(get-cgi-suggest.pl)/responses/200`.
+            /// - Remark: Generated from `#/paths//cgi/suggest.pl/get(getSuggestions)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Output.Ok)
+            case ok(Operations.getSuggestions.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.get_hyphen_cgi_hyphen_suggest_period_pl.Output.Ok {
+            public var ok: Operations.getSuggestions.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -8239,9 +8239,9 @@ public enum Operations {
     ///
     ///
     /// - Remark: HTTP `GET /cgi/nutrients.pl`.
-    /// - Remark: Generated from `#/paths//cgi/nutrients.pl/get(get-cgi-nutrients.pl)`.
-    public enum get_hyphen_cgi_hyphen_nutrients_period_pl {
-        public static let id: Swift.String = "get-cgi-nutrients.pl"
+    /// - Remark: Generated from `#/paths//cgi/nutrients.pl/get(getNutrients)`.
+    public enum getNutrients {
+        public static let id: Swift.String = "getNutrients"
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/cgi/nutrients.pl/GET/query`.
             public struct Query: Sendable, Hashable {
@@ -8270,27 +8270,27 @@ public enum Operations {
                     self.lc = lc
                 }
             }
-            public var query: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Input.Query
+            public var query: Operations.getNutrients.Input.Query
             /// - Remark: Generated from `#/paths/cgi/nutrients.pl/GET/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getNutrients.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getNutrients.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Input.Headers
+            public var headers: Operations.getNutrients.Input.Headers
             /// Creates a new `Input`.
             ///
             /// - Parameters:
             ///   - query:
             ///   - headers:
             public init(
-                query: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Input.Query = .init(),
-                headers: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Input.Headers = .init()
+                query: Operations.getNutrients.Input.Query = .init(),
+                headers: Operations.getNutrients.Input.Headers = .init()
             ) {
                 self.query = query
                 self.headers = headers
@@ -8316,26 +8316,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Output.Ok.Body
+                public var body: Operations.getNutrients.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Output.Ok.Body) {
+                public init(body: Operations.getNutrients.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// OK
             ///
-            /// - Remark: Generated from `#/paths//cgi/nutrients.pl/get(get-cgi-nutrients.pl)/responses/200`.
+            /// - Remark: Generated from `#/paths//cgi/nutrients.pl/get(getNutrients)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Output.Ok)
+            case ok(Operations.getNutrients.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.get_hyphen_cgi_hyphen_nutrients_period_pl.Output.Ok {
+            public var ok: Operations.getNutrients.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -8392,9 +8392,9 @@ public enum Operations {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/attribute_groups`.
-    /// - Remark: Generated from `#/paths//api/v2/attribute_groups/get(get-attribute-groups)`.
-    public enum get_hyphen_attribute_hyphen_groups {
-        public static let id: Swift.String = "get-attribute-groups"
+    /// - Remark: Generated from `#/paths//api/v2/attribute_groups/get(getAttributeGroups)`.
+    public enum getAttributeGroups {
+        public static let id: Swift.String = "getAttributeGroups"
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/api/v2/attribute_groups/GET/query`.
             public struct Query: Sendable, Hashable {
@@ -8414,27 +8414,27 @@ public enum Operations {
                     self.lc = lc
                 }
             }
-            public var query: Operations.get_hyphen_attribute_hyphen_groups.Input.Query
+            public var query: Operations.getAttributeGroups.Input.Query
             /// - Remark: Generated from `#/paths/api/v2/attribute_groups/GET/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_attribute_hyphen_groups.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getAttributeGroups.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_attribute_hyphen_groups.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getAttributeGroups.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.get_hyphen_attribute_hyphen_groups.Input.Headers
+            public var headers: Operations.getAttributeGroups.Input.Headers
             /// Creates a new `Input`.
             ///
             /// - Parameters:
             ///   - query:
             ///   - headers:
             public init(
-                query: Operations.get_hyphen_attribute_hyphen_groups.Input.Query = .init(),
-                headers: Operations.get_hyphen_attribute_hyphen_groups.Input.Headers = .init()
+                query: Operations.getAttributeGroups.Input.Query = .init(),
+                headers: Operations.getAttributeGroups.Input.Headers = .init()
             ) {
                 self.query = query
                 self.headers = headers
@@ -8460,26 +8460,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.get_hyphen_attribute_hyphen_groups.Output.Ok.Body
+                public var body: Operations.getAttributeGroups.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.get_hyphen_attribute_hyphen_groups.Output.Ok.Body) {
+                public init(body: Operations.getAttributeGroups.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// OK
             ///
-            /// - Remark: Generated from `#/paths//api/v2/attribute_groups/get(get-attribute-groups)/responses/200`.
+            /// - Remark: Generated from `#/paths//api/v2/attribute_groups/get(getAttributeGroups)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.get_hyphen_attribute_hyphen_groups.Output.Ok)
+            case ok(Operations.getAttributeGroups.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.get_hyphen_attribute_hyphen_groups.Output.Ok {
+            public var ok: Operations.getAttributeGroups.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -8528,9 +8528,9 @@ public enum Operations {
     ///
     ///
     /// - Remark: HTTP `GET /api/v2/preferences`.
-    /// - Remark: Generated from `#/paths//api/v2/preferences/get(get-preferences)`.
-    public enum get_hyphen_preferences {
-        public static let id: Swift.String = "get-preferences"
+    /// - Remark: Generated from `#/paths//api/v2/preferences/get(getPreferences)`.
+    public enum getPreferences {
+        public static let id: Swift.String = "getPreferences"
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/api/v2/preferences/GET/query`.
             public struct Query: Sendable, Hashable {
@@ -8550,27 +8550,27 @@ public enum Operations {
                     self.lc = lc
                 }
             }
-            public var query: Operations.get_hyphen_preferences.Input.Query
+            public var query: Operations.getPreferences.Input.Query
             /// - Remark: Generated from `#/paths/api/v2/preferences/GET/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_preferences.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getPreferences.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.get_hyphen_preferences.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getPreferences.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.get_hyphen_preferences.Input.Headers
+            public var headers: Operations.getPreferences.Input.Headers
             /// Creates a new `Input`.
             ///
             /// - Parameters:
             ///   - query:
             ///   - headers:
             public init(
-                query: Operations.get_hyphen_preferences.Input.Query = .init(),
-                headers: Operations.get_hyphen_preferences.Input.Headers = .init()
+                query: Operations.getPreferences.Input.Query = .init(),
+                headers: Operations.getPreferences.Input.Headers = .init()
             ) {
                 self.query = query
                 self.headers = headers
@@ -8596,26 +8596,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.get_hyphen_preferences.Output.Ok.Body
+                public var body: Operations.getPreferences.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.get_hyphen_preferences.Output.Ok.Body) {
+                public init(body: Operations.getPreferences.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// OK
             ///
-            /// - Remark: Generated from `#/paths//api/v2/preferences/get(get-preferences)/responses/200`.
+            /// - Remark: Generated from `#/paths//api/v2/preferences/get(getPreferences)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.get_hyphen_preferences.Output.Ok)
+            case ok(Operations.getPreferences.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.get_hyphen_preferences.Output.Ok {
+            public var ok: Operations.getPreferences.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
