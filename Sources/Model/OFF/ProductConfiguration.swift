@@ -12,7 +12,7 @@ public struct ProductQueryConfiguration {
     var languages: [OpenFoodFactsLanguage]
     var fields: [ProductField]?
     
-    init(barcode: String,
+    public init(barcode: String,
          languages: [OpenFoodFactsLanguage] = [],
          country: OpenFoodFactsCountry? = nil,
          fields: [ProductField]? = nil) {

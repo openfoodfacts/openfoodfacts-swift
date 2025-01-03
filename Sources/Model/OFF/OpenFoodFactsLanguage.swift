@@ -195,7 +195,7 @@ public enum OpenFoodFactsLanguage: String, CaseIterable, Identifiable, Equatable
     case ZULU
     case UNDEFINED
     
-    var info: (code: String, description: String) {
+    public var info: (code: String, description: String) {
         switch self {
         case .ENGLISH:
             return ("en", "English")

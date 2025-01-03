@@ -53,10 +53,10 @@ final public class OFFConfig {
                            withSystem: Bool = true, system: String = "",
                            withId: Bool = true, id: String = "") -> String {
         var appInfo = ""
-        let infoDelimiter = " - "
+        let infoDelimiter = "-"
         
         if withName {
-            appInfo += infoDelimiter + name
+            appInfo += name
         }
         if withVersion {
             appInfo += infoDelimiter + version
@@ -79,9 +79,9 @@ final public class OFFConfig {
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
         let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
         
-        let version = "\(appVersion)+\(buildNumber)"
-        let system = "\(UIDevice.current.systemName)+\(UIDevice.current.systemVersion)"
-        let comment = getAppInfoComment(name: appName, version: version, system: system, id: uuid)
+        let version = "\(appVersion)_\(buildNumber)"
+        let system = "\(UIDevice.current.systemName)_\(UIDevice.current.systemVersion)"
+        let comment = getAppInfoComment(name: appName, version: version, system: system, id: uuid.replacingOccurrences(of: "-", with: ""))
         
         self.userAgent = UserAgent(
             name: appName,

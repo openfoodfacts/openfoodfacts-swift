@@ -36,9 +36,12 @@ public struct UserAgent: Codable {
         var result = ""
         
         let mirror = Mirror(reflecting: self)
-        for child in mirror.children {
+        for (index, child) in mirror.children.enumerated() {
             if let value = child.value as? String {
-                result += " - \(value)"
+                result += "\(value)"
+                if index < mirror.children.count - 1 {
+                    result += "-"
+                }
             }
         }
         
