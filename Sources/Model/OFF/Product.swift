@@ -46,9 +46,11 @@ public struct Product: Codable, Equatable, Sendable {
     public let brands: String?
     public let lang: OpenFoodFactsLanguage?
     public let quantity: String?
-    public let packagingQuantity: Double?
+    public let packagingQuantity: Double
+    public let packagingQuantityUnit: String
     public let servingSize: String?
-    public let servingQuantity: Double?
+    public let servingQuantity: Double
+    public let servingQuantityUnit: String
     public let dataPer: String?
     public let categories: String?
     public var nutriments: [String: Any]?
@@ -56,6 +58,8 @@ public struct Product: Codable, Equatable, Sendable {
     public let imageIngredients: String?
     public let imageNutrition: String?
     public let keywords: [String]?
+    public let novaGroup: Double?
+    public let nutriScore: String?
     
     enum CodingKeys: String, CodingKey {
         case code
@@ -63,17 +67,21 @@ public struct Product: Codable, Equatable, Sendable {
         case brands
         case quantity
         case packagingQuantity = "product_quantity"
+        case packagingQuantityUnit = "product_quantity_unit"
         case categories
         case images
         case productName = "product_name"
         case productNameEn = "product_name_en"
         case servingSize = "serving_size"
         case servingQuantity = "serving_quantity"
+        case servingQuantityUnit = "serving_quantity_unit"
         case dataPer = "nutrition_data_per"
         case nutriments = "nutriments"
         case imageFront = "image_front_url"
         case imageIngredients = "image_ingredients_url"
         case imageNutrition = "image_nutrition_url"
+        case novaGroup = "nova_group"
+        case nutriScore = "nutriscore_grade"
         case keywords = "_keywords"
     }
     
@@ -91,23 +99,28 @@ public struct Product: Codable, Equatable, Sendable {
         imageIngredients = try container.decodeIfPresent(String.self, forKey: .imageIngredients)
         imageNutrition = try container.decodeIfPresent(String.self, forKey: .imageNutrition)
         keywords = try container.decodeIfPresent([String].self, forKey: .keywords)
+        nutriScore = try container.decodeIfPresent(String.self, forKey: .nutriScore)
+        novaGroup = try container.decodeIfPresent(Double.self, forKey: .novaGroup)
+        servingQuantityUnit = try container.decodeIfPresent(String.self, forKey: .servingQuantityUnit) ?? "g"
+        packagingQuantityUnit = try container.decodeIfPresent(String.self, forKey: .packagingQuantityUnit) ?? "g"
         
         if let packagingQuantityValue = try? container.decode(Double.self, forKey: .packagingQuantity) {
             packagingQuantity = packagingQuantityValue
-        } else if let packagingQuantityString = try? container.decode(String.self, forKey: .packagingQuantity),
-                  let packagingQuantityValue = Double(packagingQuantityString) {
-            packagingQuantity = packagingQuantityValue
+        } else if let packagingQuantityString = try? container.decode(String.self, forKey: .packagingQuantity) {
+            let cleanedString = packagingQuantityString.filter { $0.isNumber || $0 == "." || $0 == "," }
+            packagingQuantity = Double(cleanedString) ?? 0.0
+            
         } else {
-            packagingQuantity = nil
+            packagingQuantity = 100
         }
-
+        
         if let servingQuantityValue = try? container.decode(Double.self, forKey: .servingQuantity) {
             servingQuantity = servingQuantityValue
-        } else if let servingQuantityString = try? container.decode(String.self, forKey: .servingQuantity),
-                  let servingQuantityValue = Double(servingQuantityString) {
-            servingQuantity = servingQuantityValue
+        } else if let servingQuantityString = try? container.decode(String.self, forKey: .servingQuantity) {
+            let cleanedString = servingQuantityString.filter { $0.isNumber || $0 == "." || $0 == "," }
+            servingQuantity = Double(cleanedString) ?? 0.0
         } else {
-            servingQuantity = nil
+            servingQuantity = 100
         }
         
         if let nutrimentsContainer = try? container.nestedContainer(keyedBy: AnyCodingKey.self, forKey: .nutriments) {
@@ -136,15 +149,19 @@ public struct Product: Codable, Equatable, Sendable {
         try container.encodeIfPresent(productNameEn, forKey: .productNameEn)
         try container.encodeIfPresent(quantity, forKey: .quantity)
         try container.encodeIfPresent(packagingQuantity, forKey: .packagingQuantity)
+        try container.encodeIfPresent(packagingQuantityUnit, forKey: .packagingQuantityUnit)
         try container.encodeIfPresent(servingSize, forKey: .servingSize)
         try container.encodeIfPresent(servingQuantity, forKey: .servingQuantity)
+        try container.encodeIfPresent(servingQuantityUnit, forKey: .servingQuantityUnit)
         try container.encodeIfPresent(dataPer, forKey: .dataPer)
         try container.encodeIfPresent(categories, forKey: .categories)
         try container.encodeIfPresent(imageFront, forKey: .imageFront)
         try container.encodeIfPresent(imageIngredients, forKey: .imageIngredients)
         try container.encodeIfPresent(imageNutrition, forKey: .imageNutrition)
         try container.encodeIfPresent(keywords, forKey: .keywords)
-        try container.encodeIfPresent(self.lang?.rawValue, forKey: .lang)
+        try container.encodeIfPresent(lang?.rawValue, forKey: .lang)
+        try container.encodeIfPresent(nutriScore, forKey: .nutriScore)
+        try container.encodeIfPresent(novaGroup, forKey: .novaGroup)
         
         if let nutriments = self.nutriments {
             var nutrimentsContainer = container.nestedContainer(keyedBy: AnyCodingKey.self, forKey: .nutriments)

@@ -53,7 +53,7 @@ final public actor OpenFoodAPIClient {
         
         let queryParameters = config.getParametersMap()
         
-        guard let uriPath = UriHelper.getUri(path: "/api/v3/product/\(config.barcode)", queryParameters: queryParameters) else {
+        guard let uriPath = UriHelper.getUri(path: "/api/v2/product/\(config.barcode)", queryParameters: queryParameters) else {
             throw NSError(domain: "Couldn't compose uri for \(#function) call", code: 400)
         }
         do {
@@ -94,7 +94,7 @@ final public actor OpenFoodAPIClient {
             "limit": "\(limit)",
         ]
         
-        guard let uri = UriHelper.getUri(path: "/api/v3/taxonomy_suggestions", queryParameters: queryParameters) else {
+        guard let uri = UriHelper.getUri(path: "/api/v2/taxonomy_suggestions", queryParameters: queryParameters) else {
             throw NSError(domain: "Couldn't compose uri for \(#function) call", code: 400)
         }
         
