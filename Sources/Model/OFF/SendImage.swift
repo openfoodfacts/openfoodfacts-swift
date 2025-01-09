@@ -28,13 +28,13 @@ public enum ImageField: String, CaseIterable, Decodable {
 
 public struct SendImage {
     
-    var barcode: String
-    var image: UIImage
-    var imageField: ImageField
+    public var barcode: String
+    public var image: UIImage
+    public var imageField: ImageField
     
-    var imageUri: String?
+    public var imageUri: String?
     
-    init(barcode: String, imageField: ImageField = .front, image: UIImage, imageUri: String? = nil) {
+    public init(barcode: String, imageField: ImageField = .front, image: UIImage, imageUri: String? = nil) {
         self.barcode = barcode
         self.image = image
         self.imageField = imageField

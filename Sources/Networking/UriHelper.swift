@@ -25,7 +25,7 @@ final class UriHelper {
         
         var components = URLComponents()
         components.scheme = OFFApi.scheme
-        components.host = OFFConfig.shared.api.host(for: .world)
+        components.host = OFFConfig.shared.api.host(for: .none)
         components.path = path
         components.queryItems = allQueryParams?.map { URLQueryItem(name: $0.key, value: $0.value) }
         

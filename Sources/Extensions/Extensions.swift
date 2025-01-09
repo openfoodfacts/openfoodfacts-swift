@@ -163,3 +163,63 @@ public extension [String: String] {
         }
     }
 }
+
+extension UIImage {
+    
+    func resized(toMaxSize maxSize: CGFloat = 1000.0) -> UIImage? {
+        guard let image = self.normalizedImage() else { return nil }
+        
+        let width = image.size.width
+        let height = image.size.height
+        let aspectRatio = width / height
+        
+        var newWidth: CGFloat
+        var newHeight: CGFloat
+        
+        if width <= height {
+            // Portrait or square
+            newHeight = min(height, maxSize)
+            newWidth = newHeight * aspectRatio
+            if newWidth > maxSize {
+                newWidth = maxSize
+                newHeight = newWidth / aspectRatio
+            }
+        } else {
+            // Landscape
+            newWidth = min(width, maxSize)
+            newHeight = newWidth / aspectRatio
+            if newHeight > maxSize {
+                newHeight = maxSize
+                newWidth = newHeight * aspectRatio
+            }
+        }
+        
+        let newSize = CGSize(width: newWidth, height: newHeight)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, image.scale)
+        defer { UIGraphicsEndImageContext() }
+        
+        image.draw(in: CGRect(origin: .zero, size: newSize))
+        return UIGraphicsGetImageFromCurrentImageContext()
+    }
+    
+    /// `Re-orientate` the image to `up`.
+    func normalizedImage() -> UIImage?
+    {
+        if self.imageOrientation == .up
+        {
+            return self
+        }
+        else
+        {
+            UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+            defer
+            {
+                UIGraphicsEndImageContext()
+            }
+
+            self.draw(in: CGRect(origin: .zero, size: self.size))
+
+            return UIGraphicsGetImageFromCurrentImageContext()
+        }
+    }
+}

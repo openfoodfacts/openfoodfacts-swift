@@ -41,6 +41,7 @@ public struct OFFApi {
         case images
         case events
         case taxonomies
+        case none
     }
     
     func host(for endpoint: Endpoint) -> String {
@@ -64,7 +65,11 @@ public struct OFFApi {
             subdomain = "static"
         case .events:
             subdomain = "events"
+        case .none:
+            subdomain = ""
         }
+        
+        if subdomain.isEmpty { return domain }
         
         return "\(subdomain).\(domain)"
     }

@@ -172,25 +172,21 @@ final class ProductPageConfig: ObservableObject {
         }
     }
     
+    @MainActor
     func uploadAllProductData(barcode: String) async {
         
-        await MainActor.run {
-            self.pageState = .loading
-        }
+        self.pageState = .loading
         
         await sendAllImages(barcode: barcode)
         do {
             let productBody = try await composeProductBody(barcode: barcode)
             try await OpenFoodAPIClient.shared.saveProduct(product: productBody)
             let productResponse = try await OpenFoodAPIClient.shared.getProduct(config: ProductQueryConfiguration(barcode: barcode))
-            await MainActor.run {
-                self.pageState = .completed
-            }
+            
+            self.pageState = .completed
             try await Task.sleep(nanoseconds: 1_000_000_000 * UInt64(PageOverlay.completedAnimDuration))
-            await MainActor.run {
-                self.pageState = ProductPageState.productDetails
-                self.submittedProduct = productResponse.product
-            }
+            self.pageState = ProductPageState.productDetails
+            self.submittedProduct = productResponse.product
         } catch {
             await MainActor.run {
                 self.pageState = .error

@@ -61,7 +61,7 @@ public struct Product: Codable, Equatable, Sendable {
     public let novaGroup: Double?
     public let nutriScore: String?
     
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case code
         case lang
         case brands
@@ -83,6 +83,29 @@ public struct Product: Codable, Equatable, Sendable {
         case novaGroup = "nova_group"
         case nutriScore = "nutriscore_grade"
         case keywords = "_keywords"
+    }
+    
+    public init(code: String, productName: String? = nil, productNameEn: String? = nil, brands: String? = nil, lang: OpenFoodFactsLanguage = .ENGLISH, quantity: String? = nil, packagingQuantity: Double = 100, packagingQuantityUnit: String = "g", servingSize: String? = nil, servingQuantity: Double = 100, servingQuantityUnit: String = "g", dataPer: String? = nil, categories: String? = nil, nutriments: [String: Any]? = nil, imageFront: String? = nil, imageIngredients: String? = nil, imageNutrition: String? = nil, keywords: [String]? = nil, novaGroup: Double? = nil, nutriScore: String? = nil) {
+        self.code = code
+        self.productName = productName
+        self.productNameEn = productNameEn
+        self.brands = brands
+        self.lang = lang
+        self.quantity = quantity
+        self.packagingQuantity = packagingQuantity
+        self.packagingQuantityUnit = packagingQuantityUnit
+        self.servingSize = servingSize
+        self.servingQuantity = servingQuantity
+        self.servingQuantityUnit = servingQuantityUnit
+        self.dataPer = dataPer
+        self.categories = categories
+        self.nutriments = nutriments
+        self.imageFront = imageFront
+        self.imageIngredients = imageIngredients
+        self.imageNutrition = imageNutrition
+        self.keywords = keywords
+        self.novaGroup = novaGroup
+        self.nutriScore = nutriScore
     }
     
     public init(from decoder: Decoder) throws {

@@ -72,8 +72,7 @@ final class HttpHelper {
             data.append("\(value)\r\n")
         }
         
-        // Files
-        if let fileData = sendImage.image.pngData() {
+        if let fileData = sendImage.image.resized()?.jpegData(compressionQuality: 0.8) {
             data.append("--\(boundary)\r\n")
             data.append("Content-Disposition: form-data; name=\"\(sendImage.getImageDataKey())\"; filename=\"\(fileData.hashValue)\"\r\n")
             data.append("Content-Type: application/octet-stream\r\n\r\n")
@@ -90,6 +89,7 @@ final class HttpHelper {
             let (data, _) = try await URLSession.shared.data(for: request)
             return data
         } catch {
+            print("\(#function) \(uri) error: \(error)")
             throw error
         }
     }
@@ -140,6 +140,7 @@ final class HttpHelper {
             return data
         } catch {
             // Re-throw the error to be caught by the caller
+            print("\(#function) \(uri) error: \(error)")
             throw error
         }
     }

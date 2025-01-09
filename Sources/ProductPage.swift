@@ -121,7 +121,6 @@ public struct ProductPage: View {
             }))
         })
         .onAppear(perform: {
-            UIApplication.shared.addTapGestureRecognizer()
             Task(priority: .userInitiated) {
                 await pageConfig.fetchData(barcode: barcode)
             }
