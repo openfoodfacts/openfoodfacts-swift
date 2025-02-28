@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ProductField: String {
+public enum ProductField: String {
     case barcode = "code"
     case name = "product_name"
     case nameInLanguages = "product_name_"
