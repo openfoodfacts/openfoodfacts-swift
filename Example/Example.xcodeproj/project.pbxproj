@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -38,6 +38,7 @@
 		198CFC1E2ADD44BD00745216 /* ExampleWithCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleWithCode.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		198CFC212ADD454B00745216 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		19CC78E62ACD73E500172137 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		ABD00C7C2CA0C2C8007B1EF6 /* OpenFoodFactsSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "OpenFoodFactsSDK"; path = ".."; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +64,7 @@
 		1926CA042AC8553D004EAD53 = {
 			isa = PBXGroup;
 			children = (
+				ABD00C7C2CA0C2C8007B1EF6 /* OpenFoodFactsSDK */,
 				198CFC202ADD450100745216 /* Sources */,
 				198CFC1F2ADD44F100745216 /* ExampleWithCode */,
 				1926CA0F2AC8553D004EAD53 /* ExampleCodeFromScanner */,
@@ -202,7 +204,6 @@
 			);
 			mainGroup = 1926CA042AC8553D004EAD53;
 			packageReferences = (
-				19E1268B2AF7D86A00C0CD4A /* XCLocalSwiftPackageReference ".." */,
 			);
 			productRefGroup = 1926CA0E2AC8553D004EAD53 /* Products */;
 			projectDirPath = "";
@@ -545,13 +546,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		19E1268B2AF7D86A00C0CD4A /* XCLocalSwiftPackageReference ".." */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ..;
-		};
-/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		198CFC0D2ADD44BD00745216 /* OpenFoodFactsSDK */ = {

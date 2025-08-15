@@ -1,4 +1,5 @@
 {
+  "originHash" : "60c04df88d03ed01e79bc687a7c9df2774a83869cf1902a2c43bd3c25260c4e1",
   "pins" : [
     {
       "identity" : "barcodeview",
@@ -28,5 +29,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
