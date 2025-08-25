@@ -24,9 +24,9 @@ public struct ProductResponse: Decodable {
     /// Possible value for [result.id]: product not found
     static let resultProductNotFound = "product_not_found"
     
-    let barcode: String?
-    let status: String?
-    let product: Product?
+    public let barcode: String?
+    public let status: String?
+    public let product: Product?
     
     enum CodingKeys: String, CodingKey {
         case barcode = "code"
