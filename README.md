@@ -114,9 +114,9 @@ You can check the terms of use here : [Terms of use](https://world.openfoodfacts
 ## Using this SDK and Third party applications
 
 - If you use this SDK, feel free to open a PR to add your application in the list in [REUSERS.md](https://github.com/openfoodfacts/openfoodfacts-swift/blob/develop/REUSERS.md)
+- Please get in touch at reuse@openfoodfacts.org
+- We are very interested in learning what the Open Food Facts data is used for. It is not mandatory, but we would very much appreciate it if you tell us about your re-uses (https://forms.gle/hwaeqBfs8ywwhbTg8) so that we can share them with the Open Food Facts community. You can also fill this form to get a chance to get your app featured: https://forms.gle/hwaeqBfs8ywwhbTg8
 - Make sure you comply with the OdBL licence, mentioning the Source of your data, and ensuring to avoid combining non free data you can't release legally as open data. Another requirement is contributing back any product you add using this SDK.
-
-If you use this SDK, Feel [free to open a PR to add your application in this list](https://github.com/openfoodfacts/openfoodfacts-swift/edit/main/README.md).
 
 ## Authors
 ## Contributors
