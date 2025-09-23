@@ -9,7 +9,7 @@ Open Food Facts is powered by contributors from around the world and is constant
 
 iOS 15+, verified compatibility only with Swift 5.9 for now
 
-## Prerequisits
+## Prerequisites
 
 For adding product's pictures the SDK uses camera and gallery. App which integrates it should add NSCameraUsageDescription and NSPhotoLibraryUsageDescription.
 
@@ -111,7 +111,11 @@ See NOTICE with all dependencies of OpenFoodFactsSDK and their licensing
 The database in under the OdBL. This means attributing the source and also contributing back any additions (photos, data), which this package makes easy to do.
 You can check the terms of use here : [Terms of use](https://world.openfoodfacts.org/terms-of-use).
 
-## Applications using this SDK
+## Using this SDK and Third party applications
+
+- If you use this SDK, feel free to open a PR to add your application in the list in [REUSERS.md](https://github.com/openfoodfacts/openfoodfacts-swift/blob/develop/REUSERS.md)
+- Make sure you comply with the OdBL licence, mentioning the Source of your data, and ensuring to avoid combining non free data you can't release legally as open data. Another requirement is contributing back any product you add using this SDK.
+
 If you use this SDK, Feel [free to open a PR to add your application in this list](https://github.com/openfoodfacts/openfoodfacts-swift/edit/main/README.md).
 
 ## Authors
