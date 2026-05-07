@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Unit: String {
+public enum Unit: String, Sendable {
     case g, kcal, kj
     case milliG = "mg", microG = "µg", percentVol = "% vol"
     case percent = "%", mmol = "mmol/l", l = "l", milliL = "ml"
@@ -40,7 +40,7 @@ public enum Unit: String {
     }
 }
 
-public struct UnitType: Codable {
+public struct UnitType: Codable, Sendable {
     var en: Unit
 
     enum CodingKeys: String, CodingKey {
@@ -68,7 +68,7 @@ public struct UnitType: Codable {
     }
 }
 
-public struct NutrientMeta: Codable {
+public struct NutrientMeta: Codable, Sendable {
     
     public var unit: UnitType? // make it optional
     public var name: [String: String]
@@ -94,7 +94,7 @@ public struct NutrientMeta: Codable {
     }
 }
 
-public struct NutrientMetadata: Codable {
+public struct NutrientMetadata: Codable, Sendable {
     public var nutrients: [String: NutrientMeta]?
     
     public init(from decoder: Decoder) throws {
