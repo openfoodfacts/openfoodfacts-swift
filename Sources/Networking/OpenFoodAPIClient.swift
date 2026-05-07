@@ -203,4 +203,13 @@ final public actor OpenFoodAPIClient {
             throw error
         }
     }
+
+    /// Sendable variant of `getOrderedNutrients()` that returns
+    /// snapshot value types so the result can safely cross an
+    /// actor boundary in Swift 6 strict concurrency.
+    public func getOrderedNutrientSnapshots() async throws -> [OrderedNutrientSnapshot] {
+        let nutrients = try await getOrderedNutrients()
+        return nutrients.snapshots()
+    }
+
 }
