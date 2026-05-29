@@ -1,5 +1,8 @@
 # openfoodfacts-swift
 
+![maintenance-status](https://img.shields.io/badge/maintenance-looking--for--maintainer-orange.svg)
+
+
 
 # Open Food Facts - Swift
 Swift package for the Open Food Facts API. Easily access to more than 1.9 million products from all around the world.
