@@ -1,0 +1,63 @@
+name: Build & Test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Package.swift"
+      - "Package.resolved"
+      - "Sources/**"
+      - "Tests/**"
+      - ".github/workflows/build.yml"
+  pull_request:
+    paths:
+      - "Package.swift"
+      - "Package.resolved"
+      - "Sources/**"
+      - "Tests/**"
+      - ".github/workflows/build.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build & Test (iOS Simulator)
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Select iOS Simulator
+        id: simulator
+        run: |
+          DEVICE=$(xcrun simctl list devices available | grep -oE 'iPhone [^(]+' | head -1 | xargs)
+          if [ -z "$DEVICE" ]; then
+            echo "No available iPhone simulator found" >&2
+            exit 1
+          fi
+          echo "Using simulator: $DEVICE"
+          echo "device=$DEVICE" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -scheme OpenFoodFactsSDK \
+            -destination "platform=iOS Simulator,name=${{ steps.simulator.outputs.device }}" \
+            -skipPackagePluginValidation \
+            | xcbeautify --renderer github-actions
+
+      - name: Test
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -scheme OpenFoodFactsSDK \
+            -destination "platform=iOS Simulator,name=${{ steps.simulator.outputs.device }}" \
+            -skipPackagePluginValidation \
+            | xcbeautify --renderer github-actions
