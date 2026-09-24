@@ -69,3 +69,46 @@ public class OrderedNutrient: ObservableObject, Codable, Equatable, Identifiable
         return "OrderedNutrient(id: \(id), name: \(name), important: \(important), displayInEditForm: \(displayInEditForm), currentUnit: \(currentUnit), value: \(value))"
     }
 }
+
+// MARK: - Sendable snapshot
+
+/// Immutable, `Sendable` projection of an `OrderedNutrient` for
+/// passing across actor boundaries (Swift 6 strict concurrency).
+/// `OrderedNutrient` itself can't be `Sendable` because it's an
+/// `ObservableObject` with `@Published` mutable state.
+public struct OrderedNutrientSnapshot: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let name: String
+    public let important: Bool
+    public let displayInEditForm: Bool
+    public let subNutrients: [OrderedNutrientSnapshot]?
+
+    public init(id: String, name: String, important: Bool,
+                displayInEditForm: Bool, subNutrients: [OrderedNutrientSnapshot]? = nil) {
+        self.id = id
+        self.name = name
+        self.important = important
+        self.displayInEditForm = displayInEditForm
+        self.subNutrients = subNutrients
+    }
+}
+
+public extension OrderedNutrient {
+    /// Build a `Sendable` snapshot of this nutrient (and its subtree).
+    func snapshot() -> OrderedNutrientSnapshot {
+        OrderedNutrientSnapshot(
+            id: id,
+            name: name,
+            important: important,
+            displayInEditForm: displayInEditForm,
+            subNutrients: subNutrients?.map { $0.snapshot() }
+        )
+    }
+}
+
+public extension Array where Element: OrderedNutrient {
+    /// Convenience: snapshot a whole array.
+    func snapshots() -> [OrderedNutrientSnapshot] {
+        self.map { $0.snapshot() }
+    }
+}
